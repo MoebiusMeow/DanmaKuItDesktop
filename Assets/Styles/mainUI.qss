@@ -1,0 +1,153 @@
+/* ---------- */
+/* MainFrame  */
+/* ---------- */
+
+#MainFrame {
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 0px;
+}
+
+#MainOverlayFrame {
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+
+#MainOverlayFrame .QPushButton {
+    border: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 40px;
+    height: 30px;
+    color: white;
+}
+
+#MainOverlayFrame .QPushButton:hover {
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 40px;
+    height: 30px;
+    color: white;
+    background: rgba(100, 100, 100, 140);
+}
+
+#MainOverlayFrame #WindowCloseButton:hover {
+    background: rgba(255, 100, 100, 210);
+}
+
+#MainOverlayFrame .QLabel {
+    text-align: center;
+    font-size: 25px;
+    color: white;
+}
+
+#MainOverlayFrame #LogoFont {
+    font-size: 60px;
+}
+
+#MainOverlayFrame .QGroupBox {
+    border: none;
+}
+
+#LoginBox {
+    margin-bottom: 10px;
+    border: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: white;
+    color: black;
+}
+
+#LoginBox .QLabel {
+    border-radius: 5px;
+    font-size: 14px;
+    margin: 5px;
+    color: darkgrey;
+    border: none;
+}
+
+#LoginBox .QLineEdit {
+    border-radius: 0px;
+    font-size: 16px;
+    padding: 5px;
+    margin: 5px;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid grey;
+    background: rgb(255, 255, 255);
+}
+
+#LoginBox .QLineEdit:hover {
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 4px;
+    margin: 5px;
+    border: 1px solid lightgrey;
+    border-bottom: 1px solid grey;
+    background: rgb(255, 255, 255);
+}
+
+#LoginBox .QLineEdit:focus {
+    color: red;
+    border-bottom: 2px solid orange;
+}
+
+#LoginBox .QPushButton {
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    border: none;
+    background: rgb(80, 133, 255);
+}
+
+
+#LoginBox .QPushButton:hover {
+    background: rgb(120, 173, 255);
+}
+
+
+
+
+WaveWidget {
+    border:100px;
+    border-radius: 25px;
+}
+
+/* ---------- */
+/* MessageBox */
+/* ---------- */
+
+.KultMessageBox .QFrame {
+    border: 1px solid grey;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 240);
+    padding: 5px;
+}
+
+.KultMessageBox .QLabel {
+    margin: 20px;
+}
+
+.KultMessageBox .QPushButton {
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    color: black;
+    border: 1px solid grey;
+    background: rgb(255, 255, 255);
+}
+
+
+.KultMessageBox .QPushButton:hover {
+    border: 1px solid blue;
+    background: rgb(220, 233, 255);
+}
+
+.KultMessageBox .QPushButton:focus {
+    background: rgb(240, 243, 255);
+}
+
+

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Assets/Shaders/plainUV.vert</file>
+        <file>Assets/Shaders/waveShader.frag</file>
+        <file>Assets/Styles/mainUI.qss</file>
+        <file>Assets/Fonts/fontawesome-webfont.ttf</file>
+    </qresource>
+</RCC>
