@@ -3,6 +3,8 @@
 #include <QtDebug>
 #include <QMouseEvent>
 
+#include "danmakutestset.h"
+
 
 DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
     , m_textFloatSet(new DanmakuTextFloatSet)
@@ -10,6 +12,7 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
     , m_textBottomSet(new DanmakuTextBottomSet)
     , update_timer(new QTimer)
     , paint_timer(new QTimer)
+    , m_test(new DanmakuTestSet)
 {
     connect(update_timer, &QTimer::timeout, this, &DanmakuWidget::updateText);
     update_timer->start(UPDATE_INTERVAL);
@@ -24,6 +27,7 @@ DanmakuWidget::~DanmakuWidget()
     delete m_textBottomSet;
     delete update_timer;
     delete paint_timer;
+    delete m_test;
 }
 
 int DanmakuWidget::append(const QString &text, const QColor &color)
@@ -92,13 +96,13 @@ void DanmakuWidget::resizeEvent(QResizeEvent *resize_event)
 void DanmakuWidget::mousePressEvent(QMouseEvent *mouse_event)
 {
     if(mouse_event->button()==Qt::LeftButton){
-        append(QString("去码头整点薯条")+QString::number(time(0)));
+        append(m_test->getRandonStr());
     }
     if(mouse_event->button()==Qt::RightButton){
-        appendTop(QString("码头没有薯条了")+QString::number(time(0)));
+        appendTop(m_test->getRandonStr());
     }
     if(mouse_event->button()==Qt::MiddleButton){
-        appendBottom(QString("码头没有薯条了")+QString::number(time(0)));
+        appendBottom(m_test->getRandonStr());
     }
     Q_UNUSED(mouse_event)
 }

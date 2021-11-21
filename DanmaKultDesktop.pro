@@ -13,6 +13,7 @@ SOURCES += \
     DynamicVBoxLayout.cpp \
     KultLoginBox.cpp \
     KultMessageBox.cpp \
+    ScreenOverlay/danmakutestset.cpp \
     ScreenOverlay/danmakutext.cpp \
     ScreenOverlay/danmakutextbottom.cpp \
     ScreenOverlay/danmakutextbottomset.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     KultLoginBox.h \
     KultMessageBox.h \
     MainWindow.h \
+    ScreenOverlay/danmakutestset.h \
     ScreenOverlay/danmakutext.h \
     ScreenOverlay/danmakutextbottom.h \
     ScreenOverlay/danmakutextbottomset.h \

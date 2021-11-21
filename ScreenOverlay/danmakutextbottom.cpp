@@ -22,7 +22,7 @@ bool DanmakuTextBottom::update()
 bool DanmakuTextBottom::paint(QPainter *painter)
 {
     painter->setPen(m_color);
-    painter->drawText(m_bound, Qt::AlignCenter, m_text);
+    painter->drawText(m_bound, 0, m_text);
     return true;
 }
 
