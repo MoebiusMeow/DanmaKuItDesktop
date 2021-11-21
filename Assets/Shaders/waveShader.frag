@@ -8,6 +8,7 @@
 uniform vec2      iResolution;           // viewport resolution (in pixels)
 uniform float     iTime;                 // shader playback time (in seconds)
 uniform float     iRoundRadius;          // round-rect radius (discarding round corner)
+uniform float     iThemeTrans;
 varying vec2 fragCoord;
 
 // -----------------------------------------------
@@ -91,9 +92,10 @@ void main(void)
     //col.y += clamp(1.0 - 0.01/(col.r*10.0+0.01), 0.0, 0.2);
     //col.x += clamp(1.0 - 1.0/(smoothstep(0.1,0.5,col.r)*5.0+1.0), 0.0, 0.3);
     col = max(col, vec3(1.0, 0.0, 0.0) * mix(0.9,0.0,f2) * p.y * p.y);
+    col = mix(col, mix(col.zyx, vec3(1.0, 0.25, 0.0), 0.8), iThemeTrans);
 
     col = max(col, calc_block(p, vec2(0.4, 0.04)));
     
-    gl_FragColor = vec4(col,1.0);
+    gl_FragColor = vec4(col, 1.0);
     //if(col.y < 0.3) discard;
 }

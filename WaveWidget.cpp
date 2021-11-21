@@ -20,6 +20,7 @@ WaveWidget::WaveWidget(QWidget *parent) : QOpenGLWidget(parent), borderRadius(0.
     VAO = new QOpenGLVertexArrayObject(this);
     VBO = new QOpenGLBuffer();
     setAttribute(Qt::WA_TranslucentBackground);
+    themeTrans = 0.0f;
 }
 
 void WaveWidget::initializeGL()
@@ -58,6 +59,7 @@ void WaveWidget::paintGL()
     waveProgram.bind();
     waveProgram.setUniformValue("iResolution", ratio * QVector2D(width(), height()));
     waveProgram.setUniformValue("iTime", (GLfloat)(QTime::currentTime().msecsSinceStartOfDay() * 0.001f));
+    waveProgram.setUniformValue("iThemeTrans", themeTrans);
     waveProgram.setUniformValue("iRoundRadius", (GLfloat)ratio * borderRadius);
     //qDebug() << QVector2D(100, 100);=
     f->glViewport(0, 0, (int)(width() * ratio), (int)(height() * ratio));
@@ -93,6 +95,26 @@ void WaveWidget::animate()
     this->update();
     borderRadius = 0.85 * borderRadius + 0.15 * targetBorderRadius;
 }
+
+float WaveWidget::getThemeTrans()
+{
+    return themeTrans;
+}
+
+void WaveWidget::setThemeTrans(float value)
+{
+    themeTrans = value;
+}
+
+void WaveWidget::animateTheme(float endValue, int duration)
+{
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "themeTrans", this);
+    animation->setEasingCurve(QEasingCurve::OutCubic);
+    animation->setEndValue(endValue);
+    animation->setDuration(duration);
+    animation->start();
+}
+
 
 WaveWidget::~WaveWidget()
 {

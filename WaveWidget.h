@@ -11,6 +11,7 @@
 class WaveWidget : public QOpenGLWidget
 {
     Q_OBJECT
+    Q_PROPERTY(float themeTrans READ getThemeTrans WRITE setThemeTrans)
 
 private:
     QOpenGLBuffer *VBO;
@@ -20,6 +21,7 @@ private:
     QOpenGLShaderProgram waveProgram;
     float borderRadius;
     float targetBorderRadius;
+    float themeTrans;
 
     static GLfloat vertices[18];
 
@@ -32,6 +34,9 @@ protected:
 
 public slots:
     void animate();
+    float getThemeTrans();
+    void setThemeTrans(float value);
+    void animateTheme(float endValue, int duration = 1000);
 
 public:
     void setBorderRadius(float radius);

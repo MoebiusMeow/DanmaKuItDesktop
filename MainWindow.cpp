@@ -15,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowFlag(Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_TranslucentBackground);
-    resize(screen()->geometry().width() * 0.25, screen()->geometry().width() * 0.25 * 0.718);
+    qreal ratio = screen()->devicePixelRatio();
+    resize(screen()->geometry().width() * 0.25 * ratio, screen()->geometry().width() * 0.25 * 0.718 * ratio);
     move(screen()->geometry().center() - QPoint(width(), height()) / 2);
 
     installEventFilter(this);
@@ -97,7 +98,8 @@ void MainWindow::setupUI()
     dyLayout->addWidget(loginBox, 1000);
     dyLayout->setTarget(dyLayout->count() - 1);
     dyLayout->animateStretch(8000, 1000);
-    connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); screenOverlay->show(); });
+    connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
+    connect(loginBox, &KultLoginBox::logoutSuccess, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     //yLayout->setStretch(1, 100);
 
     stretchFrame->addWidget(overlayFrame);

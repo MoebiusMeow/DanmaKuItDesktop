@@ -22,6 +22,7 @@
     color: white;
 }
 
+
 #MainOverlayFrame .QPushButton:hover {
     border-top: none;
     border-bottom-left-radius: 10px;
@@ -50,6 +51,11 @@
     border: none;
 }
 
+#LoginBox .QGroupBox {
+    border: none;
+    background : none;
+}
+
 #LoginBox {
     margin-bottom: 10px;
     border: none;
@@ -61,7 +67,7 @@
 
 #LoginBox .QLabel {
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 16px;
     margin: 5px;
     color: darkgrey;
     border: none;
@@ -74,7 +80,7 @@
     margin: 5px;
     border-left: none;
     border-right: none;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid lightgrey;
     background: rgb(255, 255, 255);
 }
 
@@ -90,7 +96,7 @@
 
 #LoginBox .QLineEdit:focus {
     color: red;
-    border-bottom: 2px solid orange;
+    border-bottom: 1px solid rgb(80, 133, 255);
 }
 
 #LoginBox .QPushButton {
@@ -103,9 +109,30 @@
     background: rgb(80, 133, 255);
 }
 
+#LoginBox #DisconnectButton {
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    border: 1px solid darkorange;
+    background: orangered;
+}
 
 #LoginBox .QPushButton:hover {
     background: rgb(120, 173, 255);
+}
+
+#LoginBox #DisconnectButton:hover {
+    background: salmon;
+}
+
+#LoginBox #DisplayBox #TitleGroup .QLabel {
+    border-radius: 5px;
+    font-size: 24px;
+    margin: 5px;
+    color: darkorange;
+    border: none;
 }
 
 
