@@ -15,13 +15,18 @@ void KultLoginBox::setupUI()
     icons.setPixelSize(16);
 
     stackedLayout = new QStackedLayout();
-    QGroupBox *group = new QGroupBox(this);
+    QGroupBox *group;
     QHBoxLayout *xLayout;
     QVBoxLayout *yLayout;
     QGridLayout *gLayout;
     QPushButton *tempButton;
     QLineEdit *tempLineEdit;
     QLabel *tempLabel;
+
+    // ----------
+    // login
+    // ----------
+    group = new QGroupBox(this);
 
     yLayout = new QVBoxLayout();
     yLayout->addStretch(1);
@@ -46,26 +51,25 @@ void KultLoginBox::setupUI()
     tempLineEdit->setEchoMode(QLineEdit::Password);
     gLayout->addWidget(tempLineEdit, 1, 1);
 
-    //xLayout->addLayout(gLayout);
-    //xLayout->addStretch(1);
-    //yLayout->addLayout(xLayout);
-    //yLayout->addStretch(1);
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
 
-    //xLayout = new QHBoxLayout();
-    //xLayout->addStretch(1);
     tempButton = new QPushButton("弹幕一下", group);
     tempButton->setMinimumWidth(200);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::login);
     yLayout->addWidget(tempButton);
-    //xLayout->addStretch(1);
 
     xLayout->addLayout(yLayout);
     xLayout->addStretch(1);
     group->setLayout(xLayout);
     stackedLayout->addWidget(group);
-    stackedLayout->addWidget(new QGroupBox(this));
+
+    // ----------
+    // display
+    // ----------
+
+    group = new QGroupBox(this);
+    stackedLayout->addWidget(group);
 
     setLayout(stackedLayout);
 }

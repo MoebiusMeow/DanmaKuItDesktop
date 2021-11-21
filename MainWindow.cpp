@@ -133,6 +133,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::MouseButtonPress)
     {
+        if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();
         return true;

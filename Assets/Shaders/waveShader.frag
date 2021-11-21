@@ -60,7 +60,7 @@ float calc_block( vec2 p , vec2 block_size)
     vec2 front = p - fract(ij) * block_size;
     ij = floor(ij);
     if (fract((ij.y) * 0.5) >= 0.5) return 0.0;
-    if (front.y <= 0.6 || front.y >= 0.9 - block_size.y) return 0.0;
+    if (front.y <= 0.6 || front.y >= 0.85 - block_size.y) return 0.0;
     float r = noise(ij * vec2(200.0, 10.0));
     if (r > -0.005) return 0.0;
     //r = noise(ij * 2.0);
