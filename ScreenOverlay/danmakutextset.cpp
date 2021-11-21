@@ -2,7 +2,6 @@
 
 #include <QDebug>
 #include <QRandomGenerator>
-
 #include <vector>
 
 DanmakuTextSet::DanmakuTextSet(QObject *parent) : QObject(parent)

@@ -6,6 +6,7 @@
 #include "danmakutextfloatset.h"
 #include "danmakutexttopset.h"
 #include "danmakutextbottomset.h"
+#include "danmakutestset.h"
 
 class DanmakuWidget : public QWidget
 {
@@ -33,6 +34,7 @@ private:
     DanmakuTextTopSet *m_textTopSet;
     DanmakuTextBottomSet *m_textBottomSet;
     QTimer *update_timer, *paint_timer;
+    DanmakuTestSet *m_test;
 };
 
 #endif // DANMAKUWIDGET_H
