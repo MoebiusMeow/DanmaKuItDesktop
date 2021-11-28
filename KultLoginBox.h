@@ -10,6 +10,7 @@ class KultLoginBox : public QGroupBox
     Q_OBJECT
 signals:
     void loginSuccess();
+    void logoutSuccess();
 
 protected:
     QStackedLayout *stackedLayout;
@@ -20,6 +21,7 @@ public:
 
 public slots:
     void login();
+    void logout();
     void switchToDisplay();
     void switchToLogin();
 };
