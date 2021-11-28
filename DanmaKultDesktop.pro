@@ -33,6 +33,7 @@ HEADERS += \
     KultLoginBox.h \
     KultMessageBox.h \
     MainWindow.h \
+    ScreenOverlay/DanmakuConstants.h \
     ScreenOverlay/danmakutestset.h \
     ScreenOverlay/danmakutext.h \
     ScreenOverlay/danmakutextbottom.h \

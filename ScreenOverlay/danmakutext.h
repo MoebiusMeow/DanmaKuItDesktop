@@ -4,7 +4,9 @@
 #include <QObject>
 #include <QPointF>
 #include <QPainter>
+#include <ctime>
 
+#include "DanmakuConstants.h"
 
 
 class DanmakuText : public QObject
@@ -17,6 +19,8 @@ protected:
     QColor      m_color;
     QRect       m_bound;
     std::shared_ptr<QImage>      m_bufferImage;
+
+    clock_t     m_last_clock;
 
     bool        m_boundReady;
     bool        m_bufferImageReady;
@@ -46,6 +50,9 @@ public:
     virtual bool paint(QPainter *painter);
     virtual bool update();
     virtual void calcBound(QPainter *painter);
+
+protected:
+    virtual clock_t getFrameInterval();
 
 signals:
 

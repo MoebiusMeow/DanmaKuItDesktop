@@ -89,7 +89,7 @@ bool DanmakuTextSet::ifBlockRail(const DanmakuText &text, int railID)
 void DanmakuTextSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF(m_bound.right()-1, m_railYpos[railID]));
-    text.setVel(QPointF(-0.3,0.0));
+    text.setVel(QPointF(-2.5,0.0));
     text.setID(railID);
 }
 

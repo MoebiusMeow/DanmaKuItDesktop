@@ -3,7 +3,7 @@
 #include "danmakutexttop.h"
 
 DanmakuTextTop::DanmakuTextTop(QObject *parent) : DanmakuText(parent)
-  , m_life(200)
+  , m_life(400)
 {
 
 }

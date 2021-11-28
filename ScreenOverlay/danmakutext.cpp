@@ -8,6 +8,7 @@ DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
   ,m_vel(QPointF(0.0,0.0))
   ,m_text(QString("123"))
   ,m_color(QColor(0xff,0xff,0xff))
+  ,m_last_clock(0)
   ,m_boundReady(false)
   ,m_bufferImageReady(false)
   ,m_delTag(false)
@@ -106,6 +107,11 @@ bool DanmakuText::paint(QPainter *painter)
 
 bool DanmakuText::update()
 {
+    if(m_last_clock == 0){
+        m_last_clock = clock();
+        return true;
+    }
+    m_last_clock = clock();
     if(m_delTag) return false;
     return true;
 }
@@ -116,4 +122,9 @@ void DanmakuText::calcBound(QPainter *painter)
         m_bound = painter->fontMetrics().boundingRect(m_text);
     m_bound.moveTo(m_pos.x(),m_pos.y());
     m_boundReady = true;
+}
+
+clock_t DanmakuText::getFrameInterval()
+{
+    return m_last_clock? (clock()-m_last_clock)/(CLOCKS_PER_SEC/DANMAKU_FPS) :0;
 }

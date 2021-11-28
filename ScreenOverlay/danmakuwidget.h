@@ -7,6 +7,7 @@
 #include "danmakutexttopset.h"
 #include "danmakutextbottomset.h"
 #include "danmakutestset.h"
+#include "DanmakuConstants.h"
 
 class DanmakuWidget : public QWidget
 {
@@ -15,8 +16,8 @@ public:
     explicit DanmakuWidget(QWidget *parent = nullptr);
     ~DanmakuWidget();
 
-    const int UPDATE_INTERVAL = 10;
-    const int PAINT_INTERVAL  = 12;
+    const int UPDATE_INTERVAL = 1000/DANMAKU_FPS;
+    const int PAINT_INTERVAL  = 1000/DANMAKU_FPS;
 
     int append(const QString &text, const QColor &color = Qt::cyan);
     int appendTop(const QString &text, const QColor &color = Qt::magenta);

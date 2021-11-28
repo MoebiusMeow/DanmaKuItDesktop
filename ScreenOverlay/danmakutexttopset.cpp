@@ -29,6 +29,6 @@ bool DanmakuTextTopSet::ifBlockRail(const DanmakuText &text, int railID)
 void DanmakuTextTopSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF((m_bound.right()+m_bound.left())>>1, m_railYpos[railID]));
-    ((DanmakuTextTop *)(&text))->setLife(120);
+    ((DanmakuTextTop *)(&text))->setLife(240);
     text.setID(railID);
 }
