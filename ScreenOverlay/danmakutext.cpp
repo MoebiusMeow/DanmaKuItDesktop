@@ -100,8 +100,8 @@ bool DanmakuText::paint(QPainter *painter)
 
     painter->setRenderHints(QPainter::SmoothPixmapTransform, true);
     painter->drawImage(m_bound,*m_bufferImage);
-    painter->setPen(Qt::white);
-    painter->drawRect(m_bound);
+    // painter->setPen(Qt::white);
+    // painter->drawRect(m_bound);
     return true;
 }
 

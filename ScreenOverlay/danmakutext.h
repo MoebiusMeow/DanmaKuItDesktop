@@ -17,6 +17,7 @@ protected:
     QPointF     m_pos, m_vel; // position and velocity
     QString     m_text;
     QColor      m_color;
+    int         m_font_size;
     QRect       m_bound;
     std::shared_ptr<QImage>      m_bufferImage;
 
