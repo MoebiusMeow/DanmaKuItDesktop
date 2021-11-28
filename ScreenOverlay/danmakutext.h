@@ -16,8 +16,10 @@ protected:
     QString     m_text;
     QColor      m_color;
     QRect       m_bound;
+    std::shared_ptr<QImage>      m_bufferImage;
 
     bool        m_boundReady;
+    bool        m_bufferImageReady;
     bool        m_delTag;
     int         m_id;
 

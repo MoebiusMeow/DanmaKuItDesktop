@@ -89,12 +89,13 @@ bool DanmakuTextSet::ifBlockRail(const DanmakuText &text, int railID)
 void DanmakuTextSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF(m_bound.right()-1, m_railYpos[railID]));
-    text.setVel(QPointF(-4.0,0.0));
+    text.setVel(QPointF(-0.3,0.0));
     text.setID(railID);
 }
 
 bool DanmakuTextSet::paint(QPainter *painter)
 {
+    painter->setRenderHints(QPainter::Antialiasing, true);
     for(auto i=m_texts.begin(); i!=m_texts.end(); i++){
         (*i)->calcBound(painter);
         (*i)->paint(painter);

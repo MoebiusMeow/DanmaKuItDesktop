@@ -16,8 +16,6 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
 {
     connect(update_timer, &QTimer::timeout, this, &DanmakuWidget::updateText);
     update_timer->start(UPDATE_INTERVAL);
-    connect(paint_timer , &QTimer::timeout, this, &DanmakuWidget::updateDisplay);
-    paint_timer->start(PAINT_INTERVAL);
 }
 
 DanmakuWidget::~DanmakuWidget()
@@ -63,6 +61,7 @@ bool DanmakuWidget::updateText()
     m_textFloatSet->update();
     m_textTopSet ->update();
     m_textBottomSet ->update();
+    updateDisplay();
     return true;
 }
 
@@ -75,7 +74,7 @@ bool DanmakuWidget::updateDisplay()
 void DanmakuWidget::paintEvent(QPaintEvent *paint_event)
 {
     QPainter p(this);
-    p.setFont(QFont("Microsoft YaHei", 20));
+    p.setFont(QFont("SimHei", 20, 1000));
     m_textFloatSet->paint(&p);
     m_textTopSet->paint(&p);
     m_textBottomSet->paint(&p);

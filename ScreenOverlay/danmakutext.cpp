@@ -1,6 +1,7 @@
 #include "danmakutext.h"
 
 #include <QtDebug>
+#include <QPainterPath>
 
 DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
   ,m_pos(QPointF(0.0,0.0))
@@ -8,6 +9,7 @@ DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
   ,m_text(QString("123"))
   ,m_color(QColor(0xff,0xff,0xff))
   ,m_boundReady(false)
+  ,m_bufferImageReady(false)
   ,m_delTag(false)
 {
 
@@ -77,8 +79,28 @@ int DanmakuText::id() const
 
 bool DanmakuText::paint(QPainter *painter)
 {
-    painter->setPen(m_color);
-    painter->drawText(m_bound, 0, m_text);
+    const QFontMetrics &m = painter->fontMetrics();
+    int py = (m_bound.height()-m.height()) + m.ascent();
+
+    if(!m_bufferImageReady){
+        m_bufferImage = std::make_shared<QImage>(m_bound.width(),m_bound.height(),QImage::Format_ARGB32);
+        m_bufferImage->fill(QColor(0,0,0,0));
+        QPainter *bufferPainter = new QPainter(m_bufferImage.get());
+        bufferPainter->setRenderHints(QPainter::Antialiasing, true);
+        QPainterPath path;
+        path.addText(0, py, painter->font(), m_text);
+        bufferPainter->setBrush(m_color);
+        bufferPainter->setPen(QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black,2,Qt::SolidLine));
+        bufferPainter->drawPath(path);
+        bufferPainter->fillPath(path,QBrush(m_color));
+        delete(bufferPainter);
+        m_bufferImageReady = true;
+    }
+
+    painter->setRenderHints(QPainter::SmoothPixmapTransform, true);
+    painter->drawImage(m_bound,*m_bufferImage);
+    painter->setPen(Qt::white);
+    painter->drawRect(m_bound);
     return true;
 }
 
@@ -90,7 +112,8 @@ bool DanmakuText::update()
 
 void DanmakuText::calcBound(QPainter *painter)
 {
-    m_bound = painter->fontMetrics().boundingRect(m_text);
+    if(!m_boundReady)
+        m_bound = painter->fontMetrics().boundingRect(m_text);
     m_bound.moveTo(m_pos.x(),m_pos.y());
     m_boundReady = true;
 }
