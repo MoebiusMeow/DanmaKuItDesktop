@@ -17,7 +17,6 @@ SOURCES += \
     ScreenOverlay/danmakutext.cpp \
     ScreenOverlay/danmakutextbottom.cpp \
     ScreenOverlay/danmakutextbottomset.cpp \
-    ScreenOverlay/danmakutextbuttomset.cpp \
     ScreenOverlay/danmakutextfloat.cpp \
     ScreenOverlay/danmakutextfloatset.cpp \
     ScreenOverlay/danmakutextset.cpp \
@@ -38,7 +37,6 @@ HEADERS += \
     ScreenOverlay/danmakutext.h \
     ScreenOverlay/danmakutextbottom.h \
     ScreenOverlay/danmakutextbottomset.h \
-    ScreenOverlay/danmakutextbuttomset.h \
     ScreenOverlay/danmakutextfloat.h \
     ScreenOverlay/danmakutextfloatset.h \
     ScreenOverlay/danmakutextset.h \

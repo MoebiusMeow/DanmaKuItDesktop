@@ -24,7 +24,6 @@ bool DanmakuTextTop::update()
 
 void DanmakuTextTop::calcBound(QPainter *painter)
 {
-    m_bound = painter->fontMetrics().boundingRect(m_text);
+    DanmakuText::calcBound(painter);
     m_bound.moveTo(m_pos.x() - m_bound.width()/2, m_pos.y()-m_bound.height()/2);
-    Q_UNUSED(painter);
 }

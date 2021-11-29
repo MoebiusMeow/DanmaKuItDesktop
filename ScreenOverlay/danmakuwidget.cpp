@@ -74,7 +74,6 @@ bool DanmakuWidget::updateDisplay()
 void DanmakuWidget::paintEvent(QPaintEvent *paint_event)
 {
     QPainter p(this);
-    p.setFont(QFont("SimHei", 20, 1000));
     m_textFloatSet->paint(&p);
     m_textTopSet->paint(&p);
     m_textBottomSet->paint(&p);

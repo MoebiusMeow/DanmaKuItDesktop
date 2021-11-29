@@ -36,6 +36,7 @@ public:
     bool setPos(const QPointF &pos);
     bool setVel(const QPointF &vel);
     bool setColor(const QColor &color);
+    bool setFontSize(int size);
     bool setID(int id);
     void del();
 

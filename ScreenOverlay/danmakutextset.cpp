@@ -29,7 +29,7 @@ int DanmakuTextSet::getRailCnt()
 
 int DanmakuTextSet::calcRailYpos()
 {
-    int deltY = m_bound.height()/(getRailCnt()+2);
+    int deltY = m_bound.height()/DANMAKU_STANDARD_RAIL_CNT;
     for(int i=0;i<getRailCnt();i++){
         m_railYpos[i] = deltY * (i+1) + m_bound.top();
     }
