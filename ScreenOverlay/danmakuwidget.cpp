@@ -2,27 +2,30 @@
 
 #include <QtDebug>
 #include <QMouseEvent>
+#include <QHostInfo>
 
 #include "danmakutestset.h"
 
 
 DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
-    , m_textFloatSet(new DanmakuTextFloatSet)
-    , m_textTopSet(new DanmakuTextTopSet)
-    , m_textBottomSet(new DanmakuTextBottomSet)
-    , update_timer(new QTimer)
-    , reconnect_timer(new QTimer)
-    , m_test(new DanmakuTestSet)
+    , m_textFloatSet(new DanmakuTextFloatSet(this))
+    , m_textTopSet(new DanmakuTextTopSet(this))
+    , m_textBottomSet(new DanmakuTextBottomSet(this))
+    , update_timer(new QTimer(this))
+    , reconnect_timer(new QTimer(this))
+    , shutdown_timer(new QTimer(this))
+    , m_test(new DanmakuTestSet(this))
     , m_websocket(new QWebSocket)
+    , m_wsOn(false)
+    , m_shutdown(false)
+    , m_realshutdown(false)
 {
     // config websocket
-    m_url = "ws://127.0.0.1:8000";
+
     connect(m_websocket, &QWebSocket::connected, this, &DanmakuWidget::onconnect);
     connect(m_websocket, &QWebSocket::disconnected, this, &DanmakuWidget::ondisconnect);
     connect(m_websocket, &QWebSocket::binaryMessageReceived, this, &DanmakuWidget::onBinaryMessageRecieved);
     connect(m_websocket, &QWebSocket::textMessageReceived, this, &DanmakuWidget::onTextMessageReceived);
-    m_websocket->open(m_url);
-    qDebug()<<"conncting...";
 
     // config update_timer
     connect(update_timer, &QTimer::timeout, this, &DanmakuWidget::updateText);
@@ -31,13 +34,6 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
 
 DanmakuWidget::~DanmakuWidget()
 {
-    m_websocket->close();
-    delete m_textFloatSet;
-    delete m_textTopSet;
-    delete m_textBottomSet;
-    delete update_timer;
-    delete reconnect_timer;
-    delete m_test;
     delete m_websocket;
 }
 
@@ -47,6 +43,7 @@ int DanmakuWidget::appendFloat(const QString &text, const QString &id, const QCo
     newText->setText(text);
     newText->setColor(color);
     newText->setFontSize(size);
+    newText->setID(id);
     m_textFloatSet->append(newText);
     //m_waiting.push_back(newText);
     return true;
@@ -58,6 +55,7 @@ int DanmakuWidget::appendTop(const QString &text, const QString &id, const QColo
     newText->setText(text);
     newText->setColor(color);
     newText->setFontSize(size);
+    newText->setID(id);
     m_textTopSet->append(newText);
     return true;
 }
@@ -68,8 +66,19 @@ int DanmakuWidget::appendBottom(const QString &text, const QString &id, const QC
     newText->setText(text);
     newText->setColor(color);
     newText->setFontSize(size);
+    newText->setID(id);
     m_textBottomSet->append(newText);
     return true;
+}
+
+QString DanmakuWidget::getWSurl()
+{
+    return DANMAKU_SCHEMA + "://" + DANMAKU_DOMAIN
+            + "/websocket/consumer/persistent/public/default/"
+            + m_roomid + "/"
+            + QUrl::toPercentEncoding(QHostInfo::localHostName()) + "~"
+            + QString::number(QRandomGenerator::global()->generate64(), 16)
+            + "?token=" + m_token;
 }
 
 bool DanmakuWidget::updateText()
@@ -105,20 +114,74 @@ void DanmakuWidget::resizeEvent(QResizeEvent *resize_event)
     Q_UNUSED(resize_event);
 }
 
+void DanmakuWidget::closeEvent(QCloseEvent *close_event)
+{
+
+    if(m_realshutdown){
+        shutdown_timer->stop();
+        close_event->accept();
+        return;
+    }
+    if(!m_shutdown){
+        m_shutdown = true;
+        wsClose();
+    }
+    close_event->ignore();
+}
+
+void DanmakuWidget::wsConnect(const QString &roomid, const QString &token)
+{
+    m_wsOn = true;
+    m_roomid = roomid, m_token = token;
+    QString url = getWSurl();
+    qDebug()<<"[connecting]"<<url;
+    m_websocket->open(QUrl(url));
+}
+
+void DanmakuWidget::wsClose()
+{
+    m_wsOn = false;
+    m_websocket->close(); // if websockt close normally, it will reach the closing branch in ondisconnect
+    shutdown_timer->singleShot(DANMAKU_SHUTDOWN_INTERVAL, this, &DanmakuWidget::onforceShutdown);
+    qDebug()<<"waiting websocket shutdown ...";
+}
+
 void DanmakuWidget::onconnect()
 {
     qDebug()<<"connnected to room server";
+    emit wsConnected();
 }
 
 void DanmakuWidget::ondisconnect()
 {
-    //reconnect_timer->singleShot(DANMAKU_RECONNECT_INTERVAL,this,&DanmakuWidget::reconnect);
+    if(m_wsOn){
+        qDebug()<<"WebSocket connection broke, waiting reconnect ...";
+        reconnect_timer->singleShot(DANMAKU_RECONNECT_INTERVAL,this,&DanmakuWidget::reconnect);
+        emit wsBroken();
+    }
+    else if(m_shutdown){
+        qDebug()<<"connection closed, shutting down ...";
+        m_realshutdown = true;
+        emit wsClosed();
+        close();
+    }
 }
 
 void DanmakuWidget::reconnect()
 {
     m_websocket->abort();
-    m_websocket->open(m_url);
+    QString url = getWSurl();
+    qDebug()<<"[connecting]"<<url;
+    m_websocket->open(QUrl(url));
+}
+
+void DanmakuWidget::onforceShutdown()
+{
+    qDebug()<<"close message timeout, shutting down ...";
+    m_websocket->abort();
+    m_realshutdown = true;
+    emit wsForceClosed();
+    close();
 }
 
 void DanmakuWidget::onBinaryMessageRecieved(const QByteArray &message)
@@ -172,4 +235,5 @@ void DanmakuWidget::onBinaryMessageRecieved(const QByteArray &message)
 void DanmakuWidget::onTextMessageReceived(const QString &message)
 {
     qDebug()<<"[Text]"<<message;
+    onBinaryMessageRecieved(message.toUtf8());
 }

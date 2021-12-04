@@ -31,5 +31,5 @@ void DanmakuTextBottomSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF((m_bound.right()+m_bound.left())>>1, m_railYpos[railID]));
     ((DanmakuTextBottom *)(&text))->setLife(120);
-    text.setID(railID);
+    text.setRailID(railID);
 }

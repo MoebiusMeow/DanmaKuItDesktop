@@ -26,7 +26,8 @@ protected:
     bool        m_boundReady;
     bool        m_bufferImageReady;
     bool        m_delTag;
-    int         m_id;
+    QString     m_id;
+    int         m_railid;
 
 public:
     explicit DanmakuText(QObject *parent = nullptr);
@@ -37,7 +38,8 @@ public:
     bool setVel(const QPointF &vel);
     bool setColor(const QColor &color);
     bool setFontSize(int size);
-    bool setID(int id);
+    bool setID(const QString &id);
+    bool setRailID(int railid);
     void del();
 
     QPoint pos() const;
@@ -46,7 +48,8 @@ public:
     QRect bound() const;
     bool  boundReady() const;
 
-    int id() const;
+    QString id() const;
+    int railID() const;
 
 public:
     virtual bool paint(QPainter *painter);

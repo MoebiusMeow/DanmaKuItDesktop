@@ -49,10 +49,15 @@ bool DanmakuText::setFontSize(int size)
     return true;
 }
 
-bool DanmakuText::setID(int id)
+bool DanmakuText::setID(const QString &id)
 {
     m_id = id;
     return true;
+}
+
+bool DanmakuText::setRailID(int railid)
+{
+    m_railid = railid;
 }
 
 void DanmakuText::del()
@@ -80,9 +85,14 @@ bool DanmakuText::boundReady() const
     return m_boundReady;
 }
 
-int DanmakuText::id() const
+QString DanmakuText::id() const
 {
     return m_id;
+}
+
+int DanmakuText::railID() const
+{
+    return m_railid;
 }
 
 bool DanmakuText::paint(QPainter *painter)
