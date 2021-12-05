@@ -1,7 +1,9 @@
 #include "KultLoginBox.h"
 #include <QtWidgets>
 
-KultLoginBox::KultLoginBox(QWidget *parent) : QGroupBox(parent)
+KultLoginBox::KultLoginBox(QWidget *parent) :
+    QGroupBox(parent)
+  , netManager(new QNetworkAccessManager(this))
 {
     setupUI();
     switchToLogin();
@@ -21,7 +23,6 @@ void KultLoginBox::setupUI()
     QVBoxLayout *yLayout;
     QGridLayout *gLayout;
     QPushButton *tempButton;
-    QLineEdit *tempLineEdit;
     QLabel *tempLabel;
 
     // ----------
@@ -51,16 +52,18 @@ void KultLoginBox::setupUI()
     //tempLabel = new QLabel("     房间密码", group);
     //gLayout->addWidget(tempLabel, 1, 0);
 
-    tempLineEdit = new QLineEdit(group);
-    tempLineEdit->setMinimumWidth(220);
-    tempLineEdit->setPlaceholderText("房间号");
-    gLayout->addWidget(tempLineEdit, 0, 1);
+    roomidInput = new QLineEdit(group);
+    roomidInput->setMinimumWidth(220);
+    roomidInput->setPlaceholderText("房间号");
+    roomidInput->setText("5676139610");
+    gLayout->addWidget(roomidInput, 0, 1);
 
-    tempLineEdit = new QLineEdit(group);
-    tempLineEdit->setMinimumWidth(220);
-    tempLineEdit->setPlaceholderText("房间密码");
-    tempLineEdit->setEchoMode(QLineEdit::Password);
-    gLayout->addWidget(tempLineEdit, 1, 1);
+    roompassInput = new QLineEdit(group);
+    roompassInput->setMinimumWidth(220);
+    roompassInput->setPlaceholderText("房间密码");
+    roompassInput->setEchoMode(QLineEdit::Password);
+    roompassInput->setText("mriDRC");
+    gLayout->addWidget(roompassInput, 1, 1);
 
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
@@ -122,9 +125,22 @@ void KultLoginBox::setupUI()
     setLayout(stackedLayout);
 }
 
+// login with id and pass as room id and password
+// handle connect succedd in handleLoginReply
+bool KultLoginBox::loginWithIDPass(const QString &id, const QString &pass)
+{
+    QNetworkRequest request(QUrl::fromUserInput(DANMAKU_DOMAIN + "/room/" + id + "/client-login"));
+    request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());
+    m_reply = netManager->get(request);
+    connect(m_reply, &QNetworkReply::finished, this, &KultLoginBox::handleLoginReply);
+    return true;
+}
+
 void KultLoginBox::login()
 {
-    emit loginSuccess();
+    m_id = roomidInput->text();
+    QString pass = roompassInput->text();
+    loginWithIDPass(m_id, pass);
 }
 
 
@@ -143,4 +159,26 @@ void KultLoginBox::switchToDisplay()
 void KultLoginBox::switchToLogin()
 {
     stackedLayout->setCurrentIndex(0);
+}
+
+void KultLoginBox::handleLoginReply()
+{
+    if(m_reply->error() != QNetworkReply::NoError){
+        emit loginFailed();
+        return;
+    }
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(m_reply->readAll(), &error);
+    if(error.error != QJsonParseError::NoError ){
+        emit loginFailed();
+        return;
+    }
+    QString token = doc.object().value("pulsar_jwt").toString();
+    emit wsConnectOK(m_id, token);
+    qDebug()<<"ws connect:"<<m_id<<" "<<token;
+}
+
+void KultLoginBox::onConnectionSuccess()
+{
+    emit loginSuccess();
 }

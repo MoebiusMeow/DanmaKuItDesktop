@@ -11,7 +11,7 @@ DanmakuTextSet::DanmakuTextSet(QObject *parent) : QObject(parent)
 
 bool DanmakuTextSet::append(std::shared_ptr<DanmakuText> text)
 {
-    m_waiting.push(text);
+    m_waiting.push_back(text);
     return true;
 }
 
@@ -22,6 +22,17 @@ bool DanmakuTextSet::setBound(const QRect &r)
     return true;
 }
 
+std::shared_ptr<DanmakuText> DanmakuTextSet::findByID(const QString &id)
+{
+    for(auto text :m_texts){
+        if(text->id() == id) return text;
+    }
+    for(auto text :m_waiting){
+        if(text->id()== id) return text;
+    }
+    return nullptr;
+}
+
 int DanmakuTextSet::getRailCnt()
 {
     return DANMAKU_RAIL_CNT;
@@ -29,7 +40,7 @@ int DanmakuTextSet::getRailCnt()
 
 int DanmakuTextSet::calcRailYpos()
 {
-    int deltY = m_bound.height()/(getRailCnt()+2);
+    int deltY = m_bound.height()/DANMAKU_STANDARD_RAIL_CNT;
     for(int i=0;i<getRailCnt();i++){
         m_railYpos[i] = deltY * (i+1) + m_bound.top();
     }
@@ -41,7 +52,7 @@ int DanmakuTextSet::popWaiting()
     if(!m_waiting.size()||!m_nAvailableRail) return 0;
     // text to pop
     std::shared_ptr<DanmakuText> text = m_waiting.front();
-    m_waiting.pop();
+    m_waiting.pop_front();
 
     // select rail
     std::vector<int> available_rail;
@@ -70,8 +81,8 @@ int DanmakuTextSet::updateRailStatus()
 
     for(auto i=m_texts.begin(); i!=m_texts.end(); i++){
         // find available rail
-        if((*i)->id() < getRailCnt() && (*i)->id() >= 0 && ifBlockRail(*(*i), (*i)->id()))
-            m_ifRailFree[(*i)->id()] = false;
+        if((*i)->railID() < getRailCnt() && (*i)->railID() >= 0 && ifBlockRail(*(*i), (*i)->railID()))
+            m_ifRailFree[(*i)->railID()] = false;
     }
 
     // count available rail
@@ -89,12 +100,13 @@ bool DanmakuTextSet::ifBlockRail(const DanmakuText &text, int railID)
 void DanmakuTextSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF(m_bound.right()-1, m_railYpos[railID]));
-    text.setVel(QPointF(-4.0,0.0));
-    text.setID(railID);
+    text.setVel(QPointF(-2.5,0.0));
+    text.setRailID(railID);
 }
 
 bool DanmakuTextSet::paint(QPainter *painter)
 {
+    painter->setRenderHints(QPainter::Antialiasing, true);
     for(auto i=m_texts.begin(); i!=m_texts.end(); i++){
         (*i)->calcBound(painter);
         (*i)->paint(painter);
