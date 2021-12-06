@@ -13,10 +13,10 @@ int DanmakuTextBottomSet::getRailCnt()
 int DanmakuTextBottomSet::calcRailYpos()
 {
     int n = getRailCnt();
-    int deltY = m_bound.height()/2/(n+1);
-    int bias = m_bound.height()/2;
+    int deltY = m_bound.height()/DANMAKU_STANDARD_RAIL_CNT;
+    int bias = m_bound.bottom()-deltY*1.5;
     for(int i=0;i<n;i++){
-        m_railYpos[n-i-1] = deltY * (i+1) + m_bound.top() + bias;
+        m_railYpos[i] = bias - deltY * i;
     }
     return getRailCnt();
 }
@@ -31,5 +31,5 @@ void DanmakuTextBottomSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF((m_bound.right()+m_bound.left())>>1, m_railYpos[railID]));
     ((DanmakuTextBottom *)(&text))->setLife(120);
-    text.setID(railID);
+    text.setRailID(railID);
 }

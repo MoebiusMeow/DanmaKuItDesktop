@@ -17,20 +17,21 @@ public:
     explicit DanmakuTextSet(QObject *parent = nullptr);
     bool append(std::shared_ptr<DanmakuText> text);
     bool setBound(const QRect &r);
+    std::shared_ptr<DanmakuText> findByID(const QString &id);
 
 protected:
     virtual int getRailCnt();
     virtual int calcRailYpos();
     virtual int popWaiting();
     virtual int updateRailStatus();
-    virtual bool ifBlockRail(const DanmakuText &text, int railID);
+    virtual bool ifBlockRail(const DanmakuText &text,int railID);
     virtual void pushToRail(DanmakuText &text, int railID);
 
 protected:
     std::list<std::shared_ptr<DanmakuText>> m_texts;
     QRect m_bound;
 
-    std::queue<std::shared_ptr<DanmakuText>> m_waiting;
+    std::list<std::shared_ptr<DanmakuText>> m_waiting;
     int m_railYpos[DANMAKU_RAIL_CNT];
     bool m_ifRailFree[DANMAKU_RAIL_CNT];
     int m_nAvailableRail;

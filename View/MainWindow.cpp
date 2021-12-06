@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     screenOverlay->resize(screen()->geometry().width(), screen()->geometry().height());
     //screenOverlay->setWindowState(Qt::WindowMaximized);
     screenOverlay->hide();
+
+    connect(loginBox, &KultLoginBox::wsConnectOK, screenOverlay, &DanmakuWidget::wsConnect);
+    connect(screenOverlay, &DanmakuWidget::wsConnected, loginBox, &KultLoginBox::onConnectionSuccess);
 }
 
 void MainWindow::setupUI()

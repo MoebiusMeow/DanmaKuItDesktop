@@ -13,9 +13,9 @@ int DanmakuTextTopSet::getRailCnt()
 
 int DanmakuTextTopSet::calcRailYpos()
 {
-    int deltY = m_bound.height()/2/(getRailCnt()+1);
+    int deltY = m_bound.height()/DANMAKU_STANDARD_RAIL_CNT;
     for(int i=0;i<getRailCnt();i++){
-        m_railYpos[i] = deltY * (i+1) + m_bound.top();
+        m_railYpos[i] = (float)deltY * ((float)i+1.5) + m_bound.top();
     }
     return getRailCnt();
 }
@@ -29,6 +29,6 @@ bool DanmakuTextTopSet::ifBlockRail(const DanmakuText &text, int railID)
 void DanmakuTextTopSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF((m_bound.right()+m_bound.left())>>1, m_railYpos[railID]));
-    ((DanmakuTextTop *)(&text))->setLife(120);
-    text.setID(railID);
+    ((DanmakuTextTop *)(&text))->setLife(240);
+    text.setRailID(railID);
 }

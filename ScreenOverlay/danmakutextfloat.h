@@ -11,6 +11,8 @@ public:
 public:
     bool update() override;
 
+    void calcBound(QPainter *painter) override;
+
 };
 
 #endif // DANMAKUTEXTFLOAT_H

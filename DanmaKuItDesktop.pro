@@ -1,5 +1,6 @@
 QT       += core gui
 QT       += opengl openglwidgets
+QT       += websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,7 +15,6 @@ SOURCES += \
     ScreenOverlay/danmakutext.cpp \
     ScreenOverlay/danmakutextbottom.cpp \
     ScreenOverlay/danmakutextbottomset.cpp \
-    ScreenOverlay/danmakutextbuttomset.cpp \
     ScreenOverlay/danmakutextfloat.cpp \
     ScreenOverlay/danmakutextfloatset.cpp \
     ScreenOverlay/danmakutextset.cpp \
@@ -29,11 +29,12 @@ SOURCES += \
     main.cpp \
 
 HEADERS += \
+    NetworkConfig.h \
+    ScreenOverlay/DanmakuConstants.h \
     ScreenOverlay/danmakutestset.h \
     ScreenOverlay/danmakutext.h \
     ScreenOverlay/danmakutextbottom.h \
     ScreenOverlay/danmakutextbottomset.h \
-    ScreenOverlay/danmakutextbuttomset.h \
     ScreenOverlay/danmakutextfloat.h \
     ScreenOverlay/danmakutextfloatset.h \
     ScreenOverlay/danmakutextset.h \
