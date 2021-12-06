@@ -10,9 +10,6 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    DynamicVBoxLayout.cpp \
-    KultLoginBox.cpp \
-    KultMessageBox.cpp \
     ScreenOverlay/danmakutestset.cpp \
     ScreenOverlay/danmakutext.cpp \
     ScreenOverlay/danmakutextbottom.cpp \
@@ -24,15 +21,14 @@ SOURCES += \
     ScreenOverlay/danmakutexttop.cpp \
     ScreenOverlay/danmakutexttopset.cpp \
     ScreenOverlay/danmakuwidget.cpp \
-    WaveWidget.cpp \
+    View/DynamicVBoxLayout.cpp \
+    View/KultLoginBox.cpp \
+    View/KultMessageBox.cpp \
+    View/MainWindow.cpp \
+    View/WaveWidget.cpp \
     main.cpp \
-    MainWindow.cpp
 
 HEADERS += \
-    DynamicVBoxLayout.h \
-    KultLoginBox.h \
-    KultMessageBox.h \
-    MainWindow.h \
     ScreenOverlay/danmakutestset.h \
     ScreenOverlay/danmakutext.h \
     ScreenOverlay/danmakutextbottom.h \
@@ -44,10 +40,14 @@ HEADERS += \
     ScreenOverlay/danmakutexttop.h \
     ScreenOverlay/danmakutexttopset.h \
     ScreenOverlay/danmakuwidget.h \
-    WaveWidget.h
+    View/DynamicVBoxLayout.h \
+    View/KultLoginBox.h \
+    View/KultMessageBox.h \
+    View/MainWindow.h \
+    View/WaveWidget.h \
 
 TRANSLATIONS += \
-    DanmaKultDesktop_en_US.ts
+    DanmaKuItDesktop_en_US.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 

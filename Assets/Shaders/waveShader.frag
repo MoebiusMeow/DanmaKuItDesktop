@@ -92,7 +92,7 @@ void main(void)
     //col.y += clamp(1.0 - 0.01/(col.r*10.0+0.01), 0.0, 0.2);
     //col.x += clamp(1.0 - 1.0/(smoothstep(0.1,0.5,col.r)*5.0+1.0), 0.0, 0.3);
     col = max(col, vec3(1.0, 0.0, 0.0) * mix(0.9,0.0,f2) * p.y * p.y);
-    col = mix(col, mix(col.zyx, vec3(1.0, 0.25, 0.0), 0.8), iThemeTrans);
+    col = mix(col, mix(col.zyx, vec3(1.0, 0.45, 0.0), 0.8), iThemeTrans);
 
     col = max(col, calc_block(p, vec2(0.4, 0.04)));
     
