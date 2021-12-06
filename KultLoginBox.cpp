@@ -55,14 +55,14 @@ void KultLoginBox::setupUI()
     roomidInput = new QLineEdit(group);
     roomidInput->setMinimumWidth(220);
     roomidInput->setPlaceholderText("房间号");
-    roomidInput->setText("5676139610");
+    roomidInput->setText("1627286198");
     gLayout->addWidget(roomidInput, 0, 1);
 
     roompassInput = new QLineEdit(group);
     roompassInput->setMinimumWidth(220);
     roompassInput->setPlaceholderText("房间密码");
     roompassInput->setEchoMode(QLineEdit::Password);
-    roompassInput->setText("mriDRC");
+    roompassInput->setText("hscizS");
     gLayout->addWidget(roompassInput, 1, 1);
 
     yLayout->addLayout(gLayout);
@@ -129,7 +129,7 @@ void KultLoginBox::setupUI()
 // handle connect succedd in handleLoginReply
 bool KultLoginBox::loginWithIDPass(const QString &id, const QString &pass)
 {
-    QNetworkRequest request(QUrl::fromUserInput(DANMAKU_DOMAIN + "/room/" + id + "/client-login"));
+    QNetworkRequest request(QUrl::fromUserInput(QString("https://") + DANMAKU_DOMAIN + "/room/" + id + "/client-login"));
     request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());
     m_reply = netManager->get(request);
     connect(m_reply, &QNetworkReply::finished, this, &KultLoginBox::handleLoginReply);

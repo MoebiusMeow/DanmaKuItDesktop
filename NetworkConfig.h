@@ -3,7 +3,7 @@
 
 #include <QString>
 
-#define DANMAKU_DOMAIN QString("101.42.99.123:8000")
-#define DANMAKU_SCHEMA QString("ws")
+#define DANMAKU_DOMAIN QString("danmakuit.panda2134.site")
+#define DANMAKU_SCHEMA QString("wss")
 
 #endif // NETWORKCONFIG_H
