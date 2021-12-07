@@ -129,7 +129,7 @@ void KultLoginBox::setupUI()
 // handle connect succedd in handleLoginReply
 bool KultLoginBox::loginWithIDPass(const QString &id, const QString &pass)
 {
-    QNetworkRequest request(QUrl::fromUserInput(QString("https://") + DANMAKU_DOMAIN + "/room/" + id + "/client-login"));
+    QNetworkRequest request(QUrl::fromUserInput(QString("https://") + DANMAKU_DOMAIN + "/api/v1/room/" + id + "/client-login"));
     request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());
     m_reply = netManager->get(request);
     connect(m_reply, &QNetworkReply::finished, this, &KultLoginBox::handleLoginReply);
