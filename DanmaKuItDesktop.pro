@@ -11,16 +11,16 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    ScreenOverlay/danmakutestset.cpp \
-    ScreenOverlay/danmakutext.cpp \
-    ScreenOverlay/danmakutextbottom.cpp \
-    ScreenOverlay/danmakutextbottomset.cpp \
-    ScreenOverlay/danmakutextfloat.cpp \
-    ScreenOverlay/danmakutextfloatset.cpp \
-    ScreenOverlay/danmakutextset.cpp \
-    ScreenOverlay/danmakutexttop.cpp \
-    ScreenOverlay/danmakutexttopset.cpp \
-    ScreenOverlay/danmakuwidget.cpp \
+    ScreenOverlay/DanmakuTestSet.cpp \
+    ScreenOverlay/DanmakuText.cpp \
+    ScreenOverlay/DanmakuTextBottom.cpp \
+    ScreenOverlay/DanmakuTextBottomSet.cpp \
+    ScreenOverlay/DanmakuTextFloat.cpp \
+    ScreenOverlay/DanmakuTextFloatSet.cpp \
+    ScreenOverlay/DanmakuTextSet.cpp \
+    ScreenOverlay/DanmakuTextTop.cpp \
+    ScreenOverlay/DanmakuTextTopSet.cpp \
+    ScreenOverlay/DanmakuWidget.cpp \
     View/DynamicVBoxLayout.cpp \
     View/KultLoginBox.cpp \
     View/KultMessageBox.cpp \
@@ -31,16 +31,16 @@ SOURCES += \
 HEADERS += \
     NetworkConfig.h \
     ScreenOverlay/DanmakuConstants.h \
-    ScreenOverlay/danmakutestset.h \
-    ScreenOverlay/danmakutext.h \
-    ScreenOverlay/danmakutextbottom.h \
-    ScreenOverlay/danmakutextbottomset.h \
-    ScreenOverlay/danmakutextfloat.h \
-    ScreenOverlay/danmakutextfloatset.h \
-    ScreenOverlay/danmakutextset.h \
-    ScreenOverlay/danmakutexttop.h \
-    ScreenOverlay/danmakutexttopset.h \
-    ScreenOverlay/danmakuwidget.h \
+    ScreenOverlay/DanmakuTestSet.h \
+    ScreenOverlay/DanmakuText.h \
+    ScreenOverlay/DanmakuTextBottom.h \
+    ScreenOverlay/DanmakuTextBottomSet.h \
+    ScreenOverlay/DanmakuTextFloat.h \
+    ScreenOverlay/DanmakuTextFloatSet.h \
+    ScreenOverlay/DanmakuTextSet.h \
+    ScreenOverlay/DanmakuTextTop.h \
+    ScreenOverlay/DanmakuTextTopSet.h \
+    ScreenOverlay/DanmakuWidget.h \
     View/DynamicVBoxLayout.h \
     View/KultLoginBox.h \
     View/KultMessageBox.h \

@@ -124,6 +124,7 @@ void DanmakuWidget::closeEvent(QCloseEvent *close_event)
     if(m_realshutdown){
         shutdown_timer->stop();
         close_event->accept();
+        close();
         return;
     }
     if(!m_shutdown){
