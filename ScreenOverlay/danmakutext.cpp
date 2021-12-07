@@ -2,6 +2,11 @@
 
 #include <QtDebug>
 #include <QPainterPath>
+#include <QFont>
+#include <QFontDatabase>
+
+bool DanmakuText::s_font_loaded = false;
+QFont DanmakuText::s_default_font;
 
 DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
   ,m_pos(QPointF(0.0,0.0))
@@ -14,7 +19,13 @@ DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
   ,m_bufferImageReady(false)
   ,m_delTag(false)
 {
-
+    if (!DanmakuText::s_font_loaded)
+    {
+        DanmakuText::s_default_font = QFont(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont("://Assets/Fonts/NotoSansCJKsc-Bold.otf") ));
+        DanmakuText::s_default_font.setFamily("Noto Sans CJK SC Bold");
+    }
+    m_font = DanmakuText::s_default_font;
+    m_font.setPointSize(m_font_size);
 }
 
 bool DanmakuText::setText(const QString &text)
@@ -46,6 +57,7 @@ bool DanmakuText::setColor(const QColor &color)
 bool DanmakuText::setFontSize(int size)
 {
     m_font_size = size;
+    m_font.setPointSize(size);
     return true;
 }
 
@@ -58,6 +70,7 @@ bool DanmakuText::setID(const QString &id)
 bool DanmakuText::setRailID(int railid)
 {
     m_railid = railid;
+    return true;
 }
 
 void DanmakuText::del()
@@ -97,19 +110,22 @@ int DanmakuText::railID() const
 
 bool DanmakuText::paint(QPainter *painter)
 {
+    painter->setFont(m_font);
     const QFontMetrics &m = painter->fontMetrics();
-    int py = (m_bound.height()-m.height()) + m.ascent();
 
     if(!m_bufferImageReady){
-        m_bufferImage = std::make_shared<QImage>(m_bound.width(),m_bound.height(),QImage::Format_ARGB32);
+        int py = (m_bound.height() - m.height()) + m.ascent() - (m.boundingRect(m_text).bottom());
+
+        QPainterPath path;
+        path.addText(5, py, m_font, m_text);
+        m_bufferImage = std::make_shared<QImage>(m_bound.width(), m_bound.height(), QImage::Format_ARGB32);
         m_bufferImage->fill(QColor(0,0,0,0));
         QPainter *bufferPainter = new QPainter(m_bufferImage.get());
-        bufferPainter->setFont(QFont(DANMAKU_DEFAULT_FONT, m_font_size, DANMAKU_DEFAULT_TEXT_WEIGHT));
+        bufferPainter->setFont(m_font);
         bufferPainter->setRenderHints(QPainter::Antialiasing, true);
-        QPainterPath path;
-        path.addText(0, py, bufferPainter->font(), m_text);
+
         bufferPainter->setBrush(m_color);
-        bufferPainter->setPen(QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black,2,Qt::SolidLine));
+        bufferPainter->setPen(QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black, 2, Qt::SolidLine));
         bufferPainter->drawPath(path);
         bufferPainter->fillPath(path,QBrush(m_color));
         delete(bufferPainter);
@@ -137,8 +153,9 @@ bool DanmakuText::update()
 void DanmakuText::calcBound(QPainter *painter)
 {
     if(!m_boundReady){
-        painter->setFont(QFont(DANMAKU_DEFAULT_FONT, m_font_size, DANMAKU_DEFAULT_TEXT_WEIGHT));
+        painter->setFont(m_font);
         m_bound = painter->fontMetrics().boundingRect(m_text);
+        m_bound.adjust(-5, -5, 5, 5);
     }
     m_boundReady = true;
 }

@@ -12,8 +12,13 @@
 class DanmakuText : public QObject
 {
     Q_OBJECT
+private:
+    static bool s_font_loaded;
 
 protected:
+    static QFont s_default_font;
+    QFont       m_font;
+
     QPointF     m_pos, m_vel; // position and velocity
     QString     m_text;
     QColor      m_color;

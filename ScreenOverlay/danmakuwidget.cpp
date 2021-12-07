@@ -3,6 +3,8 @@
 #include <QtDebug>
 #include <QMouseEvent>
 #include <QHostInfo>
+#include <QFont>
+#include <QFontDatabase>
 
 #include "danmakutestset.h"
 
@@ -30,6 +32,8 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
     // config update_timer
     connect(update_timer, &QTimer::timeout, this, &DanmakuWidget::updateText);
     update_timer->start(UPDATE_INTERVAL);
+
+    setAttribute(Qt::WA_TransparentForMouseEvents);
 }
 
 DanmakuWidget::~DanmakuWidget()
