@@ -20,6 +20,7 @@ protected:
     DanmakuWidget *screenOverlay;
     DynamicVBoxLayout *dynamicLayout;
     KultLoginBox *loginBox;
+    QSystemTrayIcon *systemTrayIcon;
 
     void setupUI();
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -27,6 +28,7 @@ protected:
 protected slots:
     void handleMinimize();
     void handleClose();
+    void handleShow();
 
 public:
 

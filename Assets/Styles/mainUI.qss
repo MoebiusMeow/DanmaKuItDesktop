@@ -95,7 +95,6 @@
 }
 
 #LoginBox .QLineEdit:focus {
-    color: red;
     border-bottom: 1px solid rgb(80, 133, 255);
 }
 
@@ -121,6 +120,10 @@
 
 #LoginBox .QPushButton:hover {
     background: rgb(120, 173, 255);
+}
+
+#LoginBox .QPushButton:pressed {
+    background: darkgrey;
 }
 
 #LoginBox #DisconnectButton:hover {

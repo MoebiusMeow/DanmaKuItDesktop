@@ -26,8 +26,24 @@ MainWindow::MainWindow(QWidget *parent)
     screenOverlay->setAttribute(Qt::WA_TranslucentBackground);
     screenOverlay->move(0, 0);
     screenOverlay->resize(screen()->geometry().width(), screen()->geometry().height());
-    //screenOverlay->setWindowState(Qt::WindowMaximized);
     screenOverlay->hide();
+
+    systemTrayIcon = new QSystemTrayIcon(this);
+    systemTrayIcon->setToolTip(tr("弹幕一下"));
+    systemTrayIcon->setIcon(QIcon(":/Assets/Icons/trayIcon.png"));
+    systemTrayIcon->show();
+    systemTrayIcon->setContextMenu(new QMenu(this));
+    QAction *trayAction;
+    trayAction = new QAction(tr("显示面板"), this);
+    connect(trayAction, &QAction::triggered, this, &MainWindow::handleShow);
+    systemTrayIcon->contextMenu()->addAction(trayAction);
+    trayAction = new QAction(tr("退出"), this);
+    connect(trayAction, &QAction::triggered, this, &MainWindow::handleClose);
+    systemTrayIcon->contextMenu()->addAction(trayAction);
+
+    setWindowIcon(QIcon(":/Assets/Icons/trayIcon.png"));
+    setWindowIconText(tr("弹幕一下"));
+    setWindowTitle(tr("弹幕一下"));
 
     connect(loginBox, &KultLoginBox::wsConnectOK, screenOverlay, &DanmakuWidget::wsConnect);
     connect(screenOverlay, &DanmakuWidget::wsConnected, loginBox, &KultLoginBox::onConnectionSuccess);
@@ -39,7 +55,7 @@ void MainWindow::setupUI()
     // setup fonts
     // -----------
 
-    QFont icons(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont("://Assets/Fonts/fontawesome-webfont.ttf") ));
+    QFont icons(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/fontawesome-webfont.ttf") ));
     icons.setFamily("FontAwesome");
     icons.setPixelSize(16);
 
@@ -54,11 +70,6 @@ void MainWindow::setupUI()
 
     QFrame *overlayFrame = new QFrame(this);
     overlayFrame->setObjectName("MainOverlayFrame");
-    //overlayFrame->setAttribute(Qt::WA_TransparentForMouseEvents);
-    //overlayFrame->setAttribute(Qt::WA_TranslucentBackground);
-    //overlayFrame->setDisabled(true);
-
-    // yLayout = new QVBoxLayout(overlayFrame);
     dynamicLayout = dyLayout = new DynamicVBoxLayout(overlayFrame);
 
     dyLayout->setContentsMargins(0, 0, 0, 0);
@@ -141,6 +152,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();
+        // screenOverlay->show();
+        // screenOverlay->appendFloat(QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅😅😅"), "ergrerere+", QColor(0xFFFFFF), 20);
+        // screenOverlay->appendTop(QString("content") + QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅"), "erge+", QColor(0xFFFFFF), 20);
         return true;
     }
     if (event->type() == QEvent::MouseButtonRelease)
@@ -153,21 +167,32 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         move(static_cast<QMouseEvent*>(event)->pos() - (dragPosition + waveWidget->pos()) + pos());
         return true;
     }
+    if (event->type() == QEvent::WindowStateChange)
+    {
+        if (isMinimized()) QTimer::singleShot(200, this, &QWidget::hide);
+        else show();
+    }
     return QWidget::eventFilter(watched, event);
 }
 
 void MainWindow::handleMinimize()
 {
     setWindowState(Qt::WindowMinimized);
+    // this->hide();
 }
 
 void MainWindow::handleClose()
 {
-    if (KultMessageBox::information(this, "退出", "确定要退出吗\n（退出后将无法显示弹幕）", KultMessageBox::Confirm, KultMessageBox::Cancel) == KultMessageBox::Confirm)
+    if (KultMessageBox::information(this, tr("退出"), tr("确定要退出吗\n（退出后将无法显示弹幕）"), KultMessageBox::Confirm, KultMessageBox::Cancel) == KultMessageBox::Confirm)
     {
         screenOverlay->close();
         close();
     }
+}
+
+void MainWindow::handleShow()
+{
+    setWindowState(Qt::WindowNoState);
 }
 
 MainWindow::~MainWindow()
