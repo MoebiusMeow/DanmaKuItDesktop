@@ -30,6 +30,7 @@ protected:
     QPushButton *cancelConnectButton;
     QString m_id;// room id
     void setupUI();
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 public:
     KultLoginBox(QWidget *parent = nullptr);

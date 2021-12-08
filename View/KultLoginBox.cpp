@@ -60,8 +60,6 @@ void KultLoginBox::setupUI()
     tempLabel->setText(tr("大写锁定已开启"));
     tempLabel->hide();
     gLayout->addWidget(tempLabel, 2, 1);
-    //tempLabel = new QLabel("     房间密码", group);
-    //gLayout->addWidget(tempLabel, 1, 0);
 
     roomidInput = new QLineEdit(group);
     roomidInput->setMinimumWidth(220);
@@ -70,6 +68,10 @@ void KultLoginBox::setupUI()
     roomidInput->setText("1627286198");
     connect(roomidInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
     roomidInput->setText("3507228369");
+    //QStringList list;
+    //list.append(QString("1627286198"));
+    //list.append(QString("3507228369"));
+    //roomidInput->setCompleter(new QCompleter(list, roomidInput));
     gLayout->addWidget(roomidInput, 0, 1);
 
     roompassInput = new QLineEdit(group);
@@ -78,6 +80,7 @@ void KultLoginBox::setupUI()
     roompassInput->setPlaceholderText(tr("房间密码"));
     roompassInput->setEchoMode(QLineEdit::Password);
     roompassInput->setText("hscizS");
+    roompassInput->installEventFilter(this);
     connect(roompassInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
     roompassInput->setText("YANtWT");
     gLayout->addWidget(roompassInput, 1, 1);
@@ -297,4 +300,22 @@ void KultLoginBox::handleLoginFailed(int errorType, QString errorMessage)
 void KultLoginBox::onConnectionSuccess()
 {
     switchToDisplay();
+}
+
+bool KultLoginBox::eventFilter(QObject *watched, QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress)
+    {
+        //qDebug() << static_cast<QKeyEvent*>(event)->nativeModifiers();
+        //qDebug() << static_cast<QKeyEvent*>(event)->modifiers();
+        if (static_cast<QKeyEvent*>(event)->nativeModifiers() & 256)
+            loginHintLabel->show();
+        else
+            loginHintLabel->hide();
+    }
+    if (event->type() == QEvent::FocusOut)
+    {
+        loginHintLabel->hide();
+    }
+    return QGroupBox::eventFilter(watched, event);
 }
