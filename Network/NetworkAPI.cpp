@@ -37,11 +37,6 @@ QString NetworkAPI::getWebsocketURL()
 
 void NetworkAPI::on_loginReplyRecieve()
 {
-<<<<<<< HEAD
-    if(m_reply->error() != QNetworkReply::NoError){
-        m_status = logged_out;
-        emit loginFailed(tr("错误代码") + " " + QString::number(m_reply->error()) + "\n" + m_reply->errorString());
-=======
     if(m_reply->error() != QNetworkReply::NoError)
     {
         QString errorMessage;
@@ -53,18 +48,13 @@ void NetworkAPI::on_loginReplyRecieve()
             default: errorMessage += tr("错误代码") + " " + QString::number(m_reply->error()) + "\n" + m_reply->errorString(); break;
         }
         emit loginFailed(m_reply->error(), errorMessage);
->>>>>>> master
         return;
     }
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(m_reply->readAll(), &error);
     if(error.error != QJsonParseError::NoError ){
-<<<<<<< HEAD
         m_status = logged_out;
-        emit loginFailed(tr("获取令牌失败"));
-=======
         emit loginFailed(-1, tr("获取令牌失败"));
->>>>>>> master
         return;
     }
     QString token = doc.object().value("pulsar_jwt").toString();
@@ -151,7 +141,7 @@ void NetworkAPI::on_wsError(QAbstractSocket::SocketError error)
         //emit ConnectionAborted(tr("连接已断开"));
     }
     if(m_status == logging_in){
-        emit loginFailed(tr("与服务器建立连接失败")+"\n"+tr("错误代码 :")+ QString::number((int)error) + ":" + m_websocket->errorString());
+        emit loginFailed(error, tr("与服务器建立连接失败")+"\n"+tr("错误信息: ") + m_websocket->errorString());
     }
     m_status = logged_out;
 }

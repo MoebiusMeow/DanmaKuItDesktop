@@ -62,16 +62,11 @@ protected Q_SLOTS:
 signals:
     void loginSuccess();
     void logoutSuccess();
-<<<<<<< HEAD
-    void loginFailed(QString errorMessage);
+    void loginFailed(int errorType, QString errorMessage);
     void logoutFailed(QString errorMessage);
     void ConnectionAborted(QString errorMessage);
     void wsInfoReady(QString roomid, QString token);
-=======
-    void loginFailed(int errorType, QString errorMessage);
-    void logoutFailed();
-    void wsInfoReady(const QString &roomid, const QString &token);
->>>>>>> master
+
 
     //websocket
     void jsonMessage(QJsonObject obj);
