@@ -2,10 +2,13 @@
 #define NETWORKAPI_H
 
 #include <QObject>
+#include <QTimer>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QJsonDocument>
 #include <QtWebSockets>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include "NetworkConfig.h"
 
 class NetworkAPI : public QObject
@@ -30,6 +33,7 @@ private:
         logging_out,
     };
     bool m_allowReconnect;
+    QTimer *m_wsConnectionCheckTimer;
 
 private :
     QString getWebsocketURL();
@@ -52,21 +56,20 @@ protected Q_SLOTS:
     void on_wsRecieveTextMessage(const QString &message);
     void on_wsConnected();
     void on_wsDisConnected();
+    void on_wsError(QAbstractSocket::SocketError error);
+    void on_wsConnectionCheck();
 
 signals:
-    //https
     void loginSuccess();
     void logoutSuccess();
     void loginFailed(int errorType, QString errorMessage);
-    void logoutFailed();
-    void wsInfoReady(const QString &roomid, const QString &token);
+    void logoutFailed(QString errorMessage);
+    void ConnectionAborted(QString errorMessage);
+    void wsInfoReady(QString roomid, QString token);
+
 
     //websocket
-    void wsConnected();
-    void wsConnectFailed(QString errorMessage);
-    void wsBroken();
-    void wsClosed();
-    void wsMessage(QByteArray);
+    void jsonMessage(QJsonObject obj);
 };
 
 #endif // NETWORKAPI_H

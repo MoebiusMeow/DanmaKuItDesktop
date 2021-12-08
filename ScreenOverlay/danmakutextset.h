@@ -15,9 +15,10 @@ class DanmakuTextSet : public QObject
     Q_OBJECT
 public:
     explicit DanmakuTextSet(QObject *parent = nullptr);
-    bool append(std::shared_ptr<DanmakuText> text);
     bool setBound(const QRect &r);
     std::shared_ptr<DanmakuText> findByID(const QString &id);
+public Q_SLOTS:
+    bool append(std::shared_ptr<DanmakuText> text);
 
 protected:
     virtual int getRailCnt();

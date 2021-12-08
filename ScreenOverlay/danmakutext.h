@@ -24,7 +24,7 @@ protected:
     QColor      m_color;
     int         m_font_size;
     QRect       m_bound;
-    std::shared_ptr<QImage>      m_bufferImage;
+    QImage      *m_bufferImage;
 
     clock_t     m_last_clock;
 
@@ -36,6 +36,9 @@ protected:
 
 public:
     explicit DanmakuText(QObject *parent = nullptr);
+    ~DanmakuText();
+
+    void renderText();
 
     bool setText(const QString &text);
 
@@ -59,7 +62,7 @@ public:
 public:
     virtual bool paint(QPainter *painter);
     virtual bool update();
-    virtual void calcBound(QPainter *painter);
+    virtual void calcBound();
 
 protected:
     virtual clock_t getFrameInterval();

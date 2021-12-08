@@ -11,7 +11,9 @@ DanmakuTextSet::DanmakuTextSet(QObject *parent) : QObject(parent)
 
 bool DanmakuTextSet::append(std::shared_ptr<DanmakuText> text)
 {
+    qDebug()<<"4:"<<time(0);
     m_waiting.push_back(text);
+    qDebug()<<"5:"<<time(0);
     return true;
 }
 
@@ -68,6 +70,7 @@ int DanmakuTextSet::popWaiting()
     pushToRail(*text, target_rail);
 
     m_texts.push_back(text);
+    text->update();
 
     return 0;
 }
@@ -108,7 +111,6 @@ bool DanmakuTextSet::paint(QPainter *painter)
 {
     painter->setRenderHints(QPainter::Antialiasing, true);
     for(auto i=m_texts.begin(); i!=m_texts.end(); i++){
-        (*i)->calcBound(painter);
         (*i)->paint(painter);
     }
     return true;
@@ -121,6 +123,7 @@ bool DanmakuTextSet::update()
                            [this](const std::shared_ptr<DanmakuText> &i)
                             -> bool {return i->boundReady()&&!m_bound.intersects(i->bound());}
                            ),m_texts.end());
+    qDebug()<<m_texts.size()<<" "<<m_waiting.size();
 
     // Update all danmaku and delete if return value of update() return false
     m_texts.erase(remove_if(m_texts.begin(), m_texts.end(),

@@ -7,25 +7,34 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QRandomGenerator>
+#include <QThread>
 #include "DanmakuTextFloatSet.h"
 #include "DanmakuTextTopSet.h"
 #include "DanmakuTextBottomSet.h"
 #include "DanmakuTestSet.h"
 #include "DanmakuConstants.h"
 
+class DanmakuAsyncRender : public QObject
+{
+    Q_OBJECT
+public:
+    explicit DanmakuAsyncRender(QObject *parent = nullptr);
+
+public Q_SLOTS:
+    void renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset);
+};
+
 class DanmakuWidget : public QWidget
 {
     Q_OBJECT
+signals:
+    void asyncCreateText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset);
 public:
     explicit DanmakuWidget(QWidget *parent = nullptr);
     ~DanmakuWidget();
 
     const int UPDATE_INTERVAL = 1000/DANMAKU_FPS;
     const int PAINT_INTERVAL  = 1000/DANMAKU_FPS;
-
-    int appendFloat(const QString &text, const QString &id, const QColor &color = Qt::cyan, int size=20);
-    int appendTop(const QString &text, const QString &id, const QColor &color = Qt::magenta, int size=20);
-    int appendBottom(const QString &text, const QString &id, const QColor &color = Qt::yellow, int size=20);
 
 protected:
     QString getWSurl();
@@ -36,9 +45,16 @@ protected Q_SLOTS:
     void paintEvent(QPaintEvent *paint_event) override;
     void resizeEvent(QResizeEvent *resize_event) override;
 
-public Q_SLOTS:
-    void onJsonMessageRecieved(const QByteArray &message);
+public:
+    enum textPosition{
+        floatText,
+        topText,
+        bottomText,
+    };
 
+public Q_SLOTS:
+    void onJsonMessageRecieved(const QJsonObject &obj);
+    void appendText(const QString &content, const QString id, const QColor &color=QColor(0xFFFFFF), int size=20, int position=floatText);
 
 private:
     DanmakuTextFloatSet *m_textFloatSet;
@@ -48,9 +64,10 @@ private:
     DanmakuTestSet *m_test;
     QWebSocket *m_websocket;
     QString m_roomid, m_token;
+    QThread m_renderThread;
+    DanmakuAsyncRender m_asyncRender;
 
     bool m_wsOn,m_shutdown, m_realshutdown;
-
 };
 
 #endif // DANMAKUWIDGET_H

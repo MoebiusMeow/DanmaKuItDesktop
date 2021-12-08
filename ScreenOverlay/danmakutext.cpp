@@ -27,6 +27,39 @@ DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
     }
     m_font = DanmakuText::s_default_font;
     m_font.setPointSize(m_font_size);
+    m_bufferImage = nullptr;
+}
+
+DanmakuText::~DanmakuText()
+{
+    if(m_bufferImage){
+        m_bufferImage->detach();
+        delete m_bufferImage;
+    }
+}
+
+void DanmakuText::renderText()
+{
+    qDebug()<<"2:"<<clock();
+    QFontMetrics m(m_font);
+    calcBound();
+    int py = (m_bound.height() - m.height()) + m.ascent() - (m.boundingRect(m_text).bottom());
+
+    QPainterPath path;
+    path.addText(5, py, m_font, m_text);
+    m_bufferImage = new QImage(m_bound.width(), m_bound.height(), QImage::Format_ARGB32);
+    m_bufferImage->fill(QColor(0,0,0,0));
+    QPainter *bufferPainter = new QPainter(m_bufferImage);
+    bufferPainter->setFont(m_font);
+    bufferPainter->setRenderHints(QPainter::Antialiasing, true);
+
+    bufferPainter->setBrush(m_color);
+    bufferPainter->setPen(QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black, 2, Qt::SolidLine));
+    bufferPainter->drawPath(path);
+    bufferPainter->fillPath(path,QBrush(m_color));
+    delete(bufferPainter);
+    m_bufferImageReady = true;
+    qDebug()<<"3:"<<clock();
 }
 
 bool DanmakuText::setText(const QString &text)
@@ -111,27 +144,9 @@ int DanmakuText::railID() const
 
 bool DanmakuText::paint(QPainter *painter)
 {
-    painter->setFont(m_font);
-    const QFontMetrics &m = painter->fontMetrics();
     if(!m_bufferImageReady){
-        int py = (m_bound.height() - m.height()) + m.ascent() - (m.boundingRect(m_text).bottom());
-
-        QPainterPath path;
-        path.addText(5, py, m_font, m_text);
-        m_bufferImage = std::make_shared<QImage>(m_bound.width(), m_bound.height(), QImage::Format_ARGB32);
-        m_bufferImage->fill(QColor(0,0,0,0));
-        QPainter *bufferPainter = new QPainter(m_bufferImage.get());
-        bufferPainter->setFont(m_font);
-        bufferPainter->setRenderHints(QPainter::Antialiasing, true);
-
-        bufferPainter->setBrush(m_color);
-        bufferPainter->setPen(QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black, 2, Qt::SolidLine));
-        bufferPainter->drawPath(path);
-        bufferPainter->fillPath(path,QBrush(m_color));
-        delete bufferPainter;
-        m_bufferImageReady = true;
+        renderText();
     }
-
     painter->setRenderHints(QPainter::SmoothPixmapTransform, true);
     painter->drawImage(m_bound, *m_bufferImage);
     // painter->setPen(Qt::white);
@@ -141,6 +156,7 @@ bool DanmakuText::paint(QPainter *painter)
 
 bool DanmakuText::update()
 {
+    calcBound();
     if(m_last_clock == 0){
         m_last_clock = clock();
         return true;
@@ -150,11 +166,10 @@ bool DanmakuText::update()
     return true;
 }
 
-void DanmakuText::calcBound(QPainter *painter)
+void DanmakuText::calcBound()
 {
     if(!m_boundReady){
-        painter->setFont(m_font);
-        m_bound = painter->fontMetrics().boundingRect(m_text);
+        m_bound = QFontMetrics(m_font).boundingRect(m_text);
         m_bound.adjust(-5, -5, 5, 5);
     }
     m_boundReady = true;

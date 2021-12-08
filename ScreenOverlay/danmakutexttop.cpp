@@ -22,8 +22,8 @@ bool DanmakuTextTop::update()
     return true;
 }
 
-void DanmakuTextTop::calcBound(QPainter *painter)
+void DanmakuTextTop::calcBound()
 {
-    DanmakuText::calcBound(painter);
+    DanmakuText::calcBound();
     m_bound.moveTo(m_pos.x() - m_bound.width()/2, m_pos.y()-m_bound.height()/2);
 }
