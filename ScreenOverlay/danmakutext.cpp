@@ -23,6 +23,7 @@ DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
     {
         DanmakuText::s_default_font = QFont(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont("://Assets/Fonts/NotoSansCJKsc-Bold.otf") ));
         DanmakuText::s_default_font.setFamily("Noto Sans CJK SC Bold");
+        DanmakuText::s_font_loaded = true;
     }
     m_font = DanmakuText::s_default_font;
     m_font.setPointSize(m_font_size);
@@ -143,11 +144,33 @@ int DanmakuText::railID() const
 
 bool DanmakuText::paint(QPainter *painter)
 {
+<<<<<<< HEAD
     if(!m_bufferImageReady){
         renderText();
+=======
+    painter->setFont(m_font);
+    const QFontMetrics &m = painter->fontMetrics();
+    if(!m_bufferImageReady){
+        int py = (m_bound.height() - m.height()) + m.ascent() - (m.boundingRect(m_text).bottom());
+
+        QPainterPath path;
+        path.addText(5, py, m_font, m_text);
+        m_bufferImage = std::make_shared<QImage>(m_bound.width(), m_bound.height(), QImage::Format_ARGB32);
+        m_bufferImage->fill(QColor(0,0,0,0));
+        QPainter *bufferPainter = new QPainter(m_bufferImage.get());
+        bufferPainter->setFont(m_font);
+        bufferPainter->setRenderHints(QPainter::Antialiasing, true);
+
+        bufferPainter->setBrush(m_color);
+        bufferPainter->setPen(QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black, 2, Qt::SolidLine));
+        bufferPainter->drawPath(path);
+        bufferPainter->fillPath(path,QBrush(m_color));
+        delete bufferPainter;
+        m_bufferImageReady = true;
+>>>>>>> master
     }
     painter->setRenderHints(QPainter::SmoothPixmapTransform, true);
-    painter->drawImage(m_bound,*m_bufferImage);
+    painter->drawImage(m_bound, *m_bufferImage);
     // painter->setPen(Qt::white);
     // painter->drawRect(m_bound);
     return true;

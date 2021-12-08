@@ -5,6 +5,7 @@
         <file>Assets/Styles/mainUI.qss</file>
         <file>Assets/Fonts/fontawesome-webfont.ttf</file>
         <file>Assets/Fonts/NotoSansCJKsc-Bold.otf</file>
-        <file>Assets/Icons/trayIcon.png</file>
+        <file>Assets/Icons/logo.png</file>
+        <file>Assets/Icons/logo_w.png</file>
     </qresource>
 </RCC>
