@@ -13,8 +13,8 @@ bool DanmakuTextFloat::update()
     return DanmakuText::update();
 }
 
-void DanmakuTextFloat::calcBound(QPainter *painter)
+void DanmakuTextFloat::calcBound()
 {
-    DanmakuText::calcBound(painter);
+    DanmakuText::calcBound();
     m_bound.moveTo(m_pos.x(), m_pos.y()-m_bound.height()/2);
 }

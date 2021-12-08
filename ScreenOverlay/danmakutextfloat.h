@@ -11,7 +11,7 @@ public:
 public:
     bool update() override;
 
-    void calcBound(QPainter *painter) override;
+    void calcBound() override;
 
 };
 

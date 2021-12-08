@@ -50,9 +50,9 @@ MainWindow::MainWindow(QWidget *parent)
     // connect(loginBox, &KultLoginBox::wsConnectOK, screenOverlay, &DanmakuWidget::wsConnect);
     // connect(screenOverlay, &DanmakuWidget::wsConnected, loginBox, &KultLoginBox::onConnectionSuccess);
     connect(loginBox, &KultLoginBox::loginRequest, network, &NetworkAPI::login);
-    connect(network, &NetworkAPI::wsConnected, loginBox, &KultLoginBox::loginSuccess);
+    connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
     connect(network, &NetworkAPI::loginFailed, loginBox, &KultLoginBox::loginFailed);
-    connect(network, &NetworkAPI::wsMessage, screenOverlay, &DanmakuWidget::onJsonMessageRecieved);
+    connect(network, &NetworkAPI::jsonMessage, screenOverlay, &DanmakuWidget::onJsonMessageRecieved);
 }
 
 void MainWindow::setupUI()
@@ -160,9 +160,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();
-        // screenOverlay->show();
-        // screenOverlay->appendFloat(QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅😅😅"), "ergrerere+", QColor(0xFFFFFF), 20);
-        // screenOverlay->appendTop(QString("content") + QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅"), "erge+", QColor(0xFFFFFF), 20);
+         screenOverlay->show();
+         qDebug()<<"a:"<<clock();
+         screenOverlay->appendText(QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅😅😅333331133313767171367"), "ergrerere+", QColor(0xFFFFFF), 20);
+         //screenOverlay->appendTop(QString("content") + QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121"), "erge+", QColor(0xFFFFFF), 20);
         return true;
     }
     if (event->type() == QEvent::MouseButtonRelease)

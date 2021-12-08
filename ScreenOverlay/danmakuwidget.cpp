@@ -25,47 +25,15 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
     // config update_timer
     connect(update_timer, &QTimer::timeout, this, &DanmakuWidget::updateText);
     update_timer->start(UPDATE_INTERVAL);
-
+    m_asyncRender.moveToThread(&m_renderThread);
+    connect(this, &DanmakuWidget::asyncCreateText, &m_asyncRender, &DanmakuAsyncRender::renderText);
+    m_renderThread.start();
     setAttribute(Qt::WA_TransparentForMouseEvents);
 }
 
 DanmakuWidget::~DanmakuWidget()
 {
     delete m_websocket;
-}
-
-int DanmakuWidget::appendFloat(const QString &text, const QString &id, const QColor &color, int size)
-{
-    std::shared_ptr<DanmakuTextFloat> newText = std::make_shared<DanmakuTextFloat>();
-    newText->setText(text);
-    newText->setColor(color);
-    newText->setFontSize(size);
-    newText->setID(id);
-    m_textFloatSet->append(newText);
-    //m_waiting.push_back(newText);
-    return true;
-}
-
-int DanmakuWidget::appendTop(const QString &text, const QString &id, const QColor &color, int size)
-{
-    std::shared_ptr<DanmakuTextTop> newText = std::make_shared<DanmakuTextTop>();
-    newText->setText(text);
-    newText->setColor(color);
-    newText->setFontSize(size);
-    newText->setID(id);
-    m_textTopSet->append(newText);
-    return true;
-}
-
-int DanmakuWidget::appendBottom(const QString &text, const QString &id, const QColor &color, int size)
-{
-    std::shared_ptr<DanmakuTextBottom> newText = std::make_shared<DanmakuTextBottom>();
-    newText->setText(text);
-    newText->setColor(color);
-    newText->setFontSize(size);
-    newText->setID(id);
-    m_textBottomSet->append(newText);
-    return true;
 }
 
 bool DanmakuWidget::updateText()
@@ -101,49 +69,72 @@ void DanmakuWidget::resizeEvent(QResizeEvent *resize_event)
     Q_UNUSED(resize_event);
 }
 
-void DanmakuWidget::onJsonMessageRecieved(const QByteArray &message)
+void DanmakuWidget::onJsonMessageRecieved(const QJsonObject &json_obj)
 {
-    QString str_message;
-    str_message.prepend(message);
-    str_message.replace('\'','\"');
-    str_message.remove('\t');
-    QByteArray processed_message = str_message.toUtf8();
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(processed_message, &error);
-    if(!doc.isNull()){
-        QJsonObject json_obj = doc.object();
-        QString message_type = json_obj.value("payload").toString();
+    QString message_type = json_obj.value("payload").toString();
 
-        QJsonObject properties = json_obj.value("properties").toObject();
-        if(properties.value("permission").toString().toInt()==DANMAKU_PERMISSION_ALLOW) {
-            QString content = properties.value("content").toString();
-            QString id      = properties.value("id").toString();
-            QString color_name = properties.value("color").toString();
-            int     size    = properties.value("size").toString().split("pt", Qt::SkipEmptyParts)[0].toInt();
-            QString pos     = properties.value("pos").toString();
-            qDebug() << "content="<<content<<"  id="<<id<<" color="<<color_name<<"  size="<<size<<"  pos="<<pos;
+    QJsonObject properties = json_obj.value("properties").toObject();
+    if(properties.value("permission").toString().toInt()==DANMAKU_PERMISSION_ALLOW) {
+        QString content = properties.value("content").toString();
+        QString id      = properties.value("id").toString();
+        QString color_name = properties.value("color").toString();
+        int     size    = properties.value("size").toString().split("pt", Qt::SkipEmptyParts)[0].toInt();
+        QString pos     = properties.value("pos").toString();
 
-            QColor color = QColor(0xFFFFFF);
-            if(color_name != "undefined") color = QColor(color_name.toInt(NULL, 16));
-            if(pos == "rightleft"){
-                appendFloat(content, id, color, size);
-            }
-            if(pos == "top"){
-                appendTop(content, id, color, size);
-            }
-            if(pos == "bottom"){
-                appendBottom(content, id, color, size);
-            }
+        QColor color = QColor(0xFFFFFF);
+        if(color_name != "undefined") color = QColor(color_name.toInt(NULL, 16));
+        if(pos == "rightleft"){
+            emit asyncCreateText(content, id, color, size, m_textFloatSet);
         }
-        else if(message_type == "AAAB"){
-            QString id      = properties.value("id").toString();
-            std::shared_ptr<DanmakuText> p_text = nullptr;
-            if(p_text == nullptr) p_text = m_textBottomSet->findByID(id);
-            if(p_text == nullptr) p_text = m_textFloatSet->findByID(id);
-            if(p_text == nullptr) p_text = m_textTopSet->findByID(id);
-
-            if(p_text != nullptr) p_text->del();
+        if(pos == "top"){
+            emit asyncCreateText(content, id, color, size, m_textTopSet);
         }
-
+        if(pos == "bottom"){
+            emit asyncCreateText(content, id, color, size, m_textBottomSet);
+        }
     }
+    else if(message_type == "AAAB"){
+        QString id      = properties.value("id").toString();
+        std::shared_ptr<DanmakuText> p_text = nullptr;
+        if(p_text == nullptr) p_text = m_textBottomSet->findByID(id);
+        if(p_text == nullptr) p_text = m_textFloatSet->findByID(id);
+        if(p_text == nullptr) p_text = m_textTopSet->findByID(id);
+
+        if(p_text != nullptr) p_text->del();
+    }
+}
+
+void DanmakuWidget::appendText(const QString &content, const QString id, const QColor &color, int size, int position)
+{
+    switch (position){
+    case floatText:
+        emit asyncCreateText(content, id, color, size, m_textFloatSet);
+        break;
+    case topText:
+        emit asyncCreateText(content, id, color, size, m_textTopSet);
+        break;
+    case bottomText:
+        emit asyncCreateText(content, id, color, size, m_textBottomSet);
+        break;
+    default:
+        emit asyncCreateText(content, id, color, size, m_textFloatSet);
+    }
+}
+
+DanmakuAsyncRender::DanmakuAsyncRender(QObject *parent) : QObject(parent)
+{
+
+}
+
+void DanmakuAsyncRender::renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset)
+{
+    qDebug()<<"1:"<<clock();
+    std::shared_ptr<DanmakuTextFloat> newText = std::make_shared<DanmakuTextFloat>();
+    newText->setText(text);
+    newText->setColor(color);
+    newText->setFontSize(size);
+    newText->setID(id);
+    qDebug()<<"c:"<<clock();
+    newText->renderText();
+    textset->append(newText);
 }
