@@ -5,11 +5,13 @@
 #include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), network(new NetworkAPI(this))
 {
     draging = false;
     waveWidget = nullptr;
     screenOverlay = nullptr;
+    network = new NetworkAPI(this);
+
     setupUI();
 
     setWindowFlags(Qt::FramelessWindowHint);
@@ -45,8 +47,12 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowIconText(tr("弹幕一下"));
     setWindowTitle(tr("弹幕一下"));
 
-    connect(loginBox, &KultLoginBox::wsConnectOK, screenOverlay, &DanmakuWidget::wsConnect);
-    connect(screenOverlay, &DanmakuWidget::wsConnected, loginBox, &KultLoginBox::onConnectionSuccess);
+    // connect(loginBox, &KultLoginBox::wsConnectOK, screenOverlay, &DanmakuWidget::wsConnect);
+    // connect(screenOverlay, &DanmakuWidget::wsConnected, loginBox, &KultLoginBox::onConnectionSuccess);
+    connect(loginBox, &KultLoginBox::loginRequest, network, &NetworkAPI::login);
+    connect(network, &NetworkAPI::wsConnected, loginBox, &KultLoginBox::loginSuccess);
+    connect(network, &NetworkAPI::loginFailed, loginBox, &KultLoginBox::loginFailed);
+    connect(network, &NetworkAPI::wsMessage, screenOverlay, &DanmakuWidget::onJsonMessageRecieved);
 }
 
 void MainWindow::setupUI()
@@ -115,7 +121,8 @@ void MainWindow::setupUI()
     connect(loginBox, &KultLoginBox::connecting, [this]{ dynamicLayout->animateStretch(4000, 600); waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
     connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
     connect(loginBox, &KultLoginBox::backToLogin, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
-    //yLayout->setStretch(1, 100);
+    connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
+    connect(network, &NetworkAPI::logoutSuccess, loginBox, &KultLoginBox::logoutSuccess);
 
     stretchFrame->addWidget(overlayFrame);
     //stretchFrame->addItem(yLayout);

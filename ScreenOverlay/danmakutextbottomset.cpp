@@ -1,4 +1,4 @@
-#include "danmakutextbottomset.h"
+#include "DanmakuTextBottomSet.h"
 
 DanmakuTextBottomSet::DanmakuTextBottomSet(QObject *parent) : DanmakuTextSet(parent)
 {

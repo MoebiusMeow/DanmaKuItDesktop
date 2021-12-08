@@ -1,4 +1,4 @@
-#include "danmakutexttopset.h"
+#include "DanmakuTextTopSet.h"
 #include <QDebug>
 
 DanmakuTextTopSet::DanmakuTextTopSet(QObject *parent) : DanmakuTextSet(parent)

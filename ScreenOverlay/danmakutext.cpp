@@ -1,4 +1,4 @@
-#include "danmakutext.h"
+#include "DanmakuText.h"
 
 #include <QtDebug>
 #include <QPainterPath>

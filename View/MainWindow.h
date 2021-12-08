@@ -3,6 +3,7 @@
 
 #include "WaveWidget.h"
 #include "ScreenOverlay/DanmakuWidget.h"
+#include "Network/NetworkAPI.h"
 #include "DynamicVBoxLayout.h"
 #include "KultLoginBox.h"
 #include <QWidget>
@@ -21,6 +22,7 @@ protected:
     DynamicVBoxLayout *dynamicLayout;
     KultLoginBox *loginBox;
     QSystemTrayIcon *systemTrayIcon;
+    NetworkAPI *network;
 
     void setupUI();
     bool eventFilter(QObject *watched, QEvent *event) override;

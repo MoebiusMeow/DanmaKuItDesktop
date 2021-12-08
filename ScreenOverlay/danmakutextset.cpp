@@ -1,4 +1,4 @@
-#include "danmakutextset.h"
+#include "DanmakuTextSet.h"
 
 #include <QDebug>
 #include <QRandomGenerator>

@@ -1,7 +1,7 @@
 #ifndef DANMAKUTEXTBOTTOM_H
 #define DANMAKUTEXTBOTTOM_H
 
-#include "danmakutext.h"
+#include "DanmakuText.h"
 
 class DanmakuTextBottom : public DanmakuText
 {

@@ -1,4 +1,4 @@
-#include "danmakutextfloat.h"
+#include "DanmakuTextFloat.h"
 #include <QDebug>
 
 DanmakuTextFloat::DanmakuTextFloat(QObject *parent) : DanmakuText(parent)

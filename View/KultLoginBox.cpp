@@ -5,7 +5,6 @@
 
 KultLoginBox::KultLoginBox(QWidget *parent) :
     QGroupBox(parent), pMainWindow(parent)
-  , netManager(new QNetworkAccessManager(this))
 {
     recentlyFailed = false;
     setupUI();
@@ -61,6 +60,7 @@ void KultLoginBox::setupUI()
     roomidInput->setPlaceholderText(tr("房间号"));
     roomidInput->setText("1627286198");
     connect(roomidInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
+    // roomidInput->setText("3507228369");
     gLayout->addWidget(roomidInput, 0, 1);
 
     roompassInput = new QLineEdit(group);
@@ -69,6 +69,7 @@ void KultLoginBox::setupUI()
     roompassInput->setEchoMode(QLineEdit::Password);
     roompassInput->setText("hscizS");
     connect(roompassInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
+    // roompassInput->setText("YANtWT");
     gLayout->addWidget(roompassInput, 1, 1);
 
     yLayout->addLayout(gLayout);
@@ -168,31 +169,18 @@ void KultLoginBox::setupUI()
     setLayout(stackedLayout);
 }
 
-// login with id and pass as room id and password
-// handle connect succedd in handleLoginReply
-bool KultLoginBox::loginWithIDPass(const QString &id, const QString &pass)
-{
-    QNetworkRequest request(QUrl::fromUserInput(QString("https://") + DANMAKU_DOMAIN + "/api/v1/room/" + id + "/client-login"));
-    request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());
-    m_reply = netManager->get(request);
-    connect(m_reply, &QNetworkReply::finished, this, &KultLoginBox::handleLoginReply);
-    // connect(m_reply, &QNetworkReply::errorOccurred, this, &KultLoginBox::loginFailed);
-    return true;
-}
-
 void KultLoginBox::login()
 {
     recentlyFailed = false;
     switchToConnecting();
     m_id = roomidInput->text();
     QString pass = roompassInput->text();
-    loginWithIDPass(m_id, pass);
+    emit loginRequest(m_id, pass);
 }
 
 
 void KultLoginBox::logout()
 {
-    emit logoutSuccess();
     switchToLogin();
 }
 
@@ -214,23 +202,6 @@ void KultLoginBox::switchToConnecting()
     emit connecting();
 }
 
-void KultLoginBox::handleLoginReply()
-{
-    if(m_reply->error() != QNetworkReply::NoError){
-        emit loginFailed(tr("错误代码") + " " + QString::number(m_reply->error()) + "\n" + m_reply->errorString());
-        return;
-    }
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(m_reply->readAll(), &error);
-    if(error.error != QJsonParseError::NoError ){
-        emit loginFailed(tr("获取令牌失败"));
-        return;
-    }
-    QString token = doc.object().value("pulsar_jwt").toString();
-    emit wsConnectOK(m_id, token);
-    qDebug() << "ws connect:" << m_id << " " <<token;
-}
-
 void KultLoginBox::handleLoginFailed(QString errorMessage)
 {
     if (recentlyFailed) return;
@@ -244,5 +215,5 @@ void KultLoginBox::handleLoginFailed(QString errorMessage)
 
 void KultLoginBox::onConnectionSuccess()
 {
-    emit loginSuccess();
+    switchToDisplay();
 }

@@ -1,8 +1,8 @@
 #ifndef DANMAKUTEXTTOPSET_H
 #define DANMAKUTEXTTOPSET_H
 
-#include "danmakutextset.h"
-#include "danmakutexttop.h"
+#include "DanmakuTextSet.h"
+#include "DanmakuTextTop.h"
 
 const int DANMAKU_TOP_RAIL_CNT = 8;
 

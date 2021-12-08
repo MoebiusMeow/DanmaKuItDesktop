@@ -1,8 +1,8 @@
 #ifndef DANMAKUTEXTBOTTOMSET_H
 #define DANMAKUTEXTBOTTOMSET_H
 
-#include "danmakutextbottom.h"
-#include "danmakutextset.h"
+#include "DanmakuTextBottom.h"
+#include "DanmakuTextSet.h"
 
 const int DANMAKU_BOTTOM_RAIL_CNT = 8;
 

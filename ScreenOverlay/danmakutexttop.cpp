@@ -1,6 +1,6 @@
 #include <QDebug>
 
-#include "danmakutexttop.h"
+#include "DanmakuTextTop.h"
 
 DanmakuTextTop::DanmakuTextTop(QObject *parent) : DanmakuText(parent)
   , m_life(400)

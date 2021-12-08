@@ -1,7 +1,7 @@
 #ifndef DANMAKUTEXTTOP_H
 #define DANMAKUTEXTTOP_H
 
-#include "danmakutext.h"
+#include "DanmakuText.h"
 
 
 

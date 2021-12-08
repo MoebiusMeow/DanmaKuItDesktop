@@ -1,7 +1,7 @@
 #ifndef DANMAKUTEXTFLOAT_H
 #define DANMAKUTEXTFLOAT_H
 
-#include "danmakutext.h"
+#include "DanmakuText.h"
 
 class DanmakuTextFloat : public DanmakuText
 {

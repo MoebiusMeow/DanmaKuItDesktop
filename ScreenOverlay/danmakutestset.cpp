@@ -1,4 +1,4 @@
-#include "danmakutestset.h"
+#include "DanmakuTestSet.h"
 
 #include <QRandomGenerator>
 
