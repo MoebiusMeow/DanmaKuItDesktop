@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     systemTrayIcon = new QSystemTrayIcon(this);
     systemTrayIcon->setToolTip(tr("弹幕一下"));
-    systemTrayIcon->setIcon(QIcon(":/Assets/Icons/trayIcon.png"));
+    systemTrayIcon->setIcon(QIcon(":/Assets/Icons/logo.png"));
     systemTrayIcon->show();
     systemTrayIcon->setContextMenu(new QMenu(this));
     QAction *trayAction;
@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(trayAction, &QAction::triggered, this, &MainWindow::handleClose);
     systemTrayIcon->contextMenu()->addAction(trayAction);
 
-    setWindowIcon(QIcon(":/Assets/Icons/trayIcon.png"));
+    setWindowIcon(QIcon(":/Assets/Icons/logo.png"));
     setWindowIconText(tr("弹幕一下"));
     setWindowTitle(tr("弹幕一下"));
 
@@ -82,6 +82,13 @@ void MainWindow::setupUI()
     xLayout = new QHBoxLayout();
     xLayout->setContentsMargins(0, 0, 10, 0);
     xLayout->setSpacing(0);
+    QLabel *tempLabel;
+    tempLabel = new QLabel(this);
+    tempLabel->setFixedSize(30, 30);
+    tempLabel->setScaledContents(true);
+    tempLabel->setPixmap(QPixmap(":/Assets/Icons/logo_w.png"));
+    tempLabel->setMargin(5);
+    xLayout->addWidget(tempLabel);
     xLayout->addStretch(3);
     QPushButton *tempButton;
     tempButton = new QPushButton(this);
@@ -102,7 +109,7 @@ void MainWindow::setupUI()
 
     dyLayout->addLayout(xLayout);
     dyLayout->addStretch(3000);
-    //QLabel *tempLabel;
+
     //tempLabel = new QLabel(this);
     //tempLabel->setObjectName("LogoFont");
     //tempLabel->setText(QString(QChar(0xf0e6)));

@@ -17,7 +17,7 @@ KultLoginBox::KultLoginBox(QWidget *parent) :
 
 void KultLoginBox::setupUI()
 {
-    QFont icons(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont("://Assets/Fonts/fontawesome-webfont.ttf") ));
+    QFont icons(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/fontawesome-webfont.ttf") ));
     icons.setFamily("FontAwesome");
     icons.setPixelSize(16);
 
@@ -79,7 +79,10 @@ void KultLoginBox::setupUI()
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
 
-    tempButton = new QPushButton(tr("弹幕一下"), group);
+    tempButton = new QPushButton(tr("弹幕一下 "), group);
+    // tempButton->setLayoutDirection(Qt::RightToLeft);
+    // tempButton->setIcon(QIcon(":/Assets/Icons/logo_w.png"));
+    // tempButton->setIconSize(QSize(20, 20));
     tempButton->setMinimumWidth(200);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::login);
     yLayout->addWidget(tempButton);
