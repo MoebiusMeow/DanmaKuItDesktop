@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     draging = false;
     waveWidget = nullptr;
     screenOverlay = nullptr;
+    network = new NetworkAPI(this);
+
     setupUI();
 
     setWindowFlags(Qt::FramelessWindowHint);
@@ -29,8 +31,10 @@ MainWindow::MainWindow(QWidget *parent)
     //screenOverlay->setWindowState(Qt::WindowMaximized);
     screenOverlay->hide();
 
-    connect(loginBox, &KultLoginBox::wsConnectOK, screenOverlay, &DanmakuWidget::wsConnect);
-    connect(screenOverlay, &DanmakuWidget::wsConnected, loginBox, &KultLoginBox::onConnectionSuccess);
+    connect(loginBox, &KultLoginBox::loginRequest, network, &NetworkAPI::login);
+    connect(network, &NetworkAPI::wsConnected, loginBox, &KultLoginBox::on_loginSuccess);
+    connect(network, &NetworkAPI::loginFailed, loginBox, &KultLoginBox::on_loginFailed);
+    connect(network, &NetworkAPI::wsMessage, screenOverlay, &DanmakuWidget::onJsonMessageRecieved);
 }
 
 void MainWindow::setupUI()
@@ -101,8 +105,8 @@ void MainWindow::setupUI()
     dyLayout->addWidget(loginBox, 1000);
     dyLayout->setTarget(dyLayout->count() - 1);
     dyLayout->animateStretch(8000, 1000);
-    connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
-    connect(loginBox, &KultLoginBox::logoutSuccess, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
+    connect(network, &NetworkAPI::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
+    connect(network, &NetworkAPI::logoutSuccess, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     //yLayout->setStretch(1, 100);
 
     stretchFrame->addWidget(overlayFrame);

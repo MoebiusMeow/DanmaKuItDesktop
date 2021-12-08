@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "WaveWidget.h"
+#include "Network/NetworkAPI.h"
 #include "ScreenOverlay/danmakuwidget.h"
 #include "DynamicVBoxLayout.h"
 #include "KultLoginBox.h"
@@ -20,6 +21,7 @@ protected:
     DanmakuWidget *screenOverlay;
     DynamicVBoxLayout *dynamicLayout;
     KultLoginBox *loginBox;
+    NetworkAPI *network;
 
     void setupUI();
     bool eventFilter(QObject *watched, QEvent *event) override;

@@ -3,11 +3,9 @@
 
 #include <QWidget>
 #include <QTimer>
-#include <QCloseEvent>
 #include <QWebSocket>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <NetworkConfig.h>
 #include <QRandomGenerator>
 #include "danmakutextfloatset.h"
 #include "danmakutexttopset.h"
@@ -18,12 +16,6 @@
 class DanmakuWidget : public QWidget
 {
     Q_OBJECT
-signals:
-    void wsConnected();
-    void wsClosed();
-    void wsForceClosed();
-    void wsBroken();
-
 public:
     explicit DanmakuWidget(QWidget *parent = nullptr);
     ~DanmakuWidget();
@@ -43,18 +35,10 @@ protected Q_SLOTS:
     bool updateDisplay();
     void paintEvent(QPaintEvent *paint_event) override;
     void resizeEvent(QResizeEvent *resize_event) override;
-    void closeEvent(QCloseEvent *close_event) override;
-
-    void onconnect();
-    void ondisconnect();
-    void reconnect();
-    void onforceShutdown();
-    void onBinaryMessageRecieved(const QByteArray &message);
-    void onTextMessageReceived(const QString &message);
 
 public Q_SLOTS:
-    void wsConnect(const QString &roomid, const QString &token);
-    void wsClose();
+    void onJsonMessageRecieved(const QByteArray &message);
+
 
 private:
     DanmakuTextFloatSet *m_textFloatSet;

@@ -20,13 +20,6 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
     , m_shutdown(false)
     , m_realshutdown(false)
 {
-    // config websocket
-
-    connect(m_websocket, &QWebSocket::connected, this, &DanmakuWidget::onconnect);
-    connect(m_websocket, &QWebSocket::disconnected, this, &DanmakuWidget::ondisconnect);
-    connect(m_websocket, &QWebSocket::binaryMessageReceived, this, &DanmakuWidget::onBinaryMessageRecieved);
-    connect(m_websocket, &QWebSocket::textMessageReceived, this, &DanmakuWidget::onTextMessageReceived);
-
     // config update_timer
     connect(update_timer, &QTimer::timeout, this, &DanmakuWidget::updateText);
     update_timer->start(UPDATE_INTERVAL);
@@ -71,16 +64,6 @@ int DanmakuWidget::appendBottom(const QString &text, const QString &id, const QC
     return true;
 }
 
-QString DanmakuWidget::getWSurl()
-{
-    return DANMAKU_SCHEMA + "://" + DANMAKU_DOMAIN
-            + "/websocket/consumer/persistent/public/default/"
-            + m_roomid + "/"
-            + QUrl::toPercentEncoding(QHostInfo::localHostName()) + "~"
-            + QString::number(QRandomGenerator::global()->generate64(), 16)
-            + "?token=" + m_token;
-}
-
 bool DanmakuWidget::updateText()
 {
     m_textFloatSet->update();
@@ -114,79 +97,8 @@ void DanmakuWidget::resizeEvent(QResizeEvent *resize_event)
     Q_UNUSED(resize_event);
 }
 
-void DanmakuWidget::closeEvent(QCloseEvent *close_event)
+void DanmakuWidget::onJsonMessageRecieved(const QByteArray &message)
 {
-
-    if(m_realshutdown){
-        shutdown_timer->stop();
-        close_event->accept();
-        return;
-    }
-    if(!m_shutdown){
-        m_shutdown = true;
-        wsClose();
-    }
-    close_event->ignore();
-}
-
-void DanmakuWidget::wsConnect(const QString &roomid, const QString &token)
-{
-    m_wsOn = true;
-    m_roomid = roomid, m_token = token;
-    QString url = getWSurl();
-    qDebug()<<"[connecting]"<<url;
-    m_websocket->open(QUrl(url));
-}
-
-void DanmakuWidget::wsClose()
-{
-    m_wsOn = false;
-    m_websocket->close(); // if websockt close normally, it will reach the closing branch in ondisconnect
-    shutdown_timer->singleShot(DANMAKU_SHUTDOWN_INTERVAL, this, &DanmakuWidget::onforceShutdown);
-    qDebug()<<"waiting websocket shutdown ...";
-}
-
-void DanmakuWidget::onconnect()
-{
-    qDebug()<<"connnected to room server";
-    emit wsConnected();
-}
-
-void DanmakuWidget::ondisconnect()
-{
-    if(m_wsOn){
-        qDebug()<<"WebSocket connection broke, waiting reconnect ...";
-        reconnect_timer->singleShot(DANMAKU_RECONNECT_INTERVAL,this,&DanmakuWidget::reconnect);
-        emit wsBroken();
-    }
-    else if(m_shutdown){
-        qDebug()<<"connection closed, shutting down ...";
-        m_realshutdown = true;
-        emit wsClosed();
-        close();
-    }
-}
-
-void DanmakuWidget::reconnect()
-{
-    m_websocket->abort();
-    QString url = getWSurl();
-    qDebug()<<"[connecting]"<<url;
-    m_websocket->open(QUrl(url));
-}
-
-void DanmakuWidget::onforceShutdown()
-{
-    qDebug()<<"close message timeout, shutting down ...";
-    m_websocket->abort();
-    m_realshutdown = true;
-    emit wsForceClosed();
-    close();
-}
-
-void DanmakuWidget::onBinaryMessageRecieved(const QByteArray &message)
-{
-    //
     QString str_message;
     str_message.prepend(message);
     str_message.replace('\'','\"');
@@ -230,10 +142,4 @@ void DanmakuWidget::onBinaryMessageRecieved(const QByteArray &message)
         }
 
     }
-}
-
-void DanmakuWidget::onTextMessageReceived(const QString &message)
-{
-    qDebug()<<"[Text]"<<message;
-    onBinaryMessageRecieved(message.toUtf8());
 }
