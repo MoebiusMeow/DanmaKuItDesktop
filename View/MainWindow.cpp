@@ -88,12 +88,14 @@ void MainWindow::setupUI()
     // tempButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_TitleBarCloseButton));
     tempButton->setText(QString(QChar(0xf068)));
     tempButton->setFont(icons);
+    tempButton->setFocusPolicy(Qt::NoFocus);
     xLayout->addWidget(tempButton);
     connect(tempButton, &QPushButton::pressed, this, &MainWindow::handleMinimize);
 
     tempButton = new QPushButton(this);
     tempButton->setText(QString(QChar(0xf00d)));
     tempButton->setFont(icons);
+    tempButton->setFocusPolicy(Qt::NoFocus);
     tempButton->setObjectName("WindowCloseButton");
     xLayout->addWidget(tempButton);
     connect(tempButton, &QPushButton::pressed, this, &MainWindow::handleClose);
@@ -118,9 +120,10 @@ void MainWindow::setupUI()
     dyLayout->addWidget(loginBox, 1000);
     dyLayout->setTarget(dyLayout->count() - 1);
     dyLayout->animateStretch(8000, 1000);
-    connect(loginBox, &KultLoginBox::connecting, [this]{ dynamicLayout->animateStretch(4000, 600); waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
+    connect(loginBox, &KultLoginBox::connecting, [this]{ waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
     connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
     connect(loginBox, &KultLoginBox::backToLogin, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
+    connect(loginBox, &KultLoginBox::loginFailed, [this]{ dynamicLayout->animateStretch(18000, 600); waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
     connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
     connect(network, &NetworkAPI::logoutSuccess, loginBox, &KultLoginBox::logoutSuccess);
 

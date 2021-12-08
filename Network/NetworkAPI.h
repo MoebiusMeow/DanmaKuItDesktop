@@ -57,7 +57,7 @@ signals:
     //https
     void loginSuccess();
     void logoutSuccess();
-    void loginFailed(QString errorMessage);
+    void loginFailed(int errorType, QString errorMessage);
     void logoutFailed();
     void wsInfoReady(const QString &roomid, const QString &token);
 

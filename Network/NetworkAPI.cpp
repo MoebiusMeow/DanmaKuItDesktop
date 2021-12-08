@@ -33,14 +33,23 @@ QString NetworkAPI::getWebsocketURL()
 
 void NetworkAPI::on_loginReplyRecieve()
 {
-    if(m_reply->error() != QNetworkReply::NoError){
-        emit loginFailed(tr("错误代码") + " " + QString::number(m_reply->error()) + "\n" + m_reply->errorString());
+    if(m_reply->error() != QNetworkReply::NoError)
+    {
+        QString errorMessage;
+        switch (m_reply->error())
+        {
+            case QNetworkReply::NoError: break;
+            case 203: errorMessage += tr("无法连接房间服务器") + "\n" + tr("请检查房间号是否正确"); break;
+            case 204: errorMessage += tr("房间密码错误"); break;
+            default: errorMessage += tr("错误代码") + " " + QString::number(m_reply->error()) + "\n" + m_reply->errorString(); break;
+        }
+        emit loginFailed(m_reply->error(), errorMessage);
         return;
     }
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(m_reply->readAll(), &error);
     if(error.error != QJsonParseError::NoError ){
-        emit loginFailed(tr("获取令牌失败"));
+        emit loginFailed(-1, tr("获取令牌失败"));
         return;
     }
     QString token = doc.object().value("pulsar_jwt").toString();

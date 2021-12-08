@@ -152,6 +152,17 @@
     border: none;
 }
 
+#LoginBox #ErrorBox .QLabel {
+    color: orangered;
+}
+
+#LoginBox #ErrorBox #TitleGroup .QLabel {
+    border-radius: 5px;
+    font-size: 20px;
+    margin: 5px;
+    color: orangered;
+    border: none;
+}
 
 
 
