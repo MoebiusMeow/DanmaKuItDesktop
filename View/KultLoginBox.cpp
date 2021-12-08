@@ -54,6 +54,12 @@ void KultLoginBox::setupUI()
     tempLabel->setText(QString(QChar(0xf084)));
     tempLabel->setFont(icons);
     gLayout->addWidget(tempLabel, 1, 0);
+
+    loginHintLabel = tempLabel = new QLabel(group);
+    tempLabel->setObjectName("LoginHintLabel");
+    tempLabel->setText(tr("大写锁定已开启"));
+    tempLabel->hide();
+    gLayout->addWidget(tempLabel, 2, 1);
     //tempLabel = new QLabel("     房间密码", group);
     //gLayout->addWidget(tempLabel, 1, 0);
 

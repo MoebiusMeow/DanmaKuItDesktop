@@ -25,8 +25,8 @@ protected:
     QWidget *pMainWindow;
     QStackedLayout *stackedLayout;
     QLineEdit *roomidInput, *roompassInput;
+    QLabel *loginHintLabel;
     QLabel *connectingLabel;
-    QLabel *connectMessageLabel;
     QPushButton *cancelConnectButton;
     QString m_id;// room id
     void setupUI();
