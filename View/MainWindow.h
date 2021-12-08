@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include "WaveWidget.h"
-#include "ScreenOverlay/danmakuwidget.h"
+#include "ScreenOverlay/DanmakuWidget.h"
 #include "DynamicVBoxLayout.h"
 #include "KultLoginBox.h"
 #include <QWidget>

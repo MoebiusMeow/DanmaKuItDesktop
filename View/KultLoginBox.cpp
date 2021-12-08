@@ -1,13 +1,17 @@
 #include "KultLoginBox.h"
 #include <QtWidgets>
 
+#include "KultMessageBox.h"
+
 KultLoginBox::KultLoginBox(QWidget *parent) :
-    QGroupBox(parent)
+    QGroupBox(parent), pMainWindow(parent)
   , netManager(new QNetworkAccessManager(this))
 {
+    recentlyFailed = false;
     setupUI();
     switchToLogin();
     connect(this, &KultLoginBox::loginSuccess, this, &KultLoginBox::switchToDisplay);
+    connect(this, &KultLoginBox::loginFailed, this, &KultLoginBox::handleLoginFailed);
 }
 
 void KultLoginBox::setupUI()
@@ -54,21 +58,23 @@ void KultLoginBox::setupUI()
 
     roomidInput = new QLineEdit(group);
     roomidInput->setMinimumWidth(220);
-    roomidInput->setPlaceholderText("房间号");
+    roomidInput->setPlaceholderText(tr("房间号"));
     roomidInput->setText("1627286198");
+    connect(roomidInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
     gLayout->addWidget(roomidInput, 0, 1);
 
     roompassInput = new QLineEdit(group);
     roompassInput->setMinimumWidth(220);
-    roompassInput->setPlaceholderText("房间密码");
+    roompassInput->setPlaceholderText(tr("房间密码"));
     roompassInput->setEchoMode(QLineEdit::Password);
     roompassInput->setText("hscizS");
+    connect(roompassInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
     gLayout->addWidget(roompassInput, 1, 1);
 
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
 
-    tempButton = new QPushButton("弹幕一下", group);
+    tempButton = new QPushButton(tr("弹幕一下"), group);
     tempButton->setMinimumWidth(200);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::login);
     yLayout->addWidget(tempButton);
@@ -101,18 +107,55 @@ void KultLoginBox::setupUI()
     tempLabel->setText(QString(QChar(0xf058)));
     tempLabel->setFont(icons);
     titleGroup->layout()->addWidget(tempLabel);
-    tempLabel = new QLabel("弹幕已连接", group);
+    tempLabel = new QLabel(tr("弹幕已连接"), group);
     titleGroup->layout()->addWidget(tempLabel);
     gLayout->addWidget(titleGroup, 0, 0, 1, 2);
-
-    //tempLabel = new QLabel("房间号", group);
-    //gLayout->addWidget(tempLabel, 1, 0);
 
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
 
     tempButton = new QPushButton("断开连接", group);
     tempButton->setObjectName("DisconnectButton");
+    tempButton->setMinimumWidth(200);
+    connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::logout);
+    yLayout->addWidget(tempButton);
+
+    xLayout->addLayout(yLayout);
+    xLayout->addStretch(1);
+    group->setLayout(xLayout);
+    stackedLayout->addWidget(group);
+
+    // ----------
+    // connecting
+    // ----------
+
+    group = new QGroupBox(this);
+
+    yLayout = new QVBoxLayout();
+    yLayout->addStretch(1);
+
+    xLayout = new QHBoxLayout();
+    xLayout->addStretch(1);
+
+    gLayout = new QGridLayout();
+
+    titleGroup = new QGroupBox(group);
+    titleGroup->setLayout(new QHBoxLayout(titleGroup));
+    titleGroup->setObjectName("TitleGroup");
+
+    tempLabel = new QLabel(group);
+    tempLabel->setText(QString(QChar(0xf254)));
+    tempLabel->setFont(icons);
+    titleGroup->layout()->addWidget(tempLabel);
+    connectingLabel = tempLabel = new QLabel(tr("正在连接房间服务器"), group);
+    titleGroup->layout()->addWidget(tempLabel);
+    gLayout->addWidget(titleGroup, 0, 0, 1, 2);
+
+    yLayout->addLayout(gLayout);
+    yLayout->addStretch(1);
+
+    tempButton = new QPushButton("取消连接", group);
+    tempButton->setObjectName("CancelConnectButton");
     tempButton->setMinimumWidth(200);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::logout);
     yLayout->addWidget(tempButton);
@@ -133,11 +176,14 @@ bool KultLoginBox::loginWithIDPass(const QString &id, const QString &pass)
     request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());
     m_reply = netManager->get(request);
     connect(m_reply, &QNetworkReply::finished, this, &KultLoginBox::handleLoginReply);
+    // connect(m_reply, &QNetworkReply::errorOccurred, this, &KultLoginBox::loginFailed);
     return true;
 }
 
 void KultLoginBox::login()
 {
+    recentlyFailed = false;
+    switchToConnecting();
     m_id = roomidInput->text();
     QString pass = roompassInput->text();
     loginWithIDPass(m_id, pass);
@@ -159,23 +205,41 @@ void KultLoginBox::switchToDisplay()
 void KultLoginBox::switchToLogin()
 {
     stackedLayout->setCurrentIndex(0);
+    emit backToLogin();
+}
+
+void KultLoginBox::switchToConnecting()
+{
+    stackedLayout->setCurrentIndex(2);
+    emit connecting();
 }
 
 void KultLoginBox::handleLoginReply()
 {
     if(m_reply->error() != QNetworkReply::NoError){
-        emit loginFailed();
+        emit loginFailed(tr("错误代码") + " " + QString::number(m_reply->error()) + "\n" + m_reply->errorString());
         return;
     }
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(m_reply->readAll(), &error);
     if(error.error != QJsonParseError::NoError ){
-        emit loginFailed();
+        emit loginFailed(tr("获取令牌失败"));
         return;
     }
     QString token = doc.object().value("pulsar_jwt").toString();
     emit wsConnectOK(m_id, token);
-    qDebug()<<"ws connect:"<<m_id<<" "<<token;
+    qDebug() << "ws connect:" << m_id << " " <<token;
+}
+
+void KultLoginBox::handleLoginFailed(QString errorMessage)
+{
+    if (recentlyFailed) return;
+    recentlyFailed = true;
+    connectingLabel->setText(tr("房间服务器连接失败"));
+    if (KultMessageBox::information(pMainWindow, tr("连接失败"), tr("连接失败") + "\n\n\n" + errorMessage, KultMessageBox::Confirm, KultMessageBox::NoButton) == KultMessageBox::Confirm)
+    {
+        switchToLogin();
+    }
 }
 
 void KultLoginBox::onConnectionSuccess()

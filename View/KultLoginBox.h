@@ -16,11 +16,16 @@ signals:
     void loginSuccess();
     void logoutSuccess();
     void wsConnectOK(const QString &roomid, const QString &token);
-    void loginFailed();
+    void loginFailed(QString errorMessage);
+    void connecting();
+    void backToLogin();
 
 protected:
+    bool recentlyFailed;
+    QWidget *pMainWindow;
     QStackedLayout *stackedLayout;
     QLineEdit *roomidInput, *roompassInput;
+    QLabel *connectingLabel;
     void setupUI();
     QNetworkAccessManager *netManager;
     QNetworkReply *m_reply;
@@ -36,8 +41,10 @@ public slots:
     void login();
     void logout();
     void switchToDisplay();
+    void switchToConnecting();
     void switchToLogin();
     void handleLoginReply();
+    void handleLoginFailed(QString errorMessage);
     void onConnectionSuccess();
 };
 

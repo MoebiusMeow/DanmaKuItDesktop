@@ -112,8 +112,9 @@ void MainWindow::setupUI()
     dyLayout->addWidget(loginBox, 1000);
     dyLayout->setTarget(dyLayout->count() - 1);
     dyLayout->animateStretch(8000, 1000);
+    connect(loginBox, &KultLoginBox::connecting, [this]{ dynamicLayout->animateStretch(4000, 600); waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
     connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
-    connect(loginBox, &KultLoginBox::logoutSuccess, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
+    connect(loginBox, &KultLoginBox::backToLogin, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     //yLayout->setStretch(1, 100);
 
     stretchFrame->addWidget(overlayFrame);

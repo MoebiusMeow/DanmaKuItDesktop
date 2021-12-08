@@ -118,12 +118,26 @@
     background: orangered;
 }
 
+#LoginBox #CancelConnectButton {
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    border: none;
+    background: lightgrey;
+}
+
 #LoginBox .QPushButton:hover {
     background: rgb(120, 173, 255);
 }
 
 #LoginBox .QPushButton:pressed {
     background: darkgrey;
+}
+
+#LoginBox #CancelConnectButton:hover {
+    background: grey;
 }
 
 #LoginBox #DisconnectButton:hover {
@@ -163,6 +177,7 @@ WaveWidget {
 
 .KultMessageBox .QPushButton {
     border-radius: 5px;
+    min-width: 80px;
     padding: 5px;
     margin: 5px;
     color: black;
