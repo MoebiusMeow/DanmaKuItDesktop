@@ -45,7 +45,7 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     // https
-    void on_loginReplayRecieve();
+    void on_loginReplyRecieve();
 
     //websocket
     void on_wsRecieveBinaryMessage(const QByteArray &message);

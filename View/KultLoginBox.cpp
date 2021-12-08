@@ -60,7 +60,7 @@ void KultLoginBox::setupUI()
     roomidInput->setPlaceholderText(tr("房间号"));
     roomidInput->setText("1627286198");
     connect(roomidInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
-    // roomidInput->setText("3507228369");
+    roomidInput->setText("3507228369");
     gLayout->addWidget(roomidInput, 0, 1);
 
     roompassInput = new QLineEdit(group);
@@ -69,7 +69,7 @@ void KultLoginBox::setupUI()
     roompassInput->setEchoMode(QLineEdit::Password);
     roompassInput->setText("hscizS");
     connect(roompassInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
-    // roompassInput->setText("YANtWT");
+    roompassInput->setText("YANtWT");
     gLayout->addWidget(roompassInput, 1, 1);
 
     yLayout->addLayout(gLayout);

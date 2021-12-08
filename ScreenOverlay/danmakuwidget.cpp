@@ -115,7 +115,7 @@ void DanmakuWidget::onJsonMessageRecieved(const QByteArray &message)
         QString message_type = json_obj.value("payload").toString();
 
         QJsonObject properties = json_obj.value("properties").toObject();
-        if(properties.value("permission").toString().toInt()==DANMAKU_PERMISSION_ALLOW){
+        if(properties.value("permission").toString().toInt()==DANMAKU_PERMISSION_ALLOW) {
             QString content = properties.value("content").toString();
             QString id      = properties.value("id").toString();
             QString color_name = properties.value("color").toString();

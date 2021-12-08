@@ -31,7 +31,7 @@ QString NetworkAPI::getWebsocketURL()
             + "?token=" + m_roomToken;
 }
 
-void NetworkAPI::on_loginReplayRecieve()
+void NetworkAPI::on_loginReplyRecieve()
 {
     if(m_reply->error() != QNetworkReply::NoError){
         emit loginFailed(tr("错误代码") + " " + QString::number(m_reply->error()) + "\n" + m_reply->errorString());
@@ -44,6 +44,7 @@ void NetworkAPI::on_loginReplayRecieve()
         return;
     }
     QString token = doc.object().value("pulsar_jwt").toString();
+    m_roomToken = token;
     qDebug() << "ws connect:" << m_roomID << " " <<token;
     emit loginSuccess();
     emit wsInfoReady(m_roomID, m_roomToken);
@@ -51,11 +52,13 @@ void NetworkAPI::on_loginReplayRecieve()
 
 void NetworkAPI::on_wsRecieveBinaryMessage(const QByteArray &message)
 {
+    qDebug() << message;
     emit wsMessage(message);
 }
 
 void NetworkAPI::on_wsRecieveTextMessage(const QString &message)
 {
+    qDebug() << message;
     emit wsMessage(message.toUtf8());
 }
 
@@ -67,7 +70,7 @@ void NetworkAPI::login(const QString &id, const QString &pass)
     QNetworkRequest request(QUrl::fromUserInput(QString("https://") + DANMAKU_DOMAIN + "/api/v1/room/" + id + "/client-login"));
     request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());
     m_reply = m_netManager->get(request);
-    connect(m_reply, &QNetworkReply::finished, this, &NetworkAPI::on_loginReplayRecieve);
+    connect(m_reply, &QNetworkReply::finished, this, &NetworkAPI::on_loginReplyRecieve);
 }
 
 void NetworkAPI::logout()
