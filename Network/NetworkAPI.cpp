@@ -103,6 +103,7 @@ void NetworkAPI::login(const QString &id, const QString &pass)
 void NetworkAPI::logout()
 {
     m_status = logging_out;
+    wsClose();
     //TODO
 }
 
@@ -116,6 +117,7 @@ void NetworkAPI::wsConnect(const QString &roomid, const QString &token)
 
 void NetworkAPI::wsClose()
 {
+    m_websocket->close();
     //TODO
 }
 
@@ -149,7 +151,7 @@ void NetworkAPI::on_wsError(QAbstractSocket::SocketError error)
 void NetworkAPI::on_wsConnectionCheck()
 {
     qDebug()<<"ping";
-    qDebug()<<m_websocket->sendTextMessage("{type:\'isEndOfTopic\'}");
+    m_websocket->sendTextMessage("{\"type\":\"isEndOfTopic\"}");
 }
 
 

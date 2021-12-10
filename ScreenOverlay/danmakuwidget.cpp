@@ -128,13 +128,11 @@ DanmakuAsyncRender::DanmakuAsyncRender(QObject *parent) : QObject(parent)
 
 void DanmakuAsyncRender::renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset)
 {
-    qDebug()<<"1:"<<clock();
     std::shared_ptr<DanmakuTextFloat> newText = std::make_shared<DanmakuTextFloat>();
     newText->setText(text);
     newText->setColor(color);
     newText->setFontSize(size);
     newText->setID(id);
-    qDebug()<<"c:"<<clock();
     newText->renderText();
     textset->append(newText);
 }
