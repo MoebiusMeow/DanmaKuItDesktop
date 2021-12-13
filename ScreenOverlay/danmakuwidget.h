@@ -14,6 +14,11 @@
 #include "DanmakuTestSet.h"
 #include "DanmakuConstants.h"
 
+
+#define DANMAKU_FLOAT 0
+#define DANMAKU_TOP 1
+#define DANMAKU_BOTTOM 2
+
 class DanmakuAsyncRender : public QObject
 {
     Q_OBJECT
@@ -21,14 +26,14 @@ public:
     explicit DanmakuAsyncRender(QObject *parent = nullptr);
 
 public Q_SLOTS:
-    void renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset);
+    void renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset, int type);
 };
 
 class DanmakuWidget : public QWidget
 {
     Q_OBJECT
 signals:
-    void asyncCreateText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset);
+    void asyncCreateText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset, int type);
 public:
     explicit DanmakuWidget(QWidget *parent = nullptr);
     ~DanmakuWidget();

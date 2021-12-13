@@ -60,7 +60,7 @@ int DanmakuTextSet::popWaiting()
         if(m_ifRailFree[i])
         {
             available_rail.push_back(i);
-            if(available_rail.size()>=3) break;
+            if(available_rail.size()>=2) break;
         }
     int target_rail = available_rail[QRandomGenerator::global()->bounded(available_rail.size())];
 
@@ -68,6 +68,7 @@ int DanmakuTextSet::popWaiting()
     pushToRail(*text, target_rail);
 
     m_texts.push_back(text);
+    text->calcBound();
     text->update();
 
     return 0;
@@ -125,7 +126,7 @@ bool DanmakuTextSet::update()
     // Update all danmaku and delete if return value of update() return false
     m_texts.erase(remove_if(m_texts.begin(), m_texts.end(),
                            [](const std::shared_ptr<DanmakuText> &i)
-                            -> bool {return !i->update();}
+                            -> bool {i->calcBound(); return !i->update();}
                            ),m_texts.end());
 
     // update Rail Status

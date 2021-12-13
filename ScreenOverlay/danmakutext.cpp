@@ -154,7 +154,6 @@ bool DanmakuText::paint(QPainter *painter)
 
 bool DanmakuText::update()
 {
-    calcBound();
     if(m_last_clock == 0){
         m_last_clock = clock();
         return true;

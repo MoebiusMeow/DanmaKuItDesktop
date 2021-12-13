@@ -73,8 +73,11 @@ void DanmakuWidget::onJsonMessageRecieved(const QJsonObject &json_obj)
 {
     QString message_type = json_obj.value("payload").toString();
     QJsonObject properties = json_obj.value("properties").toObject();
-    qDebug()<<message_type<<" "<<properties;
-    if(properties.value("permission").toString().toInt()==DANMAKU_PERMISSION_ALLOW) {
+    //message_type = properties.value("permission").toString().toInt()?"AAAA":"AAAB";
+    //qDebug()<<message_type<<" "<<properties;
+    if(message_type == "AAAA") {
+        if(properties.value("permission").toString().toInt()!=DANMAKU_PERMISSION_ALLOW)
+            return;
         QString content = properties.value("content").toString();
         QString id      = properties.value("id").toString();
         QString color_name = properties.value("color").toString();
@@ -82,25 +85,25 @@ void DanmakuWidget::onJsonMessageRecieved(const QJsonObject &json_obj)
         QString pos     = properties.value("pos").toString();
 
         QColor color = QColor(0xFFFFFF);
-        qDebug()<<"color="<<color_name.right(6)<<" "<<color_name.right(6).toInt(NULL, 16);
         if(color_name != "undefined") color = QColor(color_name.right(6).toInt(NULL, 16));
         if(pos == "rightleft"){
-            emit asyncCreateText(content, id, color, size, m_textFloatSet);
+            appendText(content, id, color, size, floatText);
         }
         if(pos == "top"){
-            emit asyncCreateText(content, id, color, size, m_textTopSet);
+            appendText(content, id, color, size, topText);
         }
         if(pos == "bottom"){
-            emit asyncCreateText(content, id, color, size, m_textBottomSet);
+            appendText(content, id, color, size, bottomText);
         }
     }
-    else{
+    else if(message_type == "AAAB"){
+        if(properties.value("permission").toString().toInt()==DANMAKU_PERMISSION_ALLOW)
+            return;
         QString id      = properties.value("id").toString();
         std::shared_ptr<DanmakuText> p_text = nullptr;
         if(p_text == nullptr) p_text = m_textBottomSet->findByID(id);
         if(p_text == nullptr) p_text = m_textFloatSet->findByID(id);
         if(p_text == nullptr) p_text = m_textTopSet->findByID(id);
-        qDebug()<<(long long)p_text.get();
         if(p_text != nullptr) p_text->del();
     }
 }
@@ -109,16 +112,14 @@ void DanmakuWidget::appendText(const QString &content, const QString id, const Q
 {
     switch (position){
     case floatText:
-        emit asyncCreateText(content, id, color, size, m_textFloatSet);
+        emit asyncCreateText(content, id, color, size, m_textFloatSet, DANMAKU_FLOAT);
         break;
     case topText:
-        emit asyncCreateText(content, id, color, size, m_textTopSet);
+        emit asyncCreateText(content, id, color, size, m_textTopSet, DANMAKU_TOP);
         break;
     case bottomText:
-        emit asyncCreateText(content, id, color, size, m_textBottomSet);
+        emit asyncCreateText(content, id, color, size, m_textBottomSet, DANMAKU_BOTTOM);
         break;
-    default:
-        emit asyncCreateText(content, id, color, size, m_textFloatSet);
     }
 }
 
@@ -127,9 +128,21 @@ DanmakuAsyncRender::DanmakuAsyncRender(QObject *parent) : QObject(parent)
 
 }
 
-void DanmakuAsyncRender::renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset)
+void DanmakuAsyncRender::renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset, int type)
 {
-    std::shared_ptr<DanmakuTextFloat> newText = std::make_shared<DanmakuTextFloat>();
+    qDebug()<<"Creating";
+    std::shared_ptr<DanmakuText> newText;
+    switch(type){
+        case DANMAKU_FLOAT:
+            newText = std::make_shared<DanmakuTextFloat>();
+            break;
+        case DANMAKU_TOP:
+            newText = std::make_shared<DanmakuTextTop>();
+            break;
+        case DANMAKU_BOTTOM:
+            newText = std::make_shared<DanmakuTextBottom>();
+            break;
+    };
     newText->setText(text);
     newText->setColor(color);
     newText->setFontSize(size);
