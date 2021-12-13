@@ -170,9 +170,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();
-         screenOverlay->show();
-         qDebug()<<"a:"<<clock();
-         screenOverlay->appendText(QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅😅😅333331133313767171367"), "ergrerere+", QColor(0xFFFFFF), 20);
+         //screenOverlay->show();
+         //qDebug()<<"a:"<<clock();
+         //screenOverlay->appendText(QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅😅😅333331133313767171367"), "ergrerere+", QColor(0xFFFFFF), 20);
          //screenOverlay->appendTop(QString("content") + QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121"), "erge+", QColor(0xFFFFFF), 20);
         return true;
     }

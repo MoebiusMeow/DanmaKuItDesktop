@@ -34,6 +34,8 @@ private:
     };
     bool m_allowReconnect;
     QTimer *m_wsConnectionCheckTimer;
+    QTimer *m_wsReconnectTimer;
+    int m_reconnect_countdown;
 
 private :
     QString getWebsocketURL();
@@ -46,6 +48,7 @@ public Q_SLOTS:
     //websocket
     void wsConnect(const QString &roomid, const QString &token);
     void wsClose();
+    void wsCancelReconnect();
 
 protected Q_SLOTS:
     // https
@@ -58,6 +61,7 @@ protected Q_SLOTS:
     void on_wsDisConnected();
     void on_wsError(QAbstractSocket::SocketError error);
     void on_wsConnectionCheck();
+    void on_wsReconnect();
 
 signals:
     void loginSuccess();
@@ -66,7 +70,8 @@ signals:
     void logoutFailed(QString errorMessage);
     void ConnectionAborted(QString errorMessage);
     void wsInfoReady(QString roomid, QString token);
-
+    void wsReconnectCountdown(int secRemain);
+    void wsReconnecting();
 
     //websocket
     void jsonMessage(QJsonObject obj);

@@ -72,8 +72,8 @@ void DanmakuWidget::resizeEvent(QResizeEvent *resize_event)
 void DanmakuWidget::onJsonMessageRecieved(const QJsonObject &json_obj)
 {
     QString message_type = json_obj.value("payload").toString();
-
     QJsonObject properties = json_obj.value("properties").toObject();
+    qDebug()<<message_type<<" "<<properties;
     if(properties.value("permission").toString().toInt()==DANMAKU_PERMISSION_ALLOW) {
         QString content = properties.value("content").toString();
         QString id      = properties.value("id").toString();
@@ -82,7 +82,8 @@ void DanmakuWidget::onJsonMessageRecieved(const QJsonObject &json_obj)
         QString pos     = properties.value("pos").toString();
 
         QColor color = QColor(0xFFFFFF);
-        if(color_name != "undefined") color = QColor(color_name.toInt(NULL, 16));
+        qDebug()<<"color="<<color_name.right(6)<<" "<<color_name.right(6).toInt(NULL, 16);
+        if(color_name != "undefined") color = QColor(color_name.right(6).toInt(NULL, 16));
         if(pos == "rightleft"){
             emit asyncCreateText(content, id, color, size, m_textFloatSet);
         }
@@ -93,13 +94,13 @@ void DanmakuWidget::onJsonMessageRecieved(const QJsonObject &json_obj)
             emit asyncCreateText(content, id, color, size, m_textBottomSet);
         }
     }
-    else if(message_type == "AAAB"){
+    else{
         QString id      = properties.value("id").toString();
         std::shared_ptr<DanmakuText> p_text = nullptr;
         if(p_text == nullptr) p_text = m_textBottomSet->findByID(id);
         if(p_text == nullptr) p_text = m_textFloatSet->findByID(id);
         if(p_text == nullptr) p_text = m_textTopSet->findByID(id);
-
+        qDebug()<<(long long)p_text.get();
         if(p_text != nullptr) p_text->del();
     }
 }

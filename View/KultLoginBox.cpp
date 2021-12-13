@@ -65,9 +65,8 @@ void KultLoginBox::setupUI()
     roomidInput->setMinimumWidth(220);
     roomidInput->setValidator(new QRegularExpressionValidator(QRegularExpression("[a-zA-Z0-9\\+\\-\\*\\.\\@]+$"), roomidInput));
     roomidInput->setPlaceholderText(tr("房间号"));
-    roomidInput->setText("1627286198");
     connect(roomidInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
-    roomidInput->setText("3507228369");
+    roomidInput->setText("8264069150");
     //QStringList list;
     //list.append(QString("1627286198"));
     //list.append(QString("3507228369"));
@@ -79,10 +78,9 @@ void KultLoginBox::setupUI()
     roompassInput->setValidator(new QRegularExpressionValidator(QRegularExpression("[a-zA-Z0-9\\+\\-\\*\\.\\@]+$"), roompassInput));
     roompassInput->setPlaceholderText(tr("房间密码"));
     roompassInput->setEchoMode(QLineEdit::Password);
-    roompassInput->setText("hscizS");
     roompassInput->installEventFilter(this);
     connect(roompassInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
-    roompassInput->setText("YANtWT");
+    roompassInput->setText("ahSJFG");
     gLayout->addWidget(roompassInput, 1, 1);
 
     yLayout->addLayout(gLayout);

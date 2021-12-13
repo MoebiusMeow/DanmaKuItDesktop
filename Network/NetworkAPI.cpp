@@ -8,6 +8,7 @@ NetworkAPI::NetworkAPI(QObject *parent) : QObject(parent)
   , m_status(logged_out)
   , m_allowReconnect(false)
   , m_wsConnectionCheckTimer(new QTimer(this))
+  , m_wsReconnectTimer(new QTimer(this))
 {
     // config websocket
     connect(this, &NetworkAPI::wsInfoReady, this, &NetworkAPI::wsConnect);
@@ -18,6 +19,7 @@ NetworkAPI::NetworkAPI(QObject *parent) : QObject(parent)
     connect(m_websocket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error),
         this, &NetworkAPI::on_wsError);
     connect(m_wsConnectionCheckTimer, &QTimer::timeout, this, &NetworkAPI::on_wsConnectionCheck);
+    connect(m_wsReconnectTimer, &QTimer::timeout, this, &NetworkAPI::on_wsReconnect);
 }
 
 NetworkAPI::~NetworkAPI()
@@ -65,7 +67,6 @@ void NetworkAPI::on_loginReplyRecieve()
 
 void NetworkAPI::on_wsRecieveBinaryMessage(const QByteArray &message)
 {
-    qDebug() << message;
     QString str_message;
     str_message.prepend(message);
     str_message.replace('\'','\"');
@@ -75,8 +76,8 @@ void NetworkAPI::on_wsRecieveBinaryMessage(const QByteArray &message)
     QJsonDocument doc = QJsonDocument::fromJson(processed_message, &error);
     if(!doc.isNull()){
         QJsonObject json_obj = doc.object();
-        if(json_obj.value("isEndOfTopic")!= QJsonValue::Undefined){
-            qDebug()<<"pong";
+        if(json_obj.value("endOfTopic")!= QJsonValue::Undefined){
+            //qDebug()<<"pong";
             return;
         }
         emit jsonMessage(json_obj);
@@ -102,6 +103,11 @@ void NetworkAPI::login(const QString &id, const QString &pass)
 
 void NetworkAPI::logout()
 {
+    if(m_status == logged_out){
+        m_wsReconnectTimer->stop();
+        emit logoutSuccess();
+        return;
+    }
     m_status = logging_out;
     wsClose();
     //TODO
@@ -121,6 +127,13 @@ void NetworkAPI::wsClose()
     //TODO
 }
 
+void NetworkAPI::wsCancelReconnect()
+{
+    m_allowReconnect = false;
+    m_wsReconnectTimer ->stop();
+    m_reconnect_countdown = 999;
+}
+
 void NetworkAPI::on_wsConnected()
 {
     m_allowReconnect = true;
@@ -133,25 +146,58 @@ void NetworkAPI::on_wsConnected()
 void NetworkAPI::on_wsDisConnected()
 {
     m_wsConnectionCheckTimer->stop();
-    emit ConnectionAborted(tr("连接已断开"));
+    if(m_status == logged_out){
+        m_allowReconnect = false;
+        m_status = logged_out;
+        emit logoutSuccess();
+        return;
+    }
+    if(m_allowReconnect){
+        m_status = logged_out;
+        m_reconnect_countdown = 4;
+        emit wsReconnectCountdown(m_reconnect_countdown);
+        m_wsReconnectTimer->start(1000);
+    }
+    emit ConnectionAborted(tr("连接意外断开"));
 }
 
 void NetworkAPI::on_wsError(QAbstractSocket::SocketError error)
 {
     m_wsConnectionCheckTimer->stop();
     if(m_status == logged_in){
-        //emit ConnectionAborted(tr("连接已断开"));
+        emit ConnectionAborted(tr("连接意外断开\n")+tr("错误信息: ") + m_websocket->errorString());
+        return;
     }
     if(m_status == logging_in){
         emit loginFailed(error, tr("与服务器建立连接失败")+"\n"+tr("错误信息: ") + m_websocket->errorString());
+        return;
     }
+    if(m_status == logging_out){
+        emit logoutFailed(tr("断开连接时发生错误\n")+tr("错误信息：")+m_websocket->errorString());
+        m_websocket->abort();
+    }
+    m_allowReconnect = false;
+    m_websocket->abort();
     m_status = logged_out;
+    emit ConnectionAborted(tr("连接已断开"));
 }
 
 void NetworkAPI::on_wsConnectionCheck()
 {
-    qDebug()<<"ping";
     m_websocket->sendTextMessage("{\"type\":\"isEndOfTopic\"}");
+}
+
+void NetworkAPI::on_wsReconnect()
+{
+    m_reconnect_countdown --;
+    if(m_reconnect_countdown <= 0 && m_allowReconnect){
+        m_websocket->abort();
+        m_websocket->open(QUrl(getWebsocketURL()));
+        m_status = logging_in;
+        emit wsReconnecting();
+        return;
+    }
+    emit wsReconnectCountdown(m_reconnect_countdown);
 }
 
 
