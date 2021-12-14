@@ -11,6 +11,9 @@ DanmakuTextSet::DanmakuTextSet(QObject *parent) : QObject(parent)
 
 bool DanmakuTextSet::append(std::shared_ptr<DanmakuText> text)
 {
+    if(m_waiting.size()>DAMMAKU_MAX_PENDING){
+        m_waiting.pop_front();
+    }
     m_waiting.push_back(text);
     return true;
 }

@@ -6,6 +6,7 @@
 #include <queue>
 
 #include "DanmakuText.h"
+#include "DanmakuConstants.h"
 
 const int DANMAKU_RAIL_CNT = 14;
 const int DANMAKU_TEXT_INTERVAL = 30;
