@@ -3,7 +3,7 @@
 
 #include <QString>
 
-#define DANMAKU_WS_PING_INTERVAL 1000
+#define DANMAKU_WS_PING_INTERVAL 500
 
 //#define DANMAKU_DEBUG
 

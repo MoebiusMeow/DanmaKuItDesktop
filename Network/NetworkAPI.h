@@ -36,6 +36,7 @@ private:
         logging_in,
         logged_in,
         logging_out,
+        reconnecting,
     };
     bool m_allowReconnect;
     QTimer *m_wsConnectionCheckTimer;
@@ -45,9 +46,12 @@ private:
 private :
     QString getWebsocketURL();
 
+    void connectionAborted();
+
 public Q_SLOTS:
     // https
     void login(const QString &id, const QString &pass );
+    void cancelConnect();
     void logout();
 
     //websocket
