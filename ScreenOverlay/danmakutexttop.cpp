@@ -19,7 +19,7 @@ bool DanmakuTextTop::update()
 {
     m_life --;
     if(m_life <= 0) return false;
-    return true;
+    return DanmakuText::update();
 }
 
 void DanmakuTextTop::calcBound()

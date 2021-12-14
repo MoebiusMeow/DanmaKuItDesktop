@@ -40,7 +40,6 @@ DanmakuText::~DanmakuText()
 
 void DanmakuText::renderText()
 {
-    qDebug()<<"2:"<<clock();
     QFontMetrics m(m_font);
     calcBound();
     int py = (m_bound.height() - m.height()) + m.ascent() - (m.boundingRect(m_text).bottom());
@@ -59,7 +58,6 @@ void DanmakuText::renderText()
     bufferPainter->fillPath(path,QBrush(m_color));
     delete(bufferPainter);
     m_bufferImageReady = true;
-    qDebug()<<"3:"<<clock();
 }
 
 bool DanmakuText::setText(const QString &text)
@@ -156,7 +154,6 @@ bool DanmakuText::paint(QPainter *painter)
 
 bool DanmakuText::update()
 {
-    calcBound();
     if(m_last_clock == 0){
         m_last_clock = clock();
         return true;

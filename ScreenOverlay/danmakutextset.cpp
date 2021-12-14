@@ -11,9 +11,7 @@ DanmakuTextSet::DanmakuTextSet(QObject *parent) : QObject(parent)
 
 bool DanmakuTextSet::append(std::shared_ptr<DanmakuText> text)
 {
-    qDebug()<<"4:"<<time(0);
     m_waiting.push_back(text);
-    qDebug()<<"5:"<<time(0);
     return true;
 }
 
@@ -62,7 +60,7 @@ int DanmakuTextSet::popWaiting()
         if(m_ifRailFree[i])
         {
             available_rail.push_back(i);
-            if(available_rail.size()>=3) break;
+            if(available_rail.size()>=2) break;
         }
     int target_rail = available_rail[QRandomGenerator::global()->bounded(available_rail.size())];
 
@@ -70,6 +68,7 @@ int DanmakuTextSet::popWaiting()
     pushToRail(*text, target_rail);
 
     m_texts.push_back(text);
+    text->calcBound();
     text->update();
 
     return 0;
@@ -123,12 +122,11 @@ bool DanmakuTextSet::update()
                            [this](const std::shared_ptr<DanmakuText> &i)
                             -> bool {return i->boundReady()&&!m_bound.intersects(i->bound());}
                            ),m_texts.end());
-    // qDebug()<<m_texts.size()<<" "<<m_waiting.size();
 
     // Update all danmaku and delete if return value of update() return false
     m_texts.erase(remove_if(m_texts.begin(), m_texts.end(),
                            [](const std::shared_ptr<DanmakuText> &i)
-                            -> bool {return !i->update();}
+                            -> bool {i->calcBound(); return !i->update();}
                            ),m_texts.end());
 
     // update Rail Status

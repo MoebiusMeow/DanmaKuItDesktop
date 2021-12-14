@@ -14,7 +14,7 @@ int DanmakuTextBottomSet::calcRailYpos()
 {
     int n = getRailCnt();
     int deltY = m_bound.height()/DANMAKU_STANDARD_RAIL_CNT;
-    int bias = m_bound.bottom()-deltY*1.5;
+    int bias = m_bound.bottom()-deltY*0.5;
     for(int i=0;i<n;i++){
         m_railYpos[i] = bias - deltY * i;
     }
@@ -30,6 +30,6 @@ bool DanmakuTextBottomSet::ifBlockRail(const DanmakuText &text, int railID)
 void DanmakuTextBottomSet::pushToRail(DanmakuText &text, int railID)
 {
     text.setPos(QPointF((m_bound.right()+m_bound.left())>>1, m_railYpos[railID]));
-    ((DanmakuTextBottom *)(&text))->setLife(120);
+    ((DanmakuTextBottom *)(&text))->setLife(180);
     text.setRailID(railID);
 }
