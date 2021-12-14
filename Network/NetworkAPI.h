@@ -41,7 +41,7 @@ private:
     bool m_allowReconnect;
     QTimer *m_wsConnectionCheckTimer;
     QTimer *m_wsReconnectTimer;
-    int m_reconnect_countdown;
+    int m_reconnect_countdown, m_max_countdown;
 
 private :
     QString getWebsocketURL();

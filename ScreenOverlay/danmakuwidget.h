@@ -26,7 +26,7 @@ public:
     explicit DanmakuAsyncRender(QObject *parent = nullptr);
 
 public Q_SLOTS:
-    void renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset, int type);
+    void createDanamku(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset, int type);
 };
 
 class DanmakuWidget : public QWidget
