@@ -20,6 +20,7 @@ NetworkAPI::NetworkAPI(QObject *parent) : QObject(parent)
         this, &NetworkAPI::on_wsError);
     connect(m_wsConnectionCheckTimer, &QTimer::timeout, this, &NetworkAPI::on_wsConnectionCheck);
     connect(m_wsReconnectTimer, &QTimer::timeout, this, &NetworkAPI::on_wsReconnect);
+    //m_wsReconnectTimer->setSingleShot(true);
 }
 
 NetworkAPI::~NetworkAPI()
@@ -35,6 +36,20 @@ QString NetworkAPI::getWebsocketURL()
             + QUrl::toPercentEncoding(QHostInfo::localHostName()) + "~"
             + QString::number(QRandomGenerator::global()->generate64(), 16)
             + "?token=" + m_roomToken;
+}
+
+void NetworkAPI::connectionAborted()
+{
+    m_allowReconnect = false;
+    emit ConnectionAborted(tr("连接意外断开"));
+    emit wsReconnecting();
+    m_websocket->abort();
+    m_websocket->open(QUrl(getWebsocketURL()));
+    m_status = reconnecting;
+    qDebug()<<"Try reconnect...";
+    m_reconnect_countdown = 4;
+    emit wsReconnectCountdown(m_reconnect_countdown);
+    m_wsReconnectTimer->start(1000);
 }
 
 void NetworkAPI::on_loginReplyRecieve()
@@ -108,8 +123,15 @@ void NetworkAPI::login(const QString &id, const QString &pass)
     connect(m_reply, &QNetworkReply::finished, this, &NetworkAPI::on_loginReplyRecieve);
 }
 
+void NetworkAPI::cancelConnect()
+{
+    m_reply->abort();
+    m_websocket->abort();
+}
+
 void NetworkAPI::logout()
 {
+    m_allowReconnect = false;
     if(m_status == logged_out){
         m_wsReconnectTimer->stop();
         emit logoutSuccess();
@@ -146,6 +168,8 @@ void NetworkAPI::on_wsConnected()
     m_allowReconnect = true;
     m_status = logged_in;
     m_wsConnectionCheckTimer->start(DANMAKU_WS_PING_INTERVAL);
+    m_wsReconnectTimer->stop();
+    m_reconnect_countdown = -1;
     qDebug()<<"[ws connected]";
     emit loginSuccess();
 }
@@ -160,17 +184,15 @@ void NetworkAPI::on_wsDisConnected()
         return;
     }
     if(m_allowReconnect){
-        m_status = logged_out;
-        m_reconnect_countdown = 4;
-        emit wsReconnectCountdown(m_reconnect_countdown);
-        m_wsReconnectTimer->start(1000);
+        connectionAborted();
     }
-    emit ConnectionAborted(tr("连接意外断开"));
 }
 
 void NetworkAPI::on_wsError(QAbstractSocket::SocketError error)
 {
+    qDebug()<<"error:"<<m_websocket->errorString();
     m_wsConnectionCheckTimer->stop();
+    if(m_status == reconnecting) return;
     if(m_status == logged_in){
         emit ConnectionAborted(tr("连接意外断开\n")+tr("错误信息: ") + m_websocket->errorString());
         return;
@@ -197,14 +219,12 @@ void NetworkAPI::on_wsConnectionCheck()
 void NetworkAPI::on_wsReconnect()
 {
     m_reconnect_countdown --;
-    qDebug() << m_reconnect_countdown;
-    if(m_reconnect_countdown <= 0 && m_allowReconnect){
-        m_websocket->abort();
-        m_websocket->open(QUrl(getWebsocketURL()));
-        m_status = logging_in;
+    if(m_reconnect_countdown == 0){
+        connectionAborted();
         emit wsReconnecting();
         return;
     }
+    qDebug()<<"countdown:"<<m_reconnect_countdown;
     emit wsReconnectCountdown(m_reconnect_countdown);
 }
 
