@@ -19,11 +19,13 @@ public:
     ~ NetworkAPI();
 
     void setDanmakuDomain(QString domain);
+    QString getWallUrl();
 
 
 private:
     QString danmaku_domain;
     QString m_roomID;
+    QString m_roomPass;
     QString m_roomToken;
     QNetworkReply *m_reply;
     QNetworkAccessManager *m_netManager;

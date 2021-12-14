@@ -132,6 +132,14 @@
     background: rgb(80, 133, 255);
 }
 
+#LoginBox #SettingButton:disabled {
+    color: white;
+}
+
+#LoginBox #QRButton:disabled {
+    color: white;
+}
+
 #LoginBox #SettingButton {
     border-radius: 0px;
     font-size: 20px;

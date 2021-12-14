@@ -89,11 +89,18 @@ void NetworkAPI::on_wsRecieveTextMessage(const QString &message)
     on_wsRecieveBinaryMessage(message.toUtf8());
 }
 
+QString NetworkAPI::getWallUrl()
+{
+    if (m_status != logged_in) return "";
+    return QString("https://") + danmaku_domain + "/wall/" + m_roomID + "?code=" + m_roomPass;
+}
+
 // login with id and pass as room id and password
 void NetworkAPI::login(const QString &id, const QString &pass)
 {
     qDebug()<<"connect request"<<id<<" "<<pass;
     m_roomID = id;
+    m_roomPass = pass;
     m_status = logging_in;
     QNetworkRequest request(QUrl::fromUserInput(QString("https://") + danmaku_domain + "/api/v1/room/" + id + "/client-login"));
     request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());

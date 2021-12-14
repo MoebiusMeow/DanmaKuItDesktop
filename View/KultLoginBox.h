@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QtWidgets>
 
+#include "Network/NetworkAPI.h"
+
 
 class KultLoginBox : public QGroupBox
 {
@@ -23,6 +25,7 @@ signals:
 
 protected:
     bool recentlyFailed;
+    NetworkAPI *network;
     QWidget *pMainWindow;
     QStackedLayout *stackedLayout;
     QLineEdit *roompassInput;
@@ -35,7 +38,7 @@ protected:
 
 public:
     QLineEdit *roomidInput, *roomhostInput;
-    KultLoginBox(QWidget *parent = nullptr);
+    KultLoginBox(NetworkAPI *network, QWidget *parent = nullptr);
 
 protected slots:
     void login();

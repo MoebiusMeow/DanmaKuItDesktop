@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     waveWidget = nullptr;
     screenOverlay = nullptr;
     network = new NetworkAPI(this);
+    loginBox = new KultLoginBox(network, this);
 
     setupUI();
     loadConfig();
@@ -128,7 +129,6 @@ void MainWindow::setupUI()
     //tempLabel->setAlignment(Qt::AlignCenter);
     //dyLayout->addWidget(tempLabel);
 
-    loginBox = new KultLoginBox(this);
     loginBox->setObjectName("LoginBox");
     dyLayout->addWidget(loginBox, 1000);
     dyLayout->setTarget(dyLayout->count() - 1);

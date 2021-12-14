@@ -6,8 +6,8 @@
 #include "KultMessageBox.h"
 #include "MainWindow.h"
 
-KultLoginBox::KultLoginBox(QWidget *parent) :
-    QGroupBox(parent), pMainWindow(parent)
+KultLoginBox::KultLoginBox(NetworkAPI *network, QWidget *parent) :
+    QGroupBox(parent), network(network), pMainWindow(parent)
 {
     recentlyFailed = false;
     setupUI();
@@ -105,7 +105,8 @@ void KultLoginBox::setupUI()
     tempButton = new QPushButton(QString(QChar(0xf029)), group);
     tempButton->setFont(iconFont);
     tempButton->setObjectName("QRButton");
-    tempButton->setToolTip(tr("房间二维码"));
+    tempButton->setToolTip(tr("二维码和弹幕墙"));
+    // tempButton->setDisabled(true);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::showQRCode);
     xLayout->addWidget(tempButton);
     xLayout->setAlignment(tempButton, Qt::AlignBottom);
@@ -125,6 +126,14 @@ void KultLoginBox::setupUI()
 
     xLayout = new QHBoxLayout();
     xLayout->setContentsMargins(0, 0, 0, 0);
+
+    tempButton = new QPushButton(QString(QChar(0xf013)), group);
+    tempButton->setFont(iconFont);
+    tempButton->setObjectName("SettingButton");
+    tempButton->setDisabled(true);
+    xLayout->addWidget(tempButton);
+    xLayout->setAlignment(tempButton, Qt::AlignBottom);
+
     xLayout->addStretch(1);
 
 
@@ -155,6 +164,15 @@ void KultLoginBox::setupUI()
 
     xLayout->addLayout(yLayout);
     xLayout->addStretch(1);
+
+    tempButton = new QPushButton(QString(QChar(0xf029)), group);
+    tempButton->setFont(iconFont);
+    tempButton->setObjectName("QRButton");
+    tempButton->setToolTip(tr("二维码和弹幕墙"));
+    connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::showQRCode);
+    xLayout->addWidget(tempButton);
+    xLayout->setAlignment(tempButton, Qt::AlignBottom);
+
     group->setLayout(xLayout);
     stackedLayout->addWidget(group);
 
@@ -317,7 +335,8 @@ void KultLoginBox::setupUI()
     tempButton = new QPushButton(QString(QChar(0xf029)), group);
     tempButton->setFont(iconFont);
     tempButton->setObjectName("QRButton");
-    tempButton->setToolTip(tr("房间二维码"));
+    tempButton->setToolTip(tr("二维码和弹幕墙"));
+    // tempButton->setDisabled(true);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::showQRCode);
     xLayout->addWidget(tempButton);
     xLayout->setAlignment(tempButton, Qt::AlignBottom);
@@ -331,7 +350,14 @@ void KultLoginBox::setupUI()
 
 void KultLoginBox::showQRCode()
 {
-    KultMessageBox::information(pMainWindow, tr(""), tr("不存在的"), KultMessageBox::Confirm, KultMessageBox::NoButton);
+    QString s = network->getWallUrl();
+    if (s.isEmpty())
+        KultMessageBox::information(pMainWindow, tr(""), tr("请先连接房间"), KultMessageBox::Confirm, KultMessageBox::NoButton);
+    else
+    {
+        QUrl url(s);
+        QDesktopServices::openUrl(url);
+    }
 }
 
 void KultLoginBox::login()
@@ -349,7 +375,10 @@ void KultLoginBox::login()
     }
     else
     {
-        KultMessageBox::information(pMainWindow, tr("非法输入"), tr("非法输入") + "\n\n" + tr("房间名/密码包含非法字符"), KultMessageBox::Confirm, KultMessageBox::NoButton);
+        if (roomidInput->text().isEmpty() || roompassInput->text().isEmpty())
+            KultMessageBox::information(pMainWindow, tr("非法输入"), tr("房间名/密码不能为空"), KultMessageBox::Confirm, KultMessageBox::NoButton);
+        else
+            KultMessageBox::information(pMainWindow, tr("非法输入"), tr("非法输入") + "\n\n" + tr("房间名/密码包含非法字符"), KultMessageBox::Confirm, KultMessageBox::NoButton);
     }
 }
 
