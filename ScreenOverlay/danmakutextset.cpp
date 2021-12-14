@@ -123,7 +123,7 @@ bool DanmakuTextSet::update()
                            [this](const std::shared_ptr<DanmakuText> &i)
                             -> bool {return i->boundReady()&&!m_bound.intersects(i->bound());}
                            ),m_texts.end());
-    qDebug()<<m_texts.size()<<" "<<m_waiting.size();
+    // qDebug()<<m_texts.size()<<" "<<m_waiting.size();
 
     // Update all danmaku and delete if return value of update() return false
     m_texts.erase(remove_if(m_texts.begin(), m_texts.end(),

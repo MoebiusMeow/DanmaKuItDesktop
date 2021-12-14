@@ -23,8 +23,11 @@ protected:
     KultLoginBox *loginBox;
     QSystemTrayIcon *systemTrayIcon;
     NetworkAPI *network;
+    QJsonDocument configDocument;
 
     void setupUI();
+    void loadConfig();
+    void saveConfig();
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 protected slots:
@@ -36,5 +39,7 @@ public:
 
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setConfig(QString key, QJsonValue value);
+    void updateServer();
 };
 #endif // MAINWINDOW_H

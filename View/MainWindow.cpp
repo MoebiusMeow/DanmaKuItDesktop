@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     network = new NetworkAPI(this);
 
     setupUI();
+    loadConfig();
 
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowFlag(Qt::WindowStaysOnTopHint);
@@ -39,9 +40,14 @@ MainWindow::MainWindow(QWidget *parent)
     trayAction = new QAction(tr("显示面板"), this);
     connect(trayAction, &QAction::triggered, this, &MainWindow::handleShow);
     systemTrayIcon->contextMenu()->addAction(trayAction);
+    trayAction = new QAction(tr("隐藏面板"), this);
+    connect(trayAction, &QAction::triggered, this, &MainWindow::handleMinimize);
+    systemTrayIcon->contextMenu()->addAction(trayAction);
     trayAction = new QAction(tr("退出"), this);
     connect(trayAction, &QAction::triggered, this, &MainWindow::handleClose);
     systemTrayIcon->contextMenu()->addAction(trayAction);
+
+    connect(systemTrayIcon, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason r){ if (r == QSystemTrayIcon::DoubleClick) handleShow(); });
 
     setWindowIcon(QIcon(":/Assets/Icons/logo.png"));
     setWindowIconText(tr("弹幕一下"));
@@ -131,6 +137,7 @@ void MainWindow::setupUI()
     connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
     connect(loginBox, &KultLoginBox::backToLogin, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     connect(loginBox, &KultLoginBox::loginFailed, [this]{ dynamicLayout->animateStretch(18000, 600); waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
+    connect(loginBox, &KultLoginBox::showSetting, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
     connect(network, &NetworkAPI::logoutSuccess, loginBox, &KultLoginBox::logoutSuccess);
 
@@ -163,6 +170,51 @@ void MainWindow::setupUI()
     qssFile.close();
 }
 
+void MainWindow::loadConfig()
+{
+    QJsonDocument doc;
+    QJsonParseError error;
+    QFile configFile("config.json", this);
+    bool flag;
+
+    flag = configFile.open(QFile::ReadOnly);
+    doc = QJsonDocument::fromJson(flag ? configFile.readAll() : "", &error);
+    if (flag) configFile.close();
+    if (!flag || error.error != QJsonParseError::NoError)
+    {
+        QJsonObject o = doc.object();
+        o["default_server"] = "danmakuit.panda2134.site";
+        o["recent_server"] = "";
+        o["recent_room_id"] = "";
+        doc.setObject(o);
+    }
+    loginBox->roomidInput->setText(doc.object().value("recent_room_id").toString());
+    loginBox->roomhostInput->setText(doc.object().value("recent_server").toString());
+    configDocument = doc;
+    updateServer();
+}
+
+void MainWindow::saveConfig()
+{
+    QFile configFile("config.json", this);
+    bool flag;
+    flag = configFile.open(QFile::WriteOnly);
+    if (flag) configFile.write(configDocument.toJson());
+    if (flag) configFile.close();
+    if (!flag)
+    {
+        KultMessageBox::information(this, tr("失败"), tr("配置修改出错\n\n无法保存配置文件"), KultMessageBox::Confirm);
+    }
+}
+
+void MainWindow::updateServer()
+{
+    if (configDocument.object().value("recent_server").toString() != QString(""))
+        network->setDanmakuDomain(configDocument.object().value("recent_server").toString());
+    else
+        network->setDanmakuDomain(configDocument.object().value("default_server").toString());
+}
+
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::MouseButtonPress)
@@ -170,9 +222,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();
-         screenOverlay->show();
-         qDebug()<<"a:"<<clock();
-         screenOverlay->appendText(QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅😅😅333331133313767171367"), "ergrerere+", QColor(0xFFFFFF), 20);
+        // screenOverlay->show();
+        // qDebug()<<"a:"<<clock();
+        // screenOverlay->appendText(QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅😅😅333331133313767171367"), "ergrerere+", QColor(0xFFFFFF), 20);
          //screenOverlay->appendTop(QString("content") + QString::fromUtf16((char16_t*)L"我可以吞下玻璃而不🦁😅😅😅😅😅212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121"), "erge+", QColor(0xFFFFFF), 20);
         return true;
     }
@@ -197,7 +249,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 void MainWindow::handleMinimize()
 {
     setWindowState(Qt::WindowMinimized);
-    // this->hide();
+    systemTrayIcon->showMessage(tr("面板已隐藏"), tr("主面板已最小化至托盘区"), systemTrayIcon->icon());
+    this->hide();
 }
 
 void MainWindow::handleClose()
@@ -212,6 +265,22 @@ void MainWindow::handleClose()
 void MainWindow::handleShow()
 {
     setWindowState(Qt::WindowNoState);
+    raise();
+}
+
+void MainWindow::setConfig(QString key, QJsonValue value)
+{
+    if (configDocument.object().contains(key))
+    {
+        QJsonObject o = configDocument.object();
+        o[key] = value;
+        configDocument.setObject(o);
+        saveConfig();
+    }
+    else
+    {
+        qDebug() << "Not such key in config";
+    }
 }
 
 MainWindow::~MainWindow()

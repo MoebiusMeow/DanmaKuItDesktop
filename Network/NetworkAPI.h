@@ -18,8 +18,11 @@ public:
     explicit NetworkAPI(QObject *parent = nullptr);
     ~ NetworkAPI();
 
+    void setDanmakuDomain(QString domain);
+
 
 private:
+    QString danmaku_domain;
     QString m_roomID;
     QString m_roomToken;
     QNetworkReply *m_reply;
@@ -58,6 +61,8 @@ protected Q_SLOTS:
     void on_wsDisConnected();
     void on_wsError(QAbstractSocket::SocketError error);
     void on_wsConnectionCheck();
+
+    void on_setDanmakuDomain(QString domain);
 
 signals:
     void loginSuccess();

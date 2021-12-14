@@ -57,7 +57,6 @@
 }
 
 #LoginBox {
-    margin-bottom: 10px;
     border: none;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -73,11 +72,27 @@
     border: none;
 }
 
+#LoginBox #IconLabel {
+    border-radius: 0px;
+    font-size: 18px;
+    margin: 0px;
+    color: darkgrey;
+    border: none;
+}
+
 #LoginBox #LoginHintLabel{
     border-radius: 5px;
     font-size: 12px;
     margin: 0px;
     color: orangered;
+    border: none;
+}
+
+#LoginBox #SettingHintLabel{
+    border-radius: 5px;
+    font-size: 12px;
+    margin: 0px;
+    color: darkgrey;
     border: none;
 }
 
@@ -111,9 +126,34 @@
     font-size: 16px;
     padding: 5px;
     margin: 5px;
+    margin-bottom: 20px;
     color: white;
     border: none;
     background: rgb(80, 133, 255);
+}
+
+#LoginBox #SettingButton {
+    border-radius: 0px;
+    font-size: 20px;
+    padding: 0px;
+    padding-left: -5px;
+    padding-right: -5px;
+    margin: 5px;
+    color: darkgrey;
+    border: none;
+    background: none;
+}
+
+#LoginBox #QRButton {
+    border-radius: 0px;
+    font-size: 25px;
+    padding: 0px;
+    padding-left: -5px;
+    padding-right: -5px;
+    margin: 5px;
+    color: darkgrey;
+    border: none;
+    background: none;
 }
 
 #LoginBox #DisconnectButton {
@@ -121,6 +161,7 @@
     font-size: 16px;
     padding: 5px;
     margin: 5px;
+    margin-bottom: 20px;
     color: white;
     border: 1px solid darkorange;
     background: orangered;
@@ -131,6 +172,7 @@
     font-size: 16px;
     padding: 5px;
     margin: 5px;
+    margin-bottom: 20px;
     color: white;
     border: none;
     background: lightgrey;
@@ -142,6 +184,14 @@
 
 #LoginBox .QPushButton:pressed {
     background: darkgrey;
+}
+
+#LoginBox #SettingButton:hover {
+    color: black;
+}
+
+#LoginBox #QRButton:hover {
+    color: black;
 }
 
 #LoginBox #CancelConnectButton:hover {
@@ -171,8 +221,6 @@
     color: orangered;
     border: none;
 }
-
-
 
 WaveWidget {
     border:100px;

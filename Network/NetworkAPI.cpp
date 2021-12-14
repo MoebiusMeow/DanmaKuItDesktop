@@ -27,7 +27,7 @@ NetworkAPI::~NetworkAPI()
 
 QString NetworkAPI::getWebsocketURL()
 {
-    return DANMAKU_SCHEMA + "://" + DANMAKU_DOMAIN
+    return DANMAKU_SCHEMA + "://" + danmaku_domain
             + "/websocket/consumer/persistent/public/default/"
             + m_roomID + "/"
             + QUrl::toPercentEncoding(QHostInfo::localHostName()) + "~"
@@ -94,7 +94,7 @@ void NetworkAPI::login(const QString &id, const QString &pass)
     qDebug()<<"connect request"<<id<<" "<<pass;
     m_roomID = id;
     m_status = logging_in;
-    QNetworkRequest request(QUrl::fromUserInput(QString("https://") + DANMAKU_DOMAIN + "/api/v1/room/" + id + "/client-login"));
+    QNetworkRequest request(QUrl::fromUserInput(QString("https://") + danmaku_domain + "/api/v1/room/" + id + "/client-login"));
     request.setRawHeader(QByteArray("Authorization"), (QString("Bearer ")+pass).toLatin1());
     m_reply = m_netManager->get(request);
     connect(m_reply, &QNetworkReply::finished, this, &NetworkAPI::on_loginReplyRecieve);
@@ -152,5 +152,12 @@ void NetworkAPI::on_wsConnectionCheck()
     qDebug()<<m_websocket->sendTextMessage("{type:\'isEndOfTopic\'}");
 }
 
+void NetworkAPI::on_setDanmakuDomain(QString domain)
+{
+    danmaku_domain = domain;
+}
 
-
+void NetworkAPI::setDanmakuDomain(QString domain)
+{
+    danmaku_domain = domain;
+}

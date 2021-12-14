@@ -19,20 +19,22 @@ signals:
     void backToLogin();
     void loginRequest(QString roomID, QString password);
     void logoutRequest();
+    void showSetting();
 
 protected:
     bool recentlyFailed;
     QWidget *pMainWindow;
     QStackedLayout *stackedLayout;
-    QLineEdit *roomidInput, *roompassInput;
+    QLineEdit *roompassInput;
     QLabel *loginHintLabel;
     QLabel *connectingLabel;
     QPushButton *cancelConnectButton;
-    QString m_id;// room id
+    QString m_id; // room id
     void setupUI();
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 public:
+    QLineEdit *roomidInput, *roomhostInput;
     KultLoginBox(QWidget *parent = nullptr);
 
 protected slots:
@@ -42,9 +44,12 @@ protected slots:
     void switchToConnecting();
     void switchToLogin();
     void switchToLoginFailed();
+    void switchToSetting();
+
+    void settingConfirm();
+    void showQRCode();
 
     void handleLoginFailed(int errorType, QString errorMessage);
-    void onConnectionSuccess();
 };
 
 #endif // KULTLOGINBOX_H
