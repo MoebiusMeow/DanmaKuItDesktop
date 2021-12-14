@@ -213,6 +213,7 @@ void MainWindow::updateServer()
         network->setDanmakuDomain(configDocument.object().value("recent_server").toString());
     else
         network->setDanmakuDomain(configDocument.object().value("default_server").toString());
+    loginBox->roomhostInput->setPlaceholderText(configDocument.object().value("default_server").toString());
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)

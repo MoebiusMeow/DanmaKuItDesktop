@@ -197,6 +197,7 @@ void NetworkAPI::on_wsConnectionCheck()
 void NetworkAPI::on_wsReconnect()
 {
     m_reconnect_countdown --;
+    qDebug() << m_reconnect_countdown;
     if(m_reconnect_countdown <= 0 && m_allowReconnect){
         m_websocket->abort();
         m_websocket->open(QUrl(getWebsocketURL()));

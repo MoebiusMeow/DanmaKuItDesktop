@@ -14,6 +14,8 @@ KultLoginBox::KultLoginBox(NetworkAPI *network, QWidget *parent) :
     switchToLogin();
     connect(this, &KultLoginBox::loginSuccess, this, &KultLoginBox::switchToDisplay);
     connect(this, &KultLoginBox::loginFailed, this, &KultLoginBox::handleLoginFailed);
+    connect(this, &KultLoginBox::loginSuccess, this, &KultLoginBox::handleConnected);
+    connect(network, &NetworkAPI::wsReconnectCountdown, this, &KultLoginBox::handleReconnecting);
 }
 
 void KultLoginBox::setupUI()
@@ -94,7 +96,7 @@ void KultLoginBox::setupUI()
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
 
-    tempButton = new QPushButton(tr("弹幕一下 "), group);
+    tempButton = new QPushButton(tr("弹幕一下"), group);
     tempButton->setMinimumWidth(200);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::login);
     yLayout->addWidget(tempButton);
@@ -147,7 +149,7 @@ void KultLoginBox::setupUI()
     tempLabel->setText(QString(QChar(0xf058)));
     tempLabel->setFont(iconFont);
     titleGroup->layout()->addWidget(tempLabel);
-    tempLabel = new QLabel(tr("弹幕已连接"), group);
+    connectStatusLabel = tempLabel = new QLabel(tr("弹幕已连接"), group);
     titleGroup->layout()->addWidget(tempLabel);
     gLayout->addWidget(titleGroup, 0, 0, 1, 2);
 
@@ -158,8 +160,8 @@ void KultLoginBox::setupUI()
     tempButton->setObjectName("DisconnectButton");
     tempButton->setMinimumWidth(200);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::logout);
-    connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::switchToLogin);
-    connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::backToLogin);
+    // connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::switchToLogin);
+    // connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::backToLogin);
     yLayout->addWidget(tempButton);
 
     xLayout->addLayout(yLayout);
@@ -385,6 +387,9 @@ void KultLoginBox::login()
 
 void KultLoginBox::logout()
 {
+    network->logout();
+    switchToLogin();
+    emit backToLogin();
 }
 
 void KultLoginBox::settingConfirm()
@@ -431,6 +436,16 @@ void KultLoginBox::handleLoginFailed(int errorType, QString errorMessage)
             switchToLogin();
             emit backToLogin();
         }
+}
+
+void KultLoginBox::handleReconnecting(int countdown)
+{
+    connectStatusLabel->setText(tr("弹幕重连中") + "... " + QString::number(countdown));
+}
+
+void KultLoginBox::handleConnected()
+{
+    connectStatusLabel->setText(tr("弹幕已连接"));
 }
 
 bool KultLoginBox::eventFilter(QObject *watched, QEvent *event)

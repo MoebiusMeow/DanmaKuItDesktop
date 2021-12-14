@@ -31,6 +31,7 @@ protected:
     QLineEdit *roompassInput;
     QLabel *loginHintLabel;
     QLabel *connectingLabel;
+    QLabel *connectStatusLabel;
     QPushButton *cancelConnectButton;
     QString m_id; // room id
     void setupUI();
@@ -53,6 +54,8 @@ protected slots:
     void showQRCode();
 
     void handleLoginFailed(int errorType, QString errorMessage);
+    void handleReconnecting(int countdown);
+    void handleConnected();
 };
 
 #endif // KULTLOGINBOX_H
