@@ -26,7 +26,7 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
     connect(update_timer, &QTimer::timeout, this, &DanmakuWidget::updateText);
     update_timer->start(UPDATE_INTERVAL);
     m_asyncRender.moveToThread(&m_renderThread);
-    connect(this, &DanmakuWidget::asyncCreateText, &m_asyncRender, &DanmakuAsyncRender::renderText);
+    connect(this, &DanmakuWidget::asyncCreateText, &m_asyncRender, &DanmakuAsyncRender::createDanamku);
     m_renderThread.start();
     setAttribute(Qt::WA_TransparentForMouseEvents);
 }
@@ -122,7 +122,7 @@ DanmakuAsyncRender::DanmakuAsyncRender(QObject *parent) : QObject(parent)
 
 }
 
-void DanmakuAsyncRender::renderText(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset, int type)
+void DanmakuAsyncRender::createDanamku(const QString &text, const QString &id, const QColor &color, int size, DanmakuTextSet *textset, int type)
 {
     qDebug()<<"Creating";
     std::shared_ptr<DanmakuText> newText;

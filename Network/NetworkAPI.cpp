@@ -9,6 +9,7 @@ NetworkAPI::NetworkAPI(QObject *parent) : QObject(parent)
   , m_allowReconnect(false)
   , m_wsConnectionCheckTimer(new QTimer(this))
   , m_wsReconnectTimer(new QTimer(this))
+  , m_max_countdown(DANMAKU_INITIAL_RECONNECT_COUNTDOWN)
 {
     // config websocket
     connect(this, &NetworkAPI::wsInfoReady, this, &NetworkAPI::wsConnect);
@@ -47,7 +48,8 @@ void NetworkAPI::connectionAborted()
     m_websocket->open(QUrl(getWebsocketURL()));
     m_status = reconnecting;
     qDebug()<<"Try reconnect...";
-    m_reconnect_countdown = 4;
+    m_reconnect_countdown = m_max_countdown;
+    m_max_countdown = std::min(m_max_countdown*2, DANMAKU_MAX_RECONNECT_COUNTDOWN);
     emit wsReconnectCountdown(m_reconnect_countdown);
     m_wsReconnectTimer->start(1000);
 }
@@ -131,6 +133,8 @@ void NetworkAPI::cancelConnect()
 
 void NetworkAPI::logout()
 {
+    cancelConnect();
+    wsCancelReconnect();
     m_allowReconnect = false;
     if(m_status == logged_out){
         m_wsReconnectTimer->stop();
@@ -160,11 +164,13 @@ void NetworkAPI::wsCancelReconnect()
 {
     m_allowReconnect = false;
     m_wsReconnectTimer ->stop();
-    m_reconnect_countdown = 999;
+    m_max_countdown = DANMAKU_INITIAL_RECONNECT_COUNTDOWN;
+    m_reconnect_countdown = -1;
 }
 
 void NetworkAPI::on_wsConnected()
 {
+    m_max_countdown = DANMAKU_INITIAL_RECONNECT_COUNTDOWN;
     m_allowReconnect = true;
     m_status = logged_in;
     m_wsConnectionCheckTimer->start(DANMAKU_WS_PING_INTERVAL);
