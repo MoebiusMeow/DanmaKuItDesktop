@@ -212,6 +212,8 @@ void KultLoginBox::setupUI()
     cancelConnectButton = tempButton = new QPushButton("取消连接", group);
     tempButton->setObjectName("CancelConnectButton");
     tempButton->setMinimumWidth(200);
+
+    connect(tempButton, &QPushButton::pressed, network, &NetworkAPI::cancelConnect);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::switchToLogin);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::backToLogin);
     yLayout->addWidget(tempButton);
