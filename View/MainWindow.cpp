@@ -220,6 +220,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::MouseButtonPress)
     {
+        // screenOverlay->show();
+        // screenOverlay->appendText("123🤔😺😺🦊🦊🤔", "233");
         if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();

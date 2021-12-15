@@ -21,8 +21,13 @@ DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
 {
     if (!DanmakuText::s_font_loaded)
     {
-        DanmakuText::s_default_font = QFont(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont("://Assets/Fonts/NotoSansCJKsc-Bold.otf") ));
-        DanmakuText::s_default_font.setFamily("Noto Sans CJK SC Bold");
+        QStringList families;
+        families.append(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/NotoSansCJKsc-Bold.otf") ));
+        families.append(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/NotoColorEmoji_WindowsCompatible.ttf") ));
+        DanmakuText::s_default_font = QFont(families);
+        // TODO
+        // windows emoji
+        DanmakuText::s_default_font.setFamilies(families);
         DanmakuText::s_font_loaded = true;
     }
     m_font = DanmakuText::s_default_font;
@@ -49,13 +54,15 @@ void DanmakuText::renderText()
     m_bufferImage = new QImage(m_bound.width(), m_bound.height(), QImage::Format_ARGB32);
     m_bufferImage->fill(QColor(0,0,0,0));
     QPainter *bufferPainter = new QPainter(m_bufferImage);
-    bufferPainter->setFont(m_font);
     bufferPainter->setRenderHints(QPainter::Antialiasing, true);
 
-    bufferPainter->setBrush(m_color);
-    bufferPainter->setPen(QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black, 2, Qt::SolidLine));
-    bufferPainter->drawPath(path);
-    bufferPainter->fillPath(path,QBrush(m_color));
+    bufferPainter->strokePath(path, QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black, 3, Qt::SolidLine));
+    bufferPainter->fillPath(path, QBrush(m_color));
+    bufferPainter->setPen(QColor(0,0,0,0));
+    bufferPainter->setRenderHint(QPainter::RenderHint::TextAntialiasing, false);
+
+    bufferPainter->setFont(m_font);
+    bufferPainter->drawText(5, py, m_text);
     delete(bufferPainter);
     m_bufferImageReady = true;
 }
