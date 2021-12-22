@@ -2,6 +2,10 @@
 /* MainFrame  */
 /* ---------- */
 
+* {
+    color: #333333; /* fix: dark mode in kde */
+}
+
 #MainFrame {
     background: #FFFFFF;
     border-radius: 10px;
