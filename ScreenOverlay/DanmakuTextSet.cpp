@@ -65,7 +65,7 @@ int DanmakuTextSet::popWaiting()
             available_rail.push_back(i);
             if(available_rail.size()>=2) break;
         }
-    int target_rail = available_rail[QRandomGenerator::global()->bounded(available_rail.size())];
+    int target_rail = available_rail[QRandomGenerator::global()->bounded((int)available_rail.size())];
 
     // send
     pushToRail(*text, target_rail);
