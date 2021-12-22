@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QPointF>
 #include <QPainter>
-#include <ctime>
+#include <QElapsedTimer>
 
 #include "DanmakuConstants.h"
 
@@ -26,7 +26,8 @@ protected:
     QRect       m_bound;
     QImage      *m_bufferImage;
 
-    clock_t     m_last_clock;
+    bool m_timer_started;
+    QElapsedTimer m_timer;
 
     bool        m_boundReady;
     bool        m_bufferImageReady;
