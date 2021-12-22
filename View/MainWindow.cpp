@@ -26,11 +26,11 @@ MainWindow::MainWindow(QWidget *parent)
     installEventFilter(this);
 
     screenOverlay = new DanmakuWidget();
-    screenOverlay->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
+    screenOverlay->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint
 #ifdef Q_OS_MAC
-    Qt::SubWindow
-#else
-    Qt::Tool
+    | Qt::SubWindow
+#elif Q_OS_WIN
+    | Qt::Tool
 #endif
     );
     screenOverlay->setAttribute(Qt::WA_TranslucentBackground);
