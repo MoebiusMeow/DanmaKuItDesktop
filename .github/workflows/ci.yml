@@ -39,6 +39,11 @@ jobs:
           Compress-Archive -Path $archiveName $archiveName'.zip'
           echo '::set-output name=packageName::$archiveName'
       
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.package.outputs.packageName }}
+          path: ${{ steps.package.outputs.packageName }}.zip
+
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -82,6 +87,11 @@ jobs:
           Copy-Item $sdkDll $archiveName/
           Compress-Archive -Path $archiveName $archiveName'.zip'
           echo '::set-output name=packageName::$archiveName'
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.package.outputs.packageName }}
+          path: ${{ steps.package.outputs.packageName }}.zip
 
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
