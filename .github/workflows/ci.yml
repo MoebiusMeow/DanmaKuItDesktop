@@ -31,8 +31,8 @@ jobs:
         run: |
           qmake
           mingw32-make
-          $targetName = DanmaKuItDesktop.exe
-          $archiveName = DanmaKuItDesktop_MinGW900
+          $targetName = 'DanmaKuItDesktop.exe'
+          $archiveName = 'DanmaKuItDesktop_MinGW900'
           New-Item -ItemType Directory $archiveName
           Copy-Item bin/release/$targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
@@ -73,8 +73,8 @@ jobs:
       - name: Package
         shell: pwsh
         run: |
-          $targetName = DanmaKuItDesktop.exe
-          $archiveName = DanmaKuItDesktop_MSVC2019
+          $targetName = 'DanmaKuItDesktop.exe'
+          $archiveName = 'DanmaKuItDesktop_MSVC2019'
           New-Item -ItemType Directory $archiveName
           Copy-Item bin/release/$targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
