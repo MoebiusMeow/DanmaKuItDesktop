@@ -3,7 +3,7 @@
 
 #include "DanmakuText.h"
 
-#define DANMAKU_FLOAT_RAIL_CNT = 14;
+#define DANMAKU_FLOAT_RAIL_CNT 14;
 
 class DanmakuTextFloat : public DanmakuText
 {
