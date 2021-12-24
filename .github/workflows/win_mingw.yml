@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build Windows MinGW
+name: CI
 
 # Controls when the workflow will run
 on:
@@ -10,9 +10,12 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: windows-2022
+  windows-mingw:
+    name: Windows MinGW
+    runs-on: windows-latest
+    env:
+      targetName: DanmaKuItDesktop.exe
+      archiveName: DanmaKuItDesktop_MinGW900
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -34,8 +37,24 @@ jobs:
           Get-Command -Name 'mingw32-make' | Format-List
 
       # Runs a set of commands using the runners shell
-      - name: MinGW Build
+      - name: Build & Package
         shell: pwsh
         run: |
           qmake
           mingw32-make
+          New-Item -ItemType Directory $archiveName
+          Copy-Item bin\release\$targetName $archiveName\
+          windeployqt --qmldir . --plugindir $archiveName\plugins --no-translations --compiler-runtime $archiveName\$targetName
+          Remove-Item -Path $archiveName -Include @("*.qmlc", "*.ilk", "*.exp", "*.lib", "*.pdb") -Recurse -Force
+          Compress-Archive -Path $archiveName $archiveName'.zip'
+          echo '::set-output name=packageName::${env:archiveName}'
+      
+      - name: Upload to release
+        if: startsWith(github.event.ref, 'refs/tags/')
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ steps.package.outputs.packageName }}.zip
+          asset_name: ${{ steps.package.outputs.packageName }}.zip
+          tag: ${{ github.ref }}
+          overwrite: true 
