@@ -12,10 +12,13 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
       - name: Install Qt
         shell: pwsh
         run: |
@@ -24,14 +27,11 @@ jobs:
           aqt install-tool windows desktop tools_mingw90 qt.tools.win64_mingw900 -O ./Qt
           Convert-Path ./Qt/6.2.2/mingw_64/bin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           Convert-Path ./Qt/Tools/mingw900_64/bin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: where is qmake & where is mingw32-make
+      - name: Where is qmake & Where is mingw32-make
         shell: pwsh
         run: |
           Get-Command -Name 'qmake' | Format-List
           Get-Command -Name 'mingw32-make' | Format-List
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
 
       # Runs a set of commands using the runners shell
       - name: mingw-build
