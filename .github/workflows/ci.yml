@@ -34,10 +34,8 @@ jobs:
           $targetName = 'DanmaKuItDesktop.exe'
           $archiveName = 'DanmaKuItDesktop_MinGW900'
           New-Item -ItemType Directory $archiveName
-          Copy-Item bin/release/$targetName $archiveName/
+          Copy-Item release/$targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
-          $removeList = @('*.qmlc', '*.ilk', '*.exp', '*.lib', '*.pdb')
-          Get-ChildItem -Path $archiveName -Include $removeList -Recurse | Remove-Item
           Compress-Archive -Path $archiveName $archiveName'.zip'
           echo '::set-output name=packageName::$archiveName'
       
@@ -76,10 +74,8 @@ jobs:
           $targetName = 'DanmaKuItDesktop.exe'
           $archiveName = 'DanmaKuItDesktop_MSVC2019'
           New-Item -ItemType Directory $archiveName
-          Copy-Item bin/release/$targetName $archiveName/
+          Copy-Item release/$targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
-          $removeList = @('*.qmlc', '*.ilk', '*.exp', '*.lib', '*.pdb')
-          Get-ChildItem -Path $archiveName -Include $removeList -Recurse | Remove-Item
           $redistDll='{0}{1}\*.CRT\*.dll' -f $env:vcToolsRedistDir.Trim(), $env:msvcArch
           Copy-Item $redistDll $archiveName/
           $sdkDll='{0}Redist\{1}ucrt\DLLs\{2}\*.dll' -f $env:winSdkDir.Trim(), $env:winSdkVer.Trim(), $env:msvcArch
