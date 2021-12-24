@@ -26,11 +26,15 @@ jobs:
           Get-Command -Name 'qmake' | Format-List
           Get-Command -Name 'mingw32-make' | Format-List
 
-      - name: Build & Package
+      - name: Build
         shell: pwsh
         run: |
           qmake
           mingw32-make
+      
+      - name: Package
+        shell: pwsh
+        run: |
           $targetName = 'DanmaKuItDesktop.exe'
           $archiveName = 'DanmaKuItDesktop_MinGW900'
           New-Item -ItemType Directory $archiveName
@@ -38,11 +42,7 @@ jobs:
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
           Compress-Archive -Path $archiveName $archiveName'.zip'
           echo '::set-output name=packageName::$archiveName'
-      
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.package.outputs.packageName }}
-          path: ${{ steps.package.outputs.packageName }}.zip
+        id: package
 
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
@@ -72,6 +72,9 @@ jobs:
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
           qmake
           nmake
+          echo winSdkDir=%WindowsSdkDir% >> %GITHUB_ENV%
+          echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
+          echo vcToolsRedistDir=%VCToolsRedistDir% >> %GITHUB_ENV%
 
       - name: Package
         shell: pwsh
@@ -81,17 +84,13 @@ jobs:
           New-Item -ItemType Directory $archiveName
           Copy-Item release/$targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
-          $redistDll='{0}{1}\*.CRT\*.dll' -f $env:vcToolsRedistDir.Trim(), $env:msvcArch
+          $redistDll='{0}x64/*.CRT/*.dll' -f $env:vcToolsRedistDir.Trim()
           Copy-Item $redistDll $archiveName/
-          $sdkDll='{0}Redist\{1}ucrt\DLLs\{2}\*.dll' -f $env:winSdkDir.Trim(), $env:winSdkVer.Trim(), $env:msvcArch
+          $sdkDll='{0}Redist/{1}ucrt/DLLs/x64/*.dll' -f $env:winSdkDir.Trim(), $env:winSdkVer.Trim()
           Copy-Item $sdkDll $archiveName/
           Compress-Archive -Path $archiveName $archiveName'.zip'
           echo '::set-output name=packageName::$archiveName'
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.package.outputs.packageName }}
-          path: ${{ steps.package.outputs.packageName }}.zip
+        id: package
 
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
