@@ -65,7 +65,7 @@ private:
     DanmakuTextFloatSet *m_textFloatSet;
     DanmakuTextTopSet *m_textTopSet;
     DanmakuTextBottomSet *m_textBottomSet;
-    QTimer *update_timer, *reconnect_timer, *shutdown_timer;
+    QTimer *update_timer;
     DanmakuTestSet *m_test;
     QWebSocket *m_websocket;
     QString m_roomid, m_token;
