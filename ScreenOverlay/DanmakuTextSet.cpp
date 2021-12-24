@@ -36,11 +36,6 @@ std::shared_ptr<DanmakuText> DanmakuTextSet::findByID(const QString &id)
     return nullptr;
 }
 
-int DanmakuTextSet::getRailCnt()
-{
-    return DANMAKU_RAIL_CNT;
-}
-
 int DanmakuTextSet::calcRailYpos()
 {
     int deltY = m_bound.height()/DANMAKU_STANDARD_RAIL_CNT;
