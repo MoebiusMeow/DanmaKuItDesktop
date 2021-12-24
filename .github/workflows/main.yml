@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-    msvc2019:
+  msvc2019:
     name: Windows MSVC2019
     runs-on: windows-2019
     steps:
