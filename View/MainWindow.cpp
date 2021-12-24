@@ -29,7 +29,9 @@ MainWindow::MainWindow(QWidget *parent)
     screenOverlay->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint
 #ifdef Q_OS_MAC
     | Qt::SubWindow
-#elif Q_OS_WIN
+#endif
+
+#ifdef Q_OS_WIN
     | Qt::Tool
 #endif
     );
