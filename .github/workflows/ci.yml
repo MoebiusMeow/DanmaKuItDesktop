@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows-mingw:
+  mingw:
     name: Windows MinGW
     runs-on: windows-latest
     steps:
@@ -24,7 +24,6 @@ jobs:
           Get-Command -Name 'qmake' | Format-List
           Get-Command -Name 'mingw32-make' | Format-List
 
-      # Runs a set of commands using the runners shell
       - name: Build & Package
         shell: pwsh
         run: |
@@ -49,11 +48,10 @@ jobs:
           asset_name: ${{ steps.package.outputs.packageName }}.zip
           tag: ${{ github.ref }}
           overwrite: true 
-  windoes-msvc2019:
+  msvc2019:
     name: Windows MSVC2019
     runs-on: windows-2019
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
       - name: Install Qt
