@@ -21,8 +21,6 @@ NetworkAPI::NetworkAPI(QObject *parent) : QObject(parent)
         this, &NetworkAPI::on_wsError);
     connect(m_wsConnectionCheckTimer, &QTimer::timeout, this, &NetworkAPI::on_wsConnectionCheck);
     connect(m_wsReconnectTimer, &QTimer::timeout, this, &NetworkAPI::on_wsReconnect);
-    connect(m_netManager, &QNetworkAccessManager::sslErrors, this, &NetworkAPI::on_sslErrors);
-
     //m_wsReconnectTimer->setSingleShot(true);
 }
 
@@ -57,12 +55,9 @@ void NetworkAPI::connectionAborted()
 }
 
 
-void NetworkAPI::on_sslErrors([[maybe_unused]] QNetworkReply* reply, const QList<QSslError> &errors) {
-    for (const auto& err : errors) {
-        qDebug() << err;
-    }
-}
-
+// Handle login reply
+// This function handle the reply of the https login request, which is send by login()
+// It will emit wsInfoReady() if successfully get the token
 void NetworkAPI::on_loginReplyRecieve()
 {
     if(m_reply->error() != QNetworkReply::NoError)
@@ -121,7 +116,10 @@ QString NetworkAPI::getWallUrl()
     return QString("https://") + danmaku_domain + "/wall/" + m_roomID + "?code=" + m_roomPass;
 }
 
-// login with id and pass as room id and password
+// Login with id and pass as room id and password
+// note:
+//     this function get the token and then connect websocket
+//     it emit loginSuccess() signal or loginFailed() signal
 void NetworkAPI::login(const QString &id, const QString &pass)
 {
     qDebug()<<"connect request"<<id<<" "<<pass;
@@ -134,6 +132,9 @@ void NetworkAPI::login(const QString &id, const QString &pass)
     connect(m_reply, &QNetworkReply::finished, this, &NetworkAPI::on_loginReplyRecieve);
 }
 
+// Cancel all connection
+// note:
+//    both https-login and websocket will be shutdown forcely
 void NetworkAPI::cancelConnect()
 {
     m_reply->abort();
@@ -152,9 +153,12 @@ void NetworkAPI::logout()
     }
     m_status = logging_out;
     wsClose();
-    //TODO
 }
 
+
+// Connect to websocket server
+// note:
+//    releases loginSuccess() signal
 void NetworkAPI::wsConnect(const QString &roomid, const QString &token)
 {
     m_roomID = roomid, m_roomToken = token;
@@ -166,7 +170,6 @@ void NetworkAPI::wsConnect(const QString &roomid, const QString &token)
 void NetworkAPI::wsClose()
 {
     m_websocket->close();
-    //TODO
 }
 
 void NetworkAPI::wsCancelReconnect()

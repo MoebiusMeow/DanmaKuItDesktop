@@ -4,3 +4,8 @@ DanmakuTextFloatSet::DanmakuTextFloatSet(QObject *parent) : DanmakuTextSet(paren
 {
 
 }
+
+int DanmakuTextFloatSet::getRailCnt()
+{
+    return DANMAKU_FLOAT_RAIL_CNT;
+}
