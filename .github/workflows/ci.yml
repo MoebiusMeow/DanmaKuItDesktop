@@ -41,7 +41,7 @@ jobs:
           Copy-Item release/$targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
           Compress-Archive -Path $archiveName $archiveName'.zip'
-          echo '::set-output name=packageName::$archiveName'
+          echo "::set-output name=packageName::$archiveName"
         id: package
 
       - name: Upload to release
@@ -89,7 +89,7 @@ jobs:
           $sdkDll='{0}Redist/{1}ucrt/DLLs/x64/*.dll' -f $env:winSdkDir.Trim(), $env:winSdkVer.Trim()
           Copy-Item $sdkDll $archiveName/
           Compress-Archive -Path $archiveName $archiveName'.zip'
-          echo '::set-output name=packageName::$archiveName'
+          echo "::set-output name=packageName::$archiveName"
         id: package
 
       - name: Upload to release
