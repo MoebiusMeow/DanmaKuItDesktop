@@ -184,8 +184,11 @@ void MainWindow::loadConfig()
     bool flag;
 
     flag = configFile.open(QFile::ReadOnly);
-    doc = QJsonDocument::fromJson(flag ? configFile.readAll() : "", &error);
-    if (flag) configFile.close();
+    if (flag)
+    {
+        doc = QJsonDocument::fromJson(configFile.readAll(), &error);
+        configFile.close();
+    }
     if (!flag || error.error != QJsonParseError::NoError)
     {
         QJsonObject o = doc.object();
