@@ -13,6 +13,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
       
       - name: Install Qt
         shell: pwsh
@@ -52,7 +54,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ steps.package.outputs.packageName }}.zip
           asset_name: ${{ steps.package.outputs.packageName }}.zip
-          tag: ${{ github.sha }}
+          tag: ${{ steps.short-sha.outputs.sha }}
           overwrite: true
 
   msvc2019:
@@ -60,6 +62,8 @@ jobs:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
       
       - name: Install Qt
         shell: pwsh
@@ -100,5 +104,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ steps.package.outputs.packageName }}.zip
           asset_name: ${{ steps.package.outputs.packageName }}.zip
-          tag: ${{ github.sha }}
+          tag: ${{ steps.short-sha.outputs.sha }}
           overwrite: true
