@@ -8,5 +8,6 @@
         <file>Assets/Icons/logo.png</file>
         <file>Assets/Icons/logo_w.png</file>
         <file>Assets/Fonts/NotoColorEmoji_WindowsCompatible.ttf</file>
+        <file>Assets/Certificates/isrgrootx1.pem</file>
     </qresource>
 </RCC>

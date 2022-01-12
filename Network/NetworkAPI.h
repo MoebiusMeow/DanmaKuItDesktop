@@ -59,9 +59,10 @@ public Q_SLOTS:
     void wsClose();
     void wsCancelReconnect();
 
-protected Q_SLOTS:
+protected slots:
     // https
     void on_loginReplyRecieve();
+    void on_sslErrors([[maybe_unused]] QNetworkReply*, const QList<QSslError> &errors);
 
     //websocket
     void on_wsRecieveBinaryMessage(const QByteArray &message);

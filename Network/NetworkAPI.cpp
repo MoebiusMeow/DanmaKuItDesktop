@@ -21,6 +21,8 @@ NetworkAPI::NetworkAPI(QObject *parent) : QObject(parent)
         this, &NetworkAPI::on_wsError);
     connect(m_wsConnectionCheckTimer, &QTimer::timeout, this, &NetworkAPI::on_wsConnectionCheck);
     connect(m_wsReconnectTimer, &QTimer::timeout, this, &NetworkAPI::on_wsReconnect);
+    connect(m_netManager, &QNetworkAccessManager::sslErrors, this, &NetworkAPI::on_sslErrors);
+
     //m_wsReconnectTimer->setSingleShot(true);
 }
 
@@ -52,6 +54,13 @@ void NetworkAPI::connectionAborted()
     m_max_countdown = std::min(m_max_countdown*2, DANMAKU_MAX_RECONNECT_COUNTDOWN);
     emit wsReconnectCountdown(m_reconnect_countdown);
     m_wsReconnectTimer->start(1000);
+}
+
+
+void NetworkAPI::on_sslErrors([[maybe_unused]] QNetworkReply* reply, const QList<QSslError> &errors) {
+    for (const auto& err : errors) {
+        qDebug() << err;
+    }
 }
 
 void NetworkAPI::on_loginReplyRecieve()

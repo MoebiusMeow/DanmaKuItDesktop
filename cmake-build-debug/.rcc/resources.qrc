@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="Assets/Fonts/NotoColorEmoji_WindowsCompatible.ttf">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Fonts/NotoColorEmoji_WindowsCompatible.ttf</file>
+    <file alias="Assets/Fonts/NotoSansCJKsc-Bold.otf">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Fonts/NotoSansCJKsc-Bold.otf</file>
+    <file alias="Assets/Fonts/fontawesome-webfont.ttf">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Fonts/fontawesome-webfont.ttf</file>
+    <file alias="Assets/Icons/logo.png">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Icons/logo.png</file>
+    <file alias="Assets/Icons/logo_w.png">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Icons/logo_w.png</file>
+    <file alias="Assets/Shaders/plainUV.vert">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Shaders/plainUV.vert</file>
+    <file alias="Assets/Shaders/waveShader.frag">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Shaders/waveShader.frag</file>
+    <file alias="Assets/Styles/mainUI.qss">/Users/panda2134/Documents/DanmaKuItDesktop/Assets/Styles/mainUI.qss</file>
+  </qresource>
+</RCC>
+

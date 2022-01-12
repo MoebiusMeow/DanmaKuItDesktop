@@ -5,14 +5,10 @@
 #include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QWidget(parent), network(new NetworkAPI(this))
+    : QWidget(parent), network(new NetworkAPI(this)),
+    draging(false), waveWidget(nullptr), screenOverlay(nullptr)
 {
-    draging = false;
-    waveWidget = nullptr;
-    screenOverlay = nullptr;
-    network = new NetworkAPI(this);
     loginBox = new KultLoginBox(network, this);
-
     setupUI();
     loadConfig();
 

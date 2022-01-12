@@ -6,6 +6,12 @@
 
 int main(int argc, char *argv[])
 {
+    auto sslConf = QSslConfiguration::defaultConfiguration();
+    qDebug() << QSslSocket::sslLibraryVersionString();
+    sslConf.addCaCertificates(":/Assets/Certificates/isrgrootx1.pem");
+    sslConf.setProtocol(QSsl::TlsV1_3);
+    QSslConfiguration::setDefaultConfiguration(sslConf);
+
     QApplication a(argc, argv);
 
     QTranslator translator;
