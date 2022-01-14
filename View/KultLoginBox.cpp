@@ -1,6 +1,7 @@
 #include "KultLoginBox.h"
 #include <QtGlobal>
 #include <QtWidgets>
+#include <QDebug>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 
@@ -336,6 +337,27 @@ void KultLoginBox::setupUI()
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
 
+    gLayout = new QGridLayout();
+
+    tempLabel = new QLabel(group);
+    tempLabel->setText(QString(QChar(0xf015)));
+    tempLabel->setFont(iconFont);
+    tempLabel->setObjectName("IconLabel2");
+    gLayout->addWidget(tempLabel, 1, 0);
+
+    tempLabel = new QLabel(group);
+    tempLabel->setObjectName("SettingDisplayLabel");
+    tempLabel->setText(tr("弹幕显示屏幕"));
+    gLayout->addWidget(tempLabel, 2, 1);
+
+    screenSelectGroup = new QButtonGroup();
+    screenSelectLayout = new QVBoxLayout();
+    refreshScreenSelect();
+    gLayout->addLayout(screenSelectLayout, 1, 1);
+
+    yLayout->addLayout(gLayout);
+    yLayout->addStretch(1);
+
     tempButton = new QPushButton(tr("确认并返回"), group);
     tempButton->setMinimumWidth(200);
     connect(tempButton, &QPushButton::pressed, this, &KultLoginBox::switchToLogin);
@@ -360,6 +382,32 @@ void KultLoginBox::setupUI()
 
 
     setLayout(stackedLayout);
+}
+
+void KultLoginBox::refreshScreenSelect(){
+
+    // clear buttona
+    QList<QAbstractButton *> buttonList = screenSelectGroup->buttons();
+    foreach(auto btn, buttonList)
+        screenSelectGroup->removeButton(btn);
+    QList<QAbstractButton*> lbuttonList = screenSelectLayout->findChildren<QAbstractButton*>();
+    foreach(auto btn, lbuttonList){
+        screenSelectLayout->removeWidget(btn);
+        delete(btn);
+    }
+
+    // add screen's button
+    screenList = QGuiApplication::screens();
+    for(int i=0;i<screenList.count();i++){
+        auto screen_i = screenList.at(i);
+        QString screenLabel = screen_i->name() + "("
+                + QString::number(screen_i->size().width()) + "x"
+                + QString::number(screen_i->size().height()) + ")";
+        QRadioButton *temp = new QRadioButton(screenLabel, this);
+        if(i==0) temp->setChecked(true);
+        screenSelectGroup->addButton(temp);
+        screenSelectLayout->addWidget(temp);
+    }
 }
 
 void KultLoginBox::showQRCode()
