@@ -17,6 +17,7 @@ KultLoginBox::KultLoginBox(NetworkAPI *network, QWidget *parent) :
     connect(this, &KultLoginBox::loginFailed, this, &KultLoginBox::handleLoginFailed);
     connect(this, &KultLoginBox::loginSuccess, this, &KultLoginBox::handleConnected);
     connect(network, &NetworkAPI::wsReconnectCountdown, this, &KultLoginBox::handleReconnecting);
+    connect(screenSelectGroup, &QButtonGroup::buttonClicked, this, &KultLoginBox::changeDisplay);
 }
 
 void KultLoginBox::setupUI()
@@ -324,26 +325,21 @@ void KultLoginBox::setupUI()
     connect(roomhostInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
     gLayout->addWidget(roomhostInput, 1, 1);
 
-    yLayout->addLayout(gLayout);
-    yLayout->addStretch(1);
-
-    gLayout = new QGridLayout();
-
     tempLabel = new QLabel(group);
     tempLabel->setText(QString(QChar(0xf015)));
     tempLabel->setFont(iconFont);
     tempLabel->setObjectName("IconLabel2");
-    gLayout->addWidget(tempLabel, 1, 0);
+    gLayout->addWidget(tempLabel, 3, 0);
 
     tempLabel = new QLabel(group);
     tempLabel->setObjectName("SettingDisplayLabel");
-    tempLabel->setText(tr("弹幕显示屏幕"));
-    gLayout->addWidget(tempLabel, 2, 1);
+    tempLabel->setText(tr("选择弹幕显示屏幕"));
+    gLayout->addWidget(tempLabel, 3, 1);
 
     screenSelectGroup = new QButtonGroup();
     screenSelectLayout = new QVBoxLayout();
     refreshScreenSelect();
-    gLayout->addLayout(screenSelectLayout, 1, 1);
+    gLayout->addLayout(screenSelectLayout, 4, 1);
 
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
@@ -374,6 +370,12 @@ void KultLoginBox::setupUI()
     setLayout(stackedLayout);
 }
 
+void KultLoginBox::changeDisplay(){
+    qDebug()<<screenSelectGroup->checkedId();
+    qDebug()<<screenList.at(screenSelectGroup->checkedId())->geometry();
+    emit overlayGeometryChage(screenList.at(screenSelectGroup->checkedId())->geometry());
+}
+
 void KultLoginBox::refreshScreenSelect(){
 
     // clear buttona
@@ -394,8 +396,8 @@ void KultLoginBox::refreshScreenSelect(){
                 + QString::number(screen_i->size().width()) + "x"
                 + QString::number(screen_i->size().height()) + ")";
         QRadioButton *temp = new QRadioButton(screenLabel, this);
-        if(i==0) temp->setChecked(true);
-        screenSelectGroup->addButton(temp);
+        if(screen_i == QGuiApplication::primaryScreen()) temp->setChecked(true);
+        screenSelectGroup->addButton(temp, i);
         screenSelectLayout->addWidget(temp);
     }
 }

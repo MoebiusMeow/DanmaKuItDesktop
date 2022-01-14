@@ -115,6 +115,11 @@ void DanmakuWidget::appendText(const QString &content, const QString id, const Q
     }
 }
 
+void DanmakuWidget::setGeometry(const QRect &rect)
+{
+    QWidget::setGeometry(rect);
+}
+
 DanmakuAsyncRender::DanmakuAsyncRender(QObject *parent) : QObject(parent)
 {
 

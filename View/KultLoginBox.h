@@ -22,6 +22,7 @@ signals:
     void loginRequest(QString roomID, QString password);
     void logoutRequest();
     void showSetting();
+    void overlayGeometryChage(QRect geometry);
 
 protected:
     bool recentlyFailed;
@@ -56,6 +57,7 @@ protected slots:
     void settingConfirm();
     void showQRCode();
     void refreshScreenSelect();
+    void changeDisplay();
 
     void handleLoginFailed(int errorType, QString errorMessage);
     void handleReconnecting(int countdown);

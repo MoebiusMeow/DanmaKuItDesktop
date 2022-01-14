@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
     connect(network, &NetworkAPI::loginFailed, loginBox, &KultLoginBox::loginFailed);
     connect(network, &NetworkAPI::jsonMessage, screenOverlay, &DanmakuWidget::onJsonMessageRecieved);
+    connect(loginBox, &KultLoginBox::overlayGeometryChage, screenOverlay, &DanmakuWidget::setGeometry);
 }
 
 void MainWindow::setupUI()
@@ -220,8 +221,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::MouseButtonPress)
     {
-        // screenOverlay->show();
-        // screenOverlay->appendText("123🤔😺😺🦊🦊🤔", "233");
+        screenOverlay->show();
+        screenOverlay->appendText("123🤔😺😺🦊🦊🤔", "233");
         if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();
