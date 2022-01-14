@@ -13,6 +13,8 @@ int main(int argc, char *argv[])
     QSslConfiguration::setDefaultConfiguration(sslConf);
 
     QApplication a(argc, argv);
+    a.setOrganizationDomain("danmakuit.panda2134.site");
+    a.setApplicationName("DanmakuIt");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

@@ -3,6 +3,8 @@
 #include <QScreen>
 #include <QLayout>
 #include <QtWidgets>
+#include <QStandardPaths>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent), network(new NetworkAPI(this)),
@@ -22,16 +24,15 @@ MainWindow::MainWindow(QWidget *parent)
     installEventFilter(this);
 
     screenOverlay = new DanmakuWidget();
-    screenOverlay->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint
+    screenOverlay->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool
 #ifdef Q_OS_MAC
-    | Qt::SubWindow
-#endif
-
-#ifdef Q_OS_WIN
-    | Qt::Tool
+    | Qt::WindowTransparentForInput | Qt::WindowDoesNotAcceptFocus
 #endif
     );
     screenOverlay->setAttribute(Qt::WA_TranslucentBackground);
+#ifdef Q_OS_MAC
+    screenOverlay->setAttribute(Qt::WA_MacAlwaysShowToolWindow);
+#endif
     screenOverlay->move(0, 0);
     screenOverlay->resize(screen()->geometry().width(), screen()->geometry().height());
     screenOverlay->hide();
@@ -174,12 +175,24 @@ void MainWindow::setupUI()
     qssFile.close();
 }
 
+QString getConfigPath() {
+    auto location = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+    if (location.isEmpty()) location = ".";
+    else {
+       QDir p(location);
+	   p.mkpath(p.absolutePath());
+	}
+	return location;
+}
+
 void MainWindow::loadConfig()
 {
     QJsonDocument doc;
     QJsonParseError error;
-    QFile configFile("config.json", this);
-    bool flag;
+    bool flag = false;
+    auto location = getConfigPath();
+    
+    QFile configFile(location + "/danmakuit.json", this);
 
     flag = configFile.open(QFile::ReadOnly);
     if (flag)
@@ -203,7 +216,8 @@ void MainWindow::loadConfig()
 
 void MainWindow::saveConfig()
 {
-    QFile configFile("config.json", this);
+    auto location = getConfigPath();
+    QFile configFile(location + "/danmakuit.json", this);
     bool flag;
     flag = configFile.open(QFile::WriteOnly);
     if (flag) configFile.write(configDocument.toJson());

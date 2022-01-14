@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="DanmaKuItDesktop" targetName="DanmaKuItDesktop_other_files" />
+      <config projectName="DanmaKuItDesktop" targetName="DanmaKuItDesktop" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScreenOverlay/DanmakuWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ScreenOverlay/DanmakuWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/MainWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/View/MainWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cache-v2-b94f2df4ee2ed3c59ed4.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-1b22d2b28789de6ba575.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-b8978d35ed175824ae51.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2022-01-12T10-46-10-0117.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-DanmaKuItDesktop-Debug-201fb37cd822a79b58e3.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-DanmaKuItDesktop_other_files-Debug-82c6dc08fa24874cdfce.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DanmaKuItDesktop_autogen.dir/AutogenInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DanmaKuItDesktop_autogen.dir/AutogenInfo.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DanmaKuItDesktop_autogen.dir/AutogenUsed.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DanmaKuItDesktop_autogen.dir/AutogenUsed.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DanmaKuItDesktop_autogen.dir/ParseCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DanmaKuItDesktop_autogen.dir/ParseCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/d/569efed115ef7949c02872af9daba2530daa4b130affc1dd50e057c76fee73f9.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/d/569efed115ef7949c02872af9daba2530daa4b130affc1dd50e057c76fee73f9.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTestSet.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTestSet.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuText.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuText.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextBottom.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextBottom.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextBottomSet.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextBottomSet.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextFloat.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextFloat.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextFloatSet.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextFloatSet.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextSet.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextSet.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextTop.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextTop.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextTopSet.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuTextTopSet.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuWidget.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/KGVQ7RFO7L/moc_DanmakuWidget.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_DynamicVBoxLayout.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_DynamicVBoxLayout.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_KultLoginBox.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_KultLoginBox.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_KultMessageBox.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_KultMessageBox.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_MainWindow.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_MainWindow.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_WaveWidget.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/WB4RFHLAU6/moc_WaveWidget.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/XUVW4URUT3/moc_NetworkAPI.cpp.d" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/XUVW4URUT3/moc_NetworkAPI.cpp.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DanmaKuItDesktop_autogen/deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2021" />
+    <option name="minorVersion" value="3.2" />
+  </component>
+  <component name="ProjectId" id="23gtm9xn9giFyBtHwiF80nSutPq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="cidr.known.project.marker" value="true" />
+    <property name="cmake.loaded.for.project" value="true" />
+  </component>
+  <component name="RunManager" selected="CMake Application.DanmaKuItDesktop">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DanmaKuItDesktop" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DanmaKuItDesktop" TARGET_NAME="DanmaKuItDesktop" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DanmaKuItDesktop" RUN_TARGET_NAME="DanmaKuItDesktop">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DanmaKuItDesktop_other_files" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DanmaKuItDesktop" TARGET_NAME="DanmaKuItDesktop_other_files" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.DanmaKuItDesktop" />
+      <item itemvalue="CMake Application.DanmaKuItDesktop_other_files" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="" />
+      <created>1642167719155</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1642167719155</updated>
+      <workItem from="1642167720953" duration="1404000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.16)
 project(DanmaKuItDesktop LANGUAGES CXX)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-#    set(OPENSSL_ROOT_DIR /usr/local/Cellar/openssl@1.1/1.1.1m)
-    set(OPENSSL_ROOT_DIR /usr/local/opt/openssl@3)
+    set(OPENSSL_ROOT_DIR /opt/openssl@3)
+	set(CMAKE_PREFIX_PATH /usr/local/Qt-6.2.2)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
