@@ -35,9 +35,8 @@ protected:
     QLabel *connectStatusLabel;
     QPushButton *cancelConnectButton;
     QString m_id; // room id
-    QButtonGroup *screenSelectGroup;
+    QComboBox *screenSelectGroup;
     QList<QScreen*> screenList;
-    QVBoxLayout *screenSelectLayout;
     void setupUI();
     bool eventFilter(QObject *watched, QEvent *event) override;
 
@@ -57,7 +56,7 @@ protected slots:
     void settingConfirm();
     void showQRCode();
     void refreshScreenSelect();
-    void changeDisplay();
+    void changeDisplay(int index);
 
     void handleLoginFailed(int errorType, QString errorMessage);
     void handleReconnecting(int countdown);

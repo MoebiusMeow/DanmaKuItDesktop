@@ -234,6 +234,37 @@
     border: none;
 }
 
+#LoginBox .QComboBox {
+    border-radius: 0px;
+    font-size: 16px;
+    padding: 5px;
+    margin: 5px;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid lightgrey;
+    background: rgb(255, 255, 255);
+}
+
+#LoginBox .QComboBox:hover {
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 4px;
+    margin: 5px;
+    border: 1px solid lightgrey;
+    border-bottom: 1px solid grey;
+    background: rgb(255, 255, 255);
+}
+
+#LoginBox .QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border: none;
+}
+
+#LoginBox .QComboBox::down-arrow {
+}
+
 WaveWidget {
     border:100px;
     border-radius: 25px;
