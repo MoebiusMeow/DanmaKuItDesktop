@@ -138,7 +138,7 @@ void MainWindow::setupUI()
     connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
     connect(loginBox, &KultLoginBox::backToLogin, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     connect(loginBox, &KultLoginBox::loginFailed, [this]{ dynamicLayout->animateStretch(18000, 600); waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
-    connect(loginBox, &KultLoginBox::showSetting, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
+    connect(loginBox, &KultLoginBox::showSetting, [this]{ dynamicLayout->animateStretch(10000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
     connect(network, &NetworkAPI::logoutSuccess, loginBox, &KultLoginBox::logoutSuccess);
 
