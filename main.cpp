@@ -6,7 +6,15 @@
 
 int main(int argc, char *argv[])
 {
+    auto sslConf = QSslConfiguration::defaultConfiguration();
+    qDebug() << "SSL Library:" << QSslSocket::sslLibraryVersionString();
+    // install Let's Encrypt ISRG Root X1 certificate to avoid related issues
+    sslConf.addCaCertificates(":/Assets/Certificates/isrgrootx1.pem");
+    QSslConfiguration::setDefaultConfiguration(sslConf);
+
     QApplication a(argc, argv);
+    a.setOrganizationDomain("danmakuit.panda2134.site");
+    a.setApplicationName("DanmakuIt");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

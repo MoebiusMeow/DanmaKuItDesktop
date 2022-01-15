@@ -4,6 +4,7 @@
 #include <QPainterPath>
 #include <QFont>
 #include <QFontDatabase>
+#include <QGuiApplication>
 
 bool DanmakuText::s_font_loaded = false;
 QFont DanmakuText::s_default_font;
@@ -18,17 +19,28 @@ DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
   ,m_bufferImageReady(false)
   ,m_delTag(false)
 {
+#ifndef Q_OS_MAC
     if (!DanmakuText::s_font_loaded)
     {
         QStringList families;
         families.append(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/NotoSansCJKsc-Bold.otf") ));
         families.append(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/NotoColorEmoji_WindowsCompatible.ttf") ));
         DanmakuText::s_default_font = QFont(families);
-        // TODO
         // windows emoji
         DanmakuText::s_default_font.setFamilies(families);
         DanmakuText::s_font_loaded = true;
     }
+#else
+    // TODO: Fix Emoji on MacOS
+    if (!DanmakuText::s_font_loaded)
+    {
+        QStringList families({"Hiragino Sans GB", "Pingfang SC"});
+        DanmakuText::s_default_font = QFont(families);
+        DanmakuText::s_default_font.setFamilies(families);
+        qDebug() << DanmakuText::s_default_font.families();
+        DanmakuText::s_font_loaded = true;
+    }
+#endif
     m_font = DanmakuText::s_default_font;
     m_font.setPointSize(m_font_size);
     m_bufferImage = nullptr;
@@ -52,7 +64,7 @@ void DanmakuText::renderText()
     path.addText(5, py, m_font, m_text);
     m_bufferImage = new QImage(m_bound.width(), m_bound.height(), QImage::Format_ARGB32);
     m_bufferImage->fill(QColor(0,0,0,0));
-    QPainter *bufferPainter = new QPainter(m_bufferImage);
+    auto *bufferPainter = new QPainter(m_bufferImage);
     bufferPainter->setRenderHints(QPainter::Antialiasing, true);
 
     bufferPainter->strokePath(path, QPen((m_color.valueF()<0.5) ? Qt::white : Qt::black, 3, Qt::SolidLine));

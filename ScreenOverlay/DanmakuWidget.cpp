@@ -57,7 +57,9 @@ void DanmakuWidget::paintEvent(QPaintEvent *paint_event)
     m_textFloatSet->paint(&p);
     m_textTopSet->paint(&p);
     m_textBottomSet->paint(&p);
+#ifndef Q_OS_MAC
     raise();
+#endif
     Q_UNUSED(paint_event);
 }
 

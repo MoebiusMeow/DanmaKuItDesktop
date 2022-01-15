@@ -1,7 +1,17 @@
 #include "KultLoginBox.h"
+#include <QtGlobal>
 #include <QtWidgets>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
+
+#ifdef Q_OS_WIN
+#include <winuser.h>
+#endif
+#ifdef Q_OS_MAC
+// Yes, this is defined in AppKit/NSEvent.h, but that's ObjC, and cannot be included directly.
+// TODO: change to use AppKit/NSEvent.h
+#define NSEventModifierFlagCapsLock (1 << 16)
+#endif
 
 #include "KultMessageBox.h"
 #include "MainWindow.h"
@@ -454,9 +464,15 @@ bool KultLoginBox::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::KeyPress)
     {
-        //qDebug() << static_cast<QKeyEvent*>(event)->nativeModifiers();
-        //qDebug() << static_cast<QKeyEvent*>(event)->modifiers();
-        if (static_cast<QKeyEvent*>(event)->nativeModifiers() & 256)
+        bool capsLockOn = false; // disable the hint on unsupported platforms
+#ifdef Q_OS_WIN
+        capsLockOn = GetKeyState(VK_CAPITAL);
+#endif
+#ifdef Q_OS_MAC
+        auto keyEvent = dynamic_cast<QKeyEvent*>(event);
+        capsLockOn = bool(keyEvent->nativeModifiers() & NSEventModifierFlagCapsLock);
+#endif
+        if (capsLockOn)
             loginHintLabel->show();
         else
             loginHintLabel->hide();

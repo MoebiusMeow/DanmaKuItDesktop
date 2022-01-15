@@ -76,3 +76,4 @@ DanmaKuItDesktop
 config.json
 debug
 release
+cmake-build-debug

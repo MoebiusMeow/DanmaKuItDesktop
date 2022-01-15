@@ -3,39 +3,44 @@
 #include <QScreen>
 #include <QLayout>
 #include <QtWidgets>
+#include <QStandardPaths>
+
 
 MainWindow::MainWindow(QWidget *parent)
-    : QWidget(parent), network(new NetworkAPI(this))
+    : QWidget(parent), network(new NetworkAPI(this)),
+    draging(false), waveWidget(nullptr), screenOverlay(nullptr)
 {
-    draging = false;
-    waveWidget = nullptr;
-    screenOverlay = nullptr;
-    network = new NetworkAPI(this);
     loginBox = new KultLoginBox(network, this);
-
     setupUI();
     loadConfig();
 
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowFlag(Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_TranslucentBackground);
+#ifndef Q_OS_MAC
     qreal ratio = screen()->devicePixelRatio();
     resize(screen()->geometry().width() * 0.25 * ratio, screen()->geometry().width() * 0.25 * 0.718 * ratio);
+#else
+    // OSX itself will deal with pixel ratio for us
+    // set to 1.2 for consistency
+    qreal ratio = 1.2;
+    resize((int)screen()->geometry().width() * 0.25 * ratio,
+           (int)screen()->geometry().width() * 0.25 * 0.718 * ratio);
+#endif
     move(screen()->geometry().center() - QPoint(width(), height()) / 2);
 
     installEventFilter(this);
 
     screenOverlay = new DanmakuWidget();
-    screenOverlay->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint
+    screenOverlay->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool
 #ifdef Q_OS_MAC
-    | Qt::SubWindow
-#endif
-
-#ifdef Q_OS_WIN
-    | Qt::Tool
+    | Qt::WindowTransparentForInput | Qt::WindowDoesNotAcceptFocus
 #endif
     );
     screenOverlay->setAttribute(Qt::WA_TranslucentBackground);
+#ifdef Q_OS_MAC
+    screenOverlay->setAttribute(Qt::WA_MacAlwaysShowToolWindow);
+#endif
     screenOverlay->move(0, 0);
     screenOverlay->resize(screen()->geometry().width(), screen()->geometry().height());
     screenOverlay->hide();
@@ -178,12 +183,24 @@ void MainWindow::setupUI()
     qssFile.close();
 }
 
+QString getConfigPath() {
+    auto location = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+    if (location.isEmpty()) location = ".";
+    else {
+       QDir p(location);
+	   p.mkpath(p.absolutePath());
+	}
+	return location;
+}
+
 void MainWindow::loadConfig()
 {
     QJsonDocument doc;
     QJsonParseError error;
-    QFile configFile("config.json", this);
-    bool flag;
+    bool flag = false;
+    auto location = getConfigPath();
+    
+    QFile configFile(location + "/danmakuit.json", this);
 
     flag = configFile.open(QFile::ReadOnly);
     if (flag)
@@ -207,7 +224,8 @@ void MainWindow::loadConfig()
 
 void MainWindow::saveConfig()
 {
-    QFile configFile("config.json", this);
+    auto location = getConfigPath();
+    QFile configFile(location + "/danmakuit.json", this);
     bool flag;
     flag = configFile.open(QFile::WriteOnly);
     if (flag) configFile.write(configDocument.toJson());
