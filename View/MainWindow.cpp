@@ -17,8 +17,16 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::FramelessWindowHint);
     setWindowFlag(Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_TranslucentBackground);
+#ifndef Q_OS_MAC
     qreal ratio = screen()->devicePixelRatio();
     resize(screen()->geometry().width() * 0.25 * ratio, screen()->geometry().width() * 0.25 * 0.718 * ratio);
+#else
+    // OSX itself will deal with pixel ratio for us
+    // set to 1.2 for consistency
+    qreal ratio = 1.2;
+    resize((int)screen()->geometry().width() * 0.25 * ratio,
+           (int)screen()->geometry().width() * 0.25 * 0.718 * ratio);
+#endif
     move(screen()->geometry().center() - QPoint(width(), height()) / 2);
 
     installEventFilter(this);
