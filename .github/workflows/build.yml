@@ -33,7 +33,7 @@ jobs:
       - name: Build
         shell: pwsh
         run: |
-          cmake . -G"MinGW Makefiles"
+          cmake . -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
           mingw32-make
       
       - name: Package
@@ -76,19 +76,17 @@ jobs:
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
           cmake .
-          cmake --build .
+          cmake --build . --config Release
           echo winSdkDir=%WindowsSdkDir% >> %GITHUB_ENV%
           echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
           echo vcToolsRedistDir=%VCToolsRedistDir% >> %GITHUB_ENV%
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
       - name: Package
         shell: pwsh
         run: |
           $targetName = 'DanmaKuItDesktop.exe'
           $archiveName = 'DanmaKuItDesktop_MSVC2019'
           New-Item -ItemType Directory $archiveName
-          Copy-Item $targetName $archiveName/
+          Copy-Item ./Release/$targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
           $redistDll='{0}x64/*.CRT/*.dll' -f $env:vcToolsRedistDir.Trim()
           Copy-Item $redistDll $archiveName/

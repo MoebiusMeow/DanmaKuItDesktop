@@ -34,6 +34,14 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -93,7 +101,7 @@
       <option name="presentableId" value="Default" />
       <updated>1642167719155</updated>
       <workItem from="1642167720953" duration="1404000" />
-      <workItem from="1642255477606" duration="14102000" />
+      <workItem from="1642255477606" duration="14385000" />
     </task>
     <task id="LOCAL-00001" summary="fix: capslock &amp; size on MacOS&#10;&#10;should close #8 &amp; #9.">
       <created>1642260091881</created>
@@ -144,11 +152,28 @@
       <option name="project" value="LOCAL" />
       <updated>1642334920804</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="debug ci - msvc artifact position?">
+      <created>1642335250330</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1642335250330</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: capslock &amp; size on MacOS&#10;&#10;should close #8 &amp; #9." />
@@ -157,6 +182,7 @@
     <MESSAGE value="debug ci" />
     <MESSAGE value="debug ci - msvc" />
     <MESSAGE value="debug ci - fix msvc big resources" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug ci - fix msvc big resources" />
+    <MESSAGE value="debug ci - msvc artifact position?" />
+    <option name="LAST_COMMIT_MESSAGE" value="debug ci - msvc artifact position?" />
   </component>
 </project>
