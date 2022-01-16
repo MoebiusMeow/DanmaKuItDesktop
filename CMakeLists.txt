@@ -63,11 +63,17 @@ set(resources_resource_files
 
 qt6_add_big_resources(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc)
 
-set(MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns)
-set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns")
-set_source_files_properties(${app_icon_macos} PROPERTIES
-        MACOSX_PACKAGE_LOCATION "Resources")
-set(app_icon_windows "${CMAKE_CURRENT_SOURCE_DIR}/DanmakuIt.rc")
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns)
+    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES
+            MACOSX_PACKAGE_LOCATION "Resources")
+endif()
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    enable_language("RC")
+    set(app_icon_windows "${CMAKE_CURRENT_SOURCE_DIR}/DanmakuIt.rc")
+endif()
 set(app_icon ${app_icon_macos} ${app_icon_windows})
 
 qt_add_executable(DanmakuItDesktop WIN32 MACOSX_BUNDLE ${SOURCES} ${app_icon})
