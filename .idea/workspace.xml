@@ -12,7 +12,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="fix: capslock &amp; size on MacOS&#10;&#10;should close #8 &amp; #9.">
+    <list default="true" id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="cmake" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -88,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1642167719155</updated>
       <workItem from="1642167720953" duration="1404000" />
-      <workItem from="1642255477606" duration="10927000" />
+      <workItem from="1642255477606" duration="11943000" />
     </task>
     <task id="LOCAL-00001" summary="fix: capslock &amp; size on MacOS&#10;&#10;should close #8 &amp; #9.">
       <created>1642260091881</created>
@@ -111,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642329722559</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="debug ci">
+      <created>1642330857092</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1642330857092</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,6 +129,7 @@
     <MESSAGE value="fix: capslock &amp; size on MacOS&#10;&#10;should close #8 &amp; #9." />
     <MESSAGE value="chore: documents &amp; typo fixes on assets" />
     <MESSAGE value="chore: changed placeholders" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: changed placeholders" />
+    <MESSAGE value="debug ci" />
+    <option name="LAST_COMMIT_MESSAGE" value="debug ci" />
   </component>
 </project>
