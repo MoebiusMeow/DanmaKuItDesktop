@@ -74,9 +74,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     enable_language("RC")
     set(app_icon_windows "${CMAKE_CURRENT_SOURCE_DIR}/DanmakuIt.rc")
 endif()
-set(app_icon ${app_icon_macos} ${app_icon_windows})
 
-qt_add_executable(DanmakuItDesktop WIN32 MACOSX_BUNDLE ${SOURCES} ${app_icon})
+qt_add_executable(DanmakuItDesktop WIN32 ${app_icon_windows} MACOSX_BUNDLE ${app_icon_macos} ${SOURCES})
 
 target_link_libraries(DanmakuItDesktop PUBLIC
         Qt::Core
