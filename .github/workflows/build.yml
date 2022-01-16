@@ -48,14 +48,11 @@ jobs:
           echo "::set-output name=packageName::$archiveName"
         id: package
 
-      - name: Upload to release
-        uses: svenstaro/upload-release-action@v2
+      - name: Upload to artifact
+        uses: actions/upload-artifact@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ steps.package.outputs.packageName }}.zip
-          asset_name: ${{ steps.package.outputs.packageName }}.zip
-          tag: ${{ steps.short-sha.outputs.sha }}
-          overwrite: true
+          name: DanmakuIt-Desktop-MinGW.zip
+          path: ${{ steps.package.outputs.packageName }}.zip
 
   msvc2019:
     name: Windows MSVC2019
@@ -96,11 +93,8 @@ jobs:
           echo "::set-output name=packageName::$archiveName"
         id: package
 
-      - name: Upload to release
-        uses: svenstaro/upload-release-action@v2
+      - name: Upload to artifact
+        uses: actions/upload-artifact@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ steps.package.outputs.packageName }}.zip
-          asset_name: ${{ steps.package.outputs.packageName }}.zip
-          tag: ${{ steps.short-sha.outputs.sha }}
-          overwrite: true
+          name: DanmakuIt-Desktop-MSVC.zip
+          path: ${{ steps.package.outputs.packageName }}.zip

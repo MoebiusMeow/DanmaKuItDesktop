@@ -13,7 +13,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="" />
+    <list default="true" id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,7 +103,7 @@
       <option name="presentableId" value="Default" />
       <updated>1642167719155</updated>
       <workItem from="1642167720953" duration="1404000" />
-      <workItem from="1642255477606" duration="14385000" />
+      <workItem from="1642255477606" duration="15109000" />
     </task>
     <task id="LOCAL-00001" summary="fix: capslock &amp; size on MacOS&#10;&#10;should close #8 &amp; #9.">
       <created>1642260091881</created>
@@ -159,7 +161,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642335250330</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="debug ci - seems done">
+      <created>1642335744736</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1642335744736</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,6 +192,7 @@
     <MESSAGE value="debug ci - msvc" />
     <MESSAGE value="debug ci - fix msvc big resources" />
     <MESSAGE value="debug ci - msvc artifact position?" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug ci - msvc artifact position?" />
+    <MESSAGE value="debug ci - seems done" />
+    <option name="LAST_COMMIT_MESSAGE" value="debug ci - seems done" />
   </component>
 </project>
