@@ -5,7 +5,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   push:
-    branches: [fix-ci] # should change back to master
+    branches: [dev, master]
 
 jobs:
   mingw:
