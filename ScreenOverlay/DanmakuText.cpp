@@ -12,35 +12,24 @@ QFont DanmakuText::s_default_font;
 DanmakuText::DanmakuText(QObject *parent) : QObject(parent)
   ,m_pos(QPointF(0.0,0.0))
   ,m_vel(QPointF(0.0,0.0))
-  ,m_text(QString("123"))
+  ,m_text(QString("EmptyText"))
   ,m_color(QColor(0xff,0xff,0xff))
   ,m_font_size(16)
   ,m_boundReady(false)
   ,m_bufferImageReady(false)
   ,m_delTag(false)
 {
-#ifndef Q_OS_MAC
     if (!DanmakuText::s_font_loaded)
     {
         QStringList families;
         families.append(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/NotoSansCJKsc-Bold.otf") ));
         families.append(QFontDatabase::applicationFontFamilies( QFontDatabase::addApplicationFont(":/Assets/Fonts/NotoColorEmoji_WindowsCompatible.ttf") ));
+
         DanmakuText::s_default_font = QFont(families);
         // windows emoji
         DanmakuText::s_default_font.setFamilies(families);
         DanmakuText::s_font_loaded = true;
     }
-#else
-    // TODO: Fix Emoji on MacOS
-    if (!DanmakuText::s_font_loaded)
-    {
-        QStringList families({"Hiragino Sans GB", "Pingfang SC"});
-        DanmakuText::s_default_font = QFont(families);
-        DanmakuText::s_default_font.setFamilies(families);
-        qDebug() << DanmakuText::s_default_font.families();
-        DanmakuText::s_font_loaded = true;
-    }
-#endif
     m_font = DanmakuText::s_default_font;
     m_font.setPointSize(m_font_size);
     m_bufferImage = nullptr;
