@@ -1,7 +1,7 @@
-# Generated from DanmaKuItDesktop.pro.
+# Generated from DanmakuItDesktop.pro.
 
 cmake_minimum_required(VERSION 3.16)
-project(DanmaKuItDesktop LANGUAGES CXX)
+project(DanmakuItDesktop LANGUAGES CXX)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(OPENSSL_ROOT_DIR /opt/openssl@3)
@@ -61,11 +61,18 @@ set(resources_resource_files
     "Assets/Certificates/isrgrootx1.pem"
 )
 
-qt6_add_big_resources(SOURCES ./resources.qrc)
+qt6_add_big_resources(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc)
 
-qt_add_executable(DanmaKuItDesktop WIN32 MACOSX_BUNDLE ${SOURCES})
+set(MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns)
+set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns")
+set_source_files_properties(${app_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+set(app_icon_windows "${CMAKE_CURRENT_SOURCE_DIR}/DanmakuIt.rc")
+set(app_icon ${app_icon_macos} ${app_icon_windows})
 
-target_link_libraries(DanmaKuItDesktop PUBLIC
+qt_add_executable(DanmakuItDesktop WIN32 MACOSX_BUNDLE ${SOURCES} ${app_icon})
+
+target_link_libraries(DanmakuItDesktop PUBLIC
         Qt::Core
         Qt::Gui
         Qt::OpenGL
@@ -73,14 +80,13 @@ target_link_libraries(DanmaKuItDesktop PUBLIC
         Qt::WebSockets
         )
 
-
 if((QT_MAJOR_VERSION GREATER 4))
-    target_link_libraries(DanmaKuItDesktop PUBLIC
+    target_link_libraries(DanmakuItDesktop PUBLIC
         Qt::Widgets
     )
 endif()
 
-install(TARGETS DanmaKuItDesktop
+install(TARGETS DanmakuItDesktop
     RUNTIME DESTINATION "${INSTALL_EXAMPLEDIR}"
     BUNDLE DESTINATION "${INSTALL_EXAMPLEDIR}"
     LIBRARY DESTINATION "${INSTALL_EXAMPLEDIR}"
