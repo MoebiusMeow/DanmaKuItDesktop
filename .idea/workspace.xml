@@ -2,8 +2,9 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
+      <config projectName="DanmaKuItDesktop" targetName="rcc_object_resources" />
+      <config projectName="DanmaKuItDesktop" targetName="big_resources_resources" />
       <config projectName="DanmaKuItDesktop" targetName="DanmaKuItDesktop" />
-      <config projectName="DanmaKuItDesktop" targetName="DanmaKuItDesktop_other_files" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -12,11 +13,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-    </list>
+    <list default="true" id="e201a990-2ea6-4506-a886-ea80d7546766" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,7 +93,7 @@
       <option name="presentableId" value="Default" />
       <updated>1642167719155</updated>
       <workItem from="1642167720953" duration="1404000" />
-      <workItem from="1642255477606" duration="13741000" />
+      <workItem from="1642255477606" duration="14102000" />
     </task>
     <task id="LOCAL-00001" summary="fix: capslock &amp; size on MacOS&#10;&#10;should close #8 &amp; #9.">
       <created>1642260091881</created>
@@ -140,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642333520001</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="debug ci - fix msvc big resources">
+      <created>1642334920804</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1642334920804</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,6 +156,7 @@
     <MESSAGE value="chore: changed placeholders" />
     <MESSAGE value="debug ci" />
     <MESSAGE value="debug ci - msvc" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug ci - msvc" />
+    <MESSAGE value="debug ci - fix msvc big resources" />
+    <option name="LAST_COMMIT_MESSAGE" value="debug ci - fix msvc big resources" />
   </component>
 </project>
