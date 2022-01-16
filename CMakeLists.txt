@@ -27,35 +27,26 @@ find_package(Qt6 COMPONENTS OpenGL)
 find_package(Qt6 COMPONENTS OpenGLWidgets)
 find_package(Qt6 COMPONENTS WebSockets)
 
-qt_add_executable(DanmaKuItDesktop WIN32 MACOSX_BUNDLE
-    Network/NetworkAPI.cpp Network/NetworkAPI.h
-    Network/NetworkConfig.h
-    ScreenOverlay/DanmakuConstants.h
-    ScreenOverlay/DanmakuTestSet.cpp ScreenOverlay/DanmakuTestSet.h
-    ScreenOverlay/DanmakuText.cpp ScreenOverlay/DanmakuText.h
-    ScreenOverlay/DanmakuTextBottom.cpp ScreenOverlay/DanmakuTextBottom.h
-    ScreenOverlay/DanmakuTextBottomSet.cpp ScreenOverlay/DanmakuTextBottomSet.h
-    ScreenOverlay/DanmakuTextFloat.cpp ScreenOverlay/DanmakuTextFloat.h
-    ScreenOverlay/DanmakuTextFloatSet.cpp ScreenOverlay/DanmakuTextFloatSet.h
-    ScreenOverlay/DanmakuTextSet.cpp ScreenOverlay/DanmakuTextSet.h
-    ScreenOverlay/DanmakuTextTop.cpp ScreenOverlay/DanmakuTextTop.h
-    ScreenOverlay/DanmakuTextTopSet.cpp ScreenOverlay/DanmakuTextTopSet.h
-    ScreenOverlay/DanmakuWidget.cpp ScreenOverlay/DanmakuWidget.h
-    View/DynamicVBoxLayout.cpp View/DynamicVBoxLayout.h
-    View/KultLoginBox.cpp View/KultLoginBox.h
-    View/KultMessageBox.cpp View/KultMessageBox.h
-    View/MainWindow.cpp View/MainWindow.h
-    View/WaveWidget.cpp View/WaveWidget.h
-    main.cpp
-)
-target_link_libraries(DanmaKuItDesktop PUBLIC
-    Qt::Core
-    Qt::Gui
-    Qt::OpenGL
-    Qt::OpenGLWidgets
-    Qt::WebSockets
-)
-
+set(SOURCES
+        Network/NetworkAPI.cpp Network/NetworkAPI.h
+        Network/NetworkConfig.h
+        ScreenOverlay/DanmakuConstants.h
+        ScreenOverlay/DanmakuTestSet.cpp ScreenOverlay/DanmakuTestSet.h
+        ScreenOverlay/DanmakuText.cpp ScreenOverlay/DanmakuText.h
+        ScreenOverlay/DanmakuTextBottom.cpp ScreenOverlay/DanmakuTextBottom.h
+        ScreenOverlay/DanmakuTextBottomSet.cpp ScreenOverlay/DanmakuTextBottomSet.h
+        ScreenOverlay/DanmakuTextFloat.cpp ScreenOverlay/DanmakuTextFloat.h
+        ScreenOverlay/DanmakuTextFloatSet.cpp ScreenOverlay/DanmakuTextFloatSet.h
+        ScreenOverlay/DanmakuTextSet.cpp ScreenOverlay/DanmakuTextSet.h
+        ScreenOverlay/DanmakuTextTop.cpp ScreenOverlay/DanmakuTextTop.h
+        ScreenOverlay/DanmakuTextTopSet.cpp ScreenOverlay/DanmakuTextTopSet.h
+        ScreenOverlay/DanmakuWidget.cpp ScreenOverlay/DanmakuWidget.h
+        View/DynamicVBoxLayout.cpp View/DynamicVBoxLayout.h
+        View/KultLoginBox.cpp View/KultLoginBox.h
+        View/KultMessageBox.cpp View/KultMessageBox.h
+        View/MainWindow.cpp View/MainWindow.h
+        View/WaveWidget.cpp View/WaveWidget.h
+        main.cpp)
 
 # Resources:
 set(resources_resource_files
@@ -67,14 +58,21 @@ set(resources_resource_files
     "Assets/Shaders/plainUV.vert"
     "Assets/Shaders/waveShader.frag"
     "Assets/Styles/mainUI.qss"
+    "Assets/Certificates/isrgrootx1.pem"
 )
 
-qt6_add_resources(DanmaKuItDesktop "resources"
-    PREFIX
-        "/"
-    FILES
-        ${resources_resource_files}
-)
+qt6_add_big_resources(SOURCES ./resources.qrc)
+
+qt_add_executable(DanmaKuItDesktop WIN32 MACOSX_BUNDLE ${SOURCES})
+
+target_link_libraries(DanmaKuItDesktop PUBLIC
+        Qt::Core
+        Qt::Gui
+        Qt::OpenGL
+        Qt::OpenGLWidgets
+        Qt::WebSockets
+        )
+
 
 if((QT_MAJOR_VERSION GREATER 4))
     target_link_libraries(DanmaKuItDesktop PUBLIC
