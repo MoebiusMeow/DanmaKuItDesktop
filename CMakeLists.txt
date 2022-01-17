@@ -6,6 +6,7 @@ project(DanmakuItDesktop LANGUAGES CXX)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(OPENSSL_ROOT_DIR /opt/openssl@3)
 	set(CMAKE_PREFIX_PATH /usr/local/Qt-6.2.2)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.12)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -65,7 +66,7 @@ qt6_add_big_resources(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc)
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns)
+    set(MACOSX_BUNDLE_ICON_FILE mac_icon.icns)
     set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Assets/Icons/mac_icon.icns")
     set_source_files_properties(${app_icon_macos} PROPERTIES
             MACOSX_PACKAGE_LOCATION "Resources")
