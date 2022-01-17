@@ -50,7 +50,7 @@ jobs:
       - name: Upload to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: DanmakuIt-Desktop-MinGW.zip
+          name: DanmakuIt-Desktop-MinGW
           path: ${{ steps.package.outputs.packageName }}
 
   msvc2019:
@@ -94,5 +94,5 @@ jobs:
       - name: Upload to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: DanmakuIt-Desktop-MSVC.zip
+          name: DanmakuIt-Desktop-MSVC
           path: ${{ steps.package.outputs.packageName }}
