@@ -49,20 +49,22 @@ private :
     void connectionAborted();
 
 public Q_SLOTS:
+    /* Use these slots to control connection*/
     // https
     void login(const QString &id, const QString &pass );
     void cancelConnect();
     void logout();
 
+    /* websocket slots are not recommended to use out side this class */
     //websocket
     void wsConnect(const QString &roomid, const QString &token);
     void wsClose();
     void wsCancelReconnect();
 
-protected slots:
+protected Q_SLOTS:
+    /* only used inside this class*/
     // https
     void on_loginReplyRecieve();
-    void on_sslErrors([[maybe_unused]] QNetworkReply*, const QList<QSslError> &errors);
 
     //websocket
     void on_wsRecieveBinaryMessage(const QByteArray &message);

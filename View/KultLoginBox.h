@@ -22,6 +22,7 @@ signals:
     void loginRequest(QString roomID, QString password);
     void logoutRequest();
     void showSetting();
+    void overlayGeometryChage(QRect geometry);
 
 protected:
     bool recentlyFailed;
@@ -34,6 +35,8 @@ protected:
     QLabel *connectStatusLabel;
     QPushButton *cancelConnectButton;
     QString m_id; // room id
+    QComboBox *screenSelectGroup;
+    QList<QScreen*> screenList;
     void setupUI();
     bool eventFilter(QObject *watched, QEvent *event) override;
 
@@ -52,6 +55,8 @@ protected slots:
 
     void settingConfirm();
     void showQRCode();
+    void refreshScreenSelect();
+    void changeDisplay(int index);
 
     void handleLoginFailed(int errorType, QString errorMessage);
     void handleReconnecting(int countdown);

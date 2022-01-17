@@ -1,6 +1,7 @@
 #include "KultLoginBox.h"
 #include <QtGlobal>
 #include <QtWidgets>
+#include <QDebug>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 
@@ -26,6 +27,7 @@ KultLoginBox::KultLoginBox(NetworkAPI *network, QWidget *parent) :
     connect(this, &KultLoginBox::loginFailed, this, &KultLoginBox::handleLoginFailed);
     connect(this, &KultLoginBox::loginSuccess, this, &KultLoginBox::handleConnected);
     connect(network, &NetworkAPI::wsReconnectCountdown, this, &KultLoginBox::handleReconnecting);
+    connect(screenSelectGroup, &QComboBox::currentIndexChanged, this, &KultLoginBox::changeDisplay);
 }
 
 void KultLoginBox::setupUI()
@@ -287,6 +289,7 @@ void KultLoginBox::setupUI()
     // ----------
     // setting
     // ----------
+
     group = new QGroupBox(this);
     group->setObjectName("SettingBox");
 
@@ -333,6 +336,22 @@ void KultLoginBox::setupUI()
     connect(roomhostInput, &QLineEdit::returnPressed, this, &KultLoginBox::login);
     gLayout->addWidget(roomhostInput, 1, 1);
 
+    tempLabel = new QLabel(group);
+    tempLabel->setText(QString(QChar(0xf108)));
+    tempLabel->setFont(iconFont);
+    tempLabel->setObjectName("IconLabel");
+    gLayout->addWidget(tempLabel, 3, 0);
+
+    tempLabel = new QLabel(group);
+    tempLabel->setObjectName("SettingHintLabel");
+    tempLabel->setText(tr("选择弹幕显示屏幕"));
+    gLayout->addWidget(tempLabel, 4, 1);
+
+    screenSelectGroup = new QComboBox();
+    screenSelectGroup->setView(new QListView(screenSelectGroup));
+    refreshScreenSelect();
+    gLayout->addWidget(screenSelectGroup, 3, 1);
+
     yLayout->addLayout(gLayout);
     yLayout->addStretch(1);
 
@@ -360,6 +379,31 @@ void KultLoginBox::setupUI()
 
 
     setLayout(stackedLayout);
+}
+
+void KultLoginBox::changeDisplay(int index){
+    qDebug() << index;
+    qDebug() << screenList.at(screenSelectGroup->currentIndex())->geometry();
+    emit overlayGeometryChage(screenList.at(index)->geometry());
+}
+
+void KultLoginBox::refreshScreenSelect(){
+
+    // clear items
+    while (screenSelectGroup->count())
+        screenSelectGroup->removeItem(0);
+
+    // add screen's items
+    screenList = QGuiApplication::screens();
+    for(int i = 0; i<screenList.count(); i++){
+        auto screen_i = screenList.at(i);
+        QString screenLabel = screen_i->name() + " ("
+                + QString::number(screen_i->size().width()) + "x"
+                + QString::number(screen_i->size().height()) + ")";
+        screenSelectGroup->addItem(screenLabel);
+        if(screen_i == QGuiApplication::primaryScreen())
+            screenSelectGroup->setCurrentIndex(i);
+    }
 }
 
 void KultLoginBox::showQRCode()

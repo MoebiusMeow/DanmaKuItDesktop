@@ -14,8 +14,6 @@ DanmakuWidget::DanmakuWidget(QWidget *parent) : QWidget(parent)
     , m_textTopSet(new DanmakuTextTopSet(this))
     , m_textBottomSet(new DanmakuTextBottomSet(this))
     , update_timer(new QTimer(this))
-    , reconnect_timer(new QTimer(this))
-    , shutdown_timer(new QTimer(this))
     , m_test(new DanmakuTestSet(this))
     , m_websocket(new QWebSocket)
     , m_wsOn(false)
@@ -117,6 +115,11 @@ void DanmakuWidget::appendText(const QString &content, const QString id, const Q
         emit asyncCreateText(content, id, color, size, m_textBottomSet, DANMAKU_BOTTOM);
         break;
     }
+}
+
+void DanmakuWidget::setGeometry(const QRect &rect)
+{
+    QWidget::setGeometry(rect);
 }
 
 DanmakuAsyncRender::DanmakuAsyncRender(QObject *parent) : QObject(parent)

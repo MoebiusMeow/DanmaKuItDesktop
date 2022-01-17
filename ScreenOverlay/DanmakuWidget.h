@@ -60,12 +60,13 @@ public:
 public Q_SLOTS:
     void onJsonMessageRecieved(const QJsonObject &obj);
     void appendText(const QString &content, const QString id, const QColor &color=QColor(0xFFFFFF), int size=20, int position=floatText);
+    void setGeometry(const QRect &rect);
 
 private:
     DanmakuTextFloatSet *m_textFloatSet;
     DanmakuTextTopSet *m_textTopSet;
     DanmakuTextBottomSet *m_textBottomSet;
-    QTimer *update_timer, *reconnect_timer, *shutdown_timer;
+    QTimer *update_timer;
     DanmakuTestSet *m_test;
     QWebSocket *m_websocket;
     QString m_roomid, m_token;

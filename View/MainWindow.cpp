@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
     connect(network, &NetworkAPI::loginFailed, loginBox, &KultLoginBox::loginFailed);
     connect(network, &NetworkAPI::jsonMessage, screenOverlay, &DanmakuWidget::onJsonMessageRecieved);
+    connect(loginBox, &KultLoginBox::overlayGeometryChage, screenOverlay, &DanmakuWidget::setGeometry);
 }
 
 void MainWindow::setupUI()
@@ -150,7 +151,7 @@ void MainWindow::setupUI()
     connect(loginBox, &KultLoginBox::loginSuccess, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(1, 600); screenOverlay->show(); });
     connect(loginBox, &KultLoginBox::backToLogin, [this]{ dynamicLayout->animateStretch(8000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     connect(loginBox, &KultLoginBox::loginFailed, [this]{ dynamicLayout->animateStretch(18000, 600); waveWidget->animateTheme(0.5, 600); screenOverlay->hide(); });
-    connect(loginBox, &KultLoginBox::showSetting, [this]{ dynamicLayout->animateStretch(5000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
+    connect(loginBox, &KultLoginBox::showSetting, [this]{ dynamicLayout->animateStretch(10000, 600); waveWidget->animateTheme(0, 600); screenOverlay->hide(); });
     connect(network, &NetworkAPI::loginSuccess, loginBox, &KultLoginBox::loginSuccess);
     connect(network, &NetworkAPI::logoutSuccess, loginBox, &KultLoginBox::logoutSuccess);
 
@@ -249,8 +250,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::MouseButtonPress)
     {
-        // screenOverlay->show();
-        // screenOverlay->appendText("123🤔😺😺🦊🦊🤔", "233");
+        screenOverlay->show();
+        screenOverlay->appendText("123🤔😺😺🦊🦊🤔", "233");
         if (screenOverlay) screenOverlay->raise();
         draging = true;
         dragPosition = static_cast<QMouseEvent*>(event)->pos();
