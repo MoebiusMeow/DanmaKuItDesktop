@@ -71,8 +71,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    enable_language("RC")
-    set(app_icon_windows "${CMAKE_CURRENT_SOURCE_DIR}/DanmakuIt.rc")
+    #disabled, as Qt6 has poor support for rc files
+    #enable_language("RC")
+    #set(app_icon_windows "${CMAKE_CURRENT_SOURCE_DIR}/DanmakuIt.rc")
 endif()
 
 qt_add_executable(DanmakuItDesktop WIN32 ${app_icon_windows} MACOSX_BUNDLE ${app_icon_macos} ${SOURCES})
