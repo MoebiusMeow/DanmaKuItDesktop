@@ -44,7 +44,6 @@ jobs:
           New-Item -ItemType Directory $archiveName
           Copy-Item $targetName $archiveName/
           windeployqt --qmldir . --plugindir $archiveName/plugins --no-translations --compiler-runtime $archiveName/$targetName
-          Compress-Archive -Path $archiveName $archiveName'.zip'
           echo "::set-output name=packageName::$archiveName"
         id: package
 
@@ -52,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: DanmakuIt-Desktop-MinGW.zip
-          path: ${{ steps.package.outputs.packageName }}.zip
+          path: ${{ steps.package.outputs.packageName }}
 
   msvc2019:
     name: Windows MSVC2019
@@ -89,7 +88,6 @@ jobs:
           Copy-Item $redistDll $archiveName/
           $sdkDll='{0}Redist/{1}ucrt/DLLs/x64/*.dll' -f $env:winSdkDir.Trim(), $env:winSdkVer.Trim()
           Copy-Item $sdkDll $archiveName/
-          Compress-Archive -Path $archiveName $archiveName'.zip'
           echo "::set-output name=packageName::$archiveName"
         id: package
 
@@ -97,4 +95,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: DanmakuIt-Desktop-MSVC.zip
-          path: ${{ steps.package.outputs.packageName }}.zip
+          path: ${{ steps.package.outputs.packageName }}
